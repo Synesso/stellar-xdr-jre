@@ -107,7 +107,7 @@ public class TransactionResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof TransactionResult)) {
+    if (!(object instanceof TransactionResult)) {
       return false;
     }
 
@@ -115,6 +115,35 @@ public class TransactionResult implements XdrElement {
     return Objects.equal(this.feeCharged, other.feeCharged)
         && Objects.equal(this.result, other.result)
         && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private Int64 feeCharged;
+    private TransactionResultResult result;
+    private TransactionResultExt ext;
+
+    public Builder feeCharged(Int64 feeCharged) {
+      this.feeCharged = feeCharged;
+      return this;
+    }
+
+    public Builder result(TransactionResultResult result) {
+      this.result = result;
+      return this;
+    }
+
+    public Builder ext(TransactionResultExt ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public TransactionResult build() {
+      TransactionResult val = new TransactionResult();
+      val.setFeeCharged(feeCharged);
+      val.setResult(result);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class TransactionResultResult {
@@ -217,7 +246,7 @@ public class TransactionResult implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof TransactionResultResult)) {
+      if (!(object instanceof TransactionResultResult)) {
         return false;
       }
 
@@ -225,6 +254,35 @@ public class TransactionResult implements XdrElement {
       return Objects.equal(this.innerResultPair, other.innerResultPair)
           && Arrays.equals(this.results, other.results)
           && Objects.equal(this.code, other.code);
+    }
+
+    public static final class Builder {
+      private TransactionResultCode discriminant;
+      private InnerTransactionResultPair innerResultPair;
+      private OperationResult[] results;
+
+      public Builder discriminant(TransactionResultCode discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public Builder innerResultPair(InnerTransactionResultPair innerResultPair) {
+        this.innerResultPair = innerResultPair;
+        return this;
+      }
+
+      public Builder results(OperationResult[] results) {
+        this.results = results;
+        return this;
+      }
+
+      public TransactionResultResult build() {
+        TransactionResultResult val = new TransactionResultResult();
+        val.setDiscriminant(discriminant);
+        val.setInnerResultPair(innerResultPair);
+        val.setResults(results);
+        return val;
+      }
     }
   }
 
@@ -286,12 +344,27 @@ public class TransactionResult implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof TransactionResultExt)) {
+      if (!(object instanceof TransactionResultExt)) {
         return false;
       }
 
       TransactionResultExt other = (TransactionResultExt) object;
       return Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public TransactionResultExt build() {
+        TransactionResultExt val = new TransactionResultExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
   }
 }

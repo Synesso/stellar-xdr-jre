@@ -60,7 +60,7 @@ public class Thresholds implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Thresholds)) {
+    if (!(object instanceof Thresholds)) {
       return false;
     }
 

@@ -57,7 +57,7 @@ public class SequenceNumber implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof SequenceNumber)) {
+    if (!(object instanceof SequenceNumber)) {
       return false;
     }
 

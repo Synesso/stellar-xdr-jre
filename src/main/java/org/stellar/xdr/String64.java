@@ -57,7 +57,7 @@ public class String64 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof String64)) {
+    if (!(object instanceof String64)) {
       return false;
     }
 

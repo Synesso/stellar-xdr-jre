@@ -104,7 +104,7 @@ public class SCPNomination implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof SCPNomination)) {
+    if (!(object instanceof SCPNomination)) {
       return false;
     }
 
@@ -112,5 +112,34 @@ public class SCPNomination implements XdrElement {
     return Objects.equal(this.quorumSetHash, other.quorumSetHash)
         && Arrays.equals(this.votes, other.votes)
         && Arrays.equals(this.accepted, other.accepted);
+  }
+
+  public static final class Builder {
+    private Hash quorumSetHash;
+    private Value[] votes;
+    private Value[] accepted;
+
+    public Builder quorumSetHash(Hash quorumSetHash) {
+      this.quorumSetHash = quorumSetHash;
+      return this;
+    }
+
+    public Builder votes(Value[] votes) {
+      this.votes = votes;
+      return this;
+    }
+
+    public Builder accepted(Value[] accepted) {
+      this.accepted = accepted;
+      return this;
+    }
+
+    public SCPNomination build() {
+      SCPNomination val = new SCPNomination();
+      val.setQuorumSetHash(quorumSetHash);
+      val.setVotes(votes);
+      val.setAccepted(accepted);
+      return val;
+    }
   }
 }

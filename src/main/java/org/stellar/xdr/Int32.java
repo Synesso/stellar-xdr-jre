@@ -57,7 +57,7 @@ public class Int32 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Int32)) {
+    if (!(object instanceof Int32)) {
       return false;
     }
 

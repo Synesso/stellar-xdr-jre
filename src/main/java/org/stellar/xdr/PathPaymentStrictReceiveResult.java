@@ -116,13 +116,42 @@ public class PathPaymentStrictReceiveResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof PathPaymentStrictReceiveResult)) {
+    if (!(object instanceof PathPaymentStrictReceiveResult)) {
       return false;
     }
 
     PathPaymentStrictReceiveResult other = (PathPaymentStrictReceiveResult) object;
     return Objects.equal(this.success, other.success) && Objects.equal(this.noIssuer, other.noIssuer) && Objects.equal(
         this.code, other.code);
+  }
+
+  public static final class Builder {
+    private PathPaymentStrictReceiveResultCode discriminant;
+    private PathPaymentStrictReceiveResultSuccess success;
+    private Asset noIssuer;
+
+    public Builder discriminant(PathPaymentStrictReceiveResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder success(PathPaymentStrictReceiveResultSuccess success) {
+      this.success = success;
+      return this;
+    }
+
+    public Builder noIssuer(Asset noIssuer) {
+      this.noIssuer = noIssuer;
+      return this;
+    }
+
+    public PathPaymentStrictReceiveResult build() {
+      PathPaymentStrictReceiveResult val = new PathPaymentStrictReceiveResult();
+      val.setDiscriminant(discriminant);
+      val.setSuccess(success);
+      val.setNoIssuer(noIssuer);
+      return val;
+    }
   }
 
   public static class PathPaymentStrictReceiveResultSuccess {
@@ -192,12 +221,34 @@ public class PathPaymentStrictReceiveResult implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof PathPaymentStrictReceiveResultSuccess)) {
+      if (!(object instanceof PathPaymentStrictReceiveResultSuccess)) {
         return false;
       }
 
       PathPaymentStrictReceiveResultSuccess other = (PathPaymentStrictReceiveResultSuccess) object;
       return Arrays.equals(this.offers, other.offers) && Objects.equal(this.last, other.last);
+    }
+
+    public static final class Builder {
+      private ClaimOfferAtom[] offers;
+      private SimplePaymentResult last;
+
+      public Builder offers(ClaimOfferAtom[] offers) {
+        this.offers = offers;
+        return this;
+      }
+
+      public Builder last(SimplePaymentResult last) {
+        this.last = last;
+        return this;
+      }
+
+      public PathPaymentStrictReceiveResultSuccess build() {
+        PathPaymentStrictReceiveResultSuccess val = new PathPaymentStrictReceiveResultSuccess();
+        val.setOffers(offers);
+        val.setLast(last);
+        return val;
+      }
     }
   }
 }

@@ -144,7 +144,7 @@ public class TrustLineEntry implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof TrustLineEntry)) {
+    if (!(object instanceof TrustLineEntry)) {
       return false;
     }
 
@@ -155,6 +155,56 @@ public class TrustLineEntry implements XdrElement {
         && Objects.equal(this.limit, other.limit)
         && Objects.equal(this.flags, other.flags)
         && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private AccountID accountID;
+    private Asset asset;
+    private Int64 balance;
+    private Int64 limit;
+    private Uint32 flags;
+    private TrustLineEntryExt ext;
+
+    public Builder accountID(AccountID accountID) {
+      this.accountID = accountID;
+      return this;
+    }
+
+    public Builder asset(Asset asset) {
+      this.asset = asset;
+      return this;
+    }
+
+    public Builder balance(Int64 balance) {
+      this.balance = balance;
+      return this;
+    }
+
+    public Builder limit(Int64 limit) {
+      this.limit = limit;
+      return this;
+    }
+
+    public Builder flags(Uint32 flags) {
+      this.flags = flags;
+      return this;
+    }
+
+    public Builder ext(TrustLineEntryExt ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public TrustLineEntry build() {
+      TrustLineEntry val = new TrustLineEntry();
+      val.setAccountID(accountID);
+      val.setAsset(asset);
+      val.setBalance(balance);
+      val.setLimit(limit);
+      val.setFlags(flags);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class TrustLineEntryExt {
@@ -230,12 +280,34 @@ public class TrustLineEntry implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof TrustLineEntryExt)) {
+      if (!(object instanceof TrustLineEntryExt)) {
         return false;
       }
 
       TrustLineEntryExt other = (TrustLineEntryExt) object;
       return Objects.equal(this.v1, other.v1) && Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+      private TrustLineEntryV1 v1;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public Builder v1(TrustLineEntryV1 v1) {
+        this.v1 = v1;
+        return this;
+      }
+
+      public TrustLineEntryExt build() {
+        TrustLineEntryExt val = new TrustLineEntryExt();
+        val.setDiscriminant(discriminant);
+        val.setV1(v1);
+        return val;
+      }
     }
 
     public static class TrustLineEntryV1 {
@@ -296,12 +368,34 @@ public class TrustLineEntry implements XdrElement {
 
       @Override
       public boolean equals(Object object) {
-        if (object == null || !(object instanceof TrustLineEntryV1)) {
+        if (!(object instanceof TrustLineEntryV1)) {
           return false;
         }
 
         TrustLineEntryV1 other = (TrustLineEntryV1) object;
         return Objects.equal(this.liabilities, other.liabilities) && Objects.equal(this.ext, other.ext);
+      }
+
+      public static final class Builder {
+        private Liabilities liabilities;
+        private TrustLineEntryV1Ext ext;
+
+        public Builder liabilities(Liabilities liabilities) {
+          this.liabilities = liabilities;
+          return this;
+        }
+
+        public Builder ext(TrustLineEntryV1Ext ext) {
+          this.ext = ext;
+          return this;
+        }
+
+        public TrustLineEntryV1 build() {
+          TrustLineEntryV1 val = new TrustLineEntryV1();
+          val.setLiabilities(liabilities);
+          val.setExt(ext);
+          return val;
+        }
       }
 
       public static class TrustLineEntryV1Ext {
@@ -362,12 +456,27 @@ public class TrustLineEntry implements XdrElement {
 
         @Override
         public boolean equals(Object object) {
-          if (object == null || !(object instanceof TrustLineEntryV1Ext)) {
+          if (!(object instanceof TrustLineEntryV1Ext)) {
             return false;
           }
 
           TrustLineEntryV1Ext other = (TrustLineEntryV1Ext) object;
           return Objects.equal(this.v, other.v);
+        }
+
+        public static final class Builder {
+          private Integer discriminant;
+
+          public Builder discriminant(Integer discriminant) {
+            this.discriminant = discriminant;
+            return this;
+          }
+
+          public TrustLineEntryV1Ext build() {
+            TrustLineEntryV1Ext val = new TrustLineEntryV1Ext();
+            val.setDiscriminant(discriminant);
+            return val;
+          }
         }
       }
     }

@@ -86,11 +86,33 @@ public class PublicKey implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof PublicKey)) {
+    if (!(object instanceof PublicKey)) {
       return false;
     }
 
     PublicKey other = (PublicKey) object;
     return Objects.equal(this.ed25519, other.ed25519) && Objects.equal(this.type, other.type);
+  }
+
+  public static final class Builder {
+    private PublicKeyType discriminant;
+    private Uint256 ed25519;
+
+    public Builder discriminant(PublicKeyType discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder ed25519(Uint256 ed25519) {
+      this.ed25519 = ed25519;
+      return this;
+    }
+
+    public PublicKey build() {
+      PublicKey val = new PublicKey();
+      val.setDiscriminant(discriminant);
+      val.setEd25519(ed25519);
+      return val;
+    }
   }
 }

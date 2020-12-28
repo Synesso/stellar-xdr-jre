@@ -81,11 +81,26 @@ public class ChangeTrustResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof ChangeTrustResult)) {
+    if (!(object instanceof ChangeTrustResult)) {
       return false;
     }
 
     ChangeTrustResult other = (ChangeTrustResult) object;
     return Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private ChangeTrustResultCode discriminant;
+
+    public Builder discriminant(ChangeTrustResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public ChangeTrustResult build() {
+      ChangeTrustResult val = new ChangeTrustResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 }

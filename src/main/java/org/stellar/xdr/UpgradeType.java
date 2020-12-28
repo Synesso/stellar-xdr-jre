@@ -61,7 +61,7 @@ public class UpgradeType implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof UpgradeType)) {
+    if (!(object instanceof UpgradeType)) {
       return false;
     }
 

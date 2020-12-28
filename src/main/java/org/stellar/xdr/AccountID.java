@@ -57,7 +57,7 @@ public class AccountID implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof AccountID)) {
+    if (!(object instanceof AccountID)) {
       return false;
     }
 

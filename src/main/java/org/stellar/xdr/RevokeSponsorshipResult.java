@@ -82,11 +82,26 @@ public class RevokeSponsorshipResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof RevokeSponsorshipResult)) {
+    if (!(object instanceof RevokeSponsorshipResult)) {
       return false;
     }
 
     RevokeSponsorshipResult other = (RevokeSponsorshipResult) object;
     return Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private RevokeSponsorshipResultCode discriminant;
+
+    public Builder discriminant(RevokeSponsorshipResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public RevokeSponsorshipResult build() {
+      RevokeSponsorshipResult val = new RevokeSponsorshipResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 }

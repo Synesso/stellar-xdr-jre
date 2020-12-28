@@ -57,7 +57,7 @@ public class NodeID implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof NodeID)) {
+    if (!(object instanceof NodeID)) {
       return false;
     }
 

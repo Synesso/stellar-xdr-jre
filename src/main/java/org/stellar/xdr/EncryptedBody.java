@@ -61,7 +61,7 @@ public class EncryptedBody implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof EncryptedBody)) {
+    if (!(object instanceof EncryptedBody)) {
       return false;
     }
 

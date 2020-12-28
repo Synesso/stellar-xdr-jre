@@ -161,7 +161,7 @@ public class OfferEntry implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof OfferEntry)) {
+    if (!(object instanceof OfferEntry)) {
       return false;
     }
 
@@ -174,6 +174,70 @@ public class OfferEntry implements XdrElement {
         && Objects.equal(this.price, other.price)
         && Objects.equal(this.flags, other.flags)
         && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private AccountID sellerID;
+    private Int64 offerID;
+    private Asset selling;
+    private Asset buying;
+    private Int64 amount;
+    private Price price;
+    private Uint32 flags;
+    private OfferEntryExt ext;
+
+    public Builder sellerID(AccountID sellerID) {
+      this.sellerID = sellerID;
+      return this;
+    }
+
+    public Builder offerID(Int64 offerID) {
+      this.offerID = offerID;
+      return this;
+    }
+
+    public Builder selling(Asset selling) {
+      this.selling = selling;
+      return this;
+    }
+
+    public Builder buying(Asset buying) {
+      this.buying = buying;
+      return this;
+    }
+
+    public Builder amount(Int64 amount) {
+      this.amount = amount;
+      return this;
+    }
+
+    public Builder price(Price price) {
+      this.price = price;
+      return this;
+    }
+
+    public Builder flags(Uint32 flags) {
+      this.flags = flags;
+      return this;
+    }
+
+    public Builder ext(OfferEntryExt ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public OfferEntry build() {
+      OfferEntry val = new OfferEntry();
+      val.setSellerID(sellerID);
+      val.setOfferID(offerID);
+      val.setSelling(selling);
+      val.setBuying(buying);
+      val.setAmount(amount);
+      val.setPrice(price);
+      val.setFlags(flags);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class OfferEntryExt {
@@ -233,12 +297,27 @@ public class OfferEntry implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof OfferEntryExt)) {
+      if (!(object instanceof OfferEntryExt)) {
         return false;
       }
 
       OfferEntryExt other = (OfferEntryExt) object;
       return Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public OfferEntryExt build() {
+        OfferEntryExt val = new OfferEntryExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
   }
 }

@@ -83,11 +83,26 @@ public class EndSponsoringFutureReservesResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof EndSponsoringFutureReservesResult)) {
+    if (!(object instanceof EndSponsoringFutureReservesResult)) {
       return false;
     }
 
     EndSponsoringFutureReservesResult other = (EndSponsoringFutureReservesResult) object;
     return Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private EndSponsoringFutureReservesResultCode discriminant;
+
+    public Builder discriminant(EndSponsoringFutureReservesResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public EndSponsoringFutureReservesResult build() {
+      EndSponsoringFutureReservesResult val = new EndSponsoringFutureReservesResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 }

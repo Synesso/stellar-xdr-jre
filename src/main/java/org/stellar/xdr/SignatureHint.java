@@ -60,7 +60,7 @@ public class SignatureHint implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof SignatureHint)) {
+    if (!(object instanceof SignatureHint)) {
       return false;
     }
 

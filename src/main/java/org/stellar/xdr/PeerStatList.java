@@ -65,7 +65,7 @@ public class PeerStatList implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof PeerStatList)) {
+    if (!(object instanceof PeerStatList)) {
       return false;
     }
 

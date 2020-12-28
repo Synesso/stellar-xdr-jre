@@ -57,7 +57,7 @@ public class String32 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof String32)) {
+    if (!(object instanceof String32)) {
       return false;
     }
 

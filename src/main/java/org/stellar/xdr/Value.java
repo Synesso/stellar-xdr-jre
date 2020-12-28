@@ -61,7 +61,7 @@ public class Value implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Value)) {
+    if (!(object instanceof Value)) {
       return false;
     }
 

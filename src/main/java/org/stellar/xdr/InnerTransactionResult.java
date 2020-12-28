@@ -119,7 +119,7 @@ public class InnerTransactionResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof InnerTransactionResult)) {
+    if (!(object instanceof InnerTransactionResult)) {
       return false;
     }
 
@@ -127,6 +127,35 @@ public class InnerTransactionResult implements XdrElement {
     return Objects.equal(this.feeCharged, other.feeCharged)
         && Objects.equal(this.result, other.result)
         && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private Int64 feeCharged;
+    private InnerTransactionResultResult result;
+    private InnerTransactionResultExt ext;
+
+    public Builder feeCharged(Int64 feeCharged) {
+      this.feeCharged = feeCharged;
+      return this;
+    }
+
+    public Builder result(InnerTransactionResultResult result) {
+      this.result = result;
+      return this;
+    }
+
+    public Builder ext(InnerTransactionResultExt ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public InnerTransactionResult build() {
+      InnerTransactionResult val = new InnerTransactionResult();
+      val.setFeeCharged(feeCharged);
+      val.setResult(result);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class InnerTransactionResultResult {
@@ -234,12 +263,34 @@ public class InnerTransactionResult implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof InnerTransactionResultResult)) {
+      if (!(object instanceof InnerTransactionResultResult)) {
         return false;
       }
 
       InnerTransactionResultResult other = (InnerTransactionResultResult) object;
       return Arrays.equals(this.results, other.results) && Objects.equal(this.code, other.code);
+    }
+
+    public static final class Builder {
+      private TransactionResultCode discriminant;
+      private OperationResult[] results;
+
+      public Builder discriminant(TransactionResultCode discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public Builder results(OperationResult[] results) {
+        this.results = results;
+        return this;
+      }
+
+      public InnerTransactionResultResult build() {
+        InnerTransactionResultResult val = new InnerTransactionResultResult();
+        val.setDiscriminant(discriminant);
+        val.setResults(results);
+        return val;
+      }
     }
   }
 
@@ -301,12 +352,27 @@ public class InnerTransactionResult implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof InnerTransactionResultExt)) {
+      if (!(object instanceof InnerTransactionResultExt)) {
         return false;
       }
 
       InnerTransactionResultExt other = (InnerTransactionResultExt) object;
       return Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public InnerTransactionResultExt build() {
+        InnerTransactionResultExt val = new InnerTransactionResultExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
   }
 }

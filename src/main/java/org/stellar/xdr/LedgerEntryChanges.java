@@ -66,7 +66,7 @@ public class LedgerEntryChanges implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof LedgerEntryChanges)) {
+    if (!(object instanceof LedgerEntryChanges)) {
       return false;
     }
 

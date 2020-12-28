@@ -66,7 +66,7 @@ public class SponsorshipDescriptor implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof SponsorshipDescriptor)) {
+    if (!(object instanceof SponsorshipDescriptor)) {
       return false;
     }
 

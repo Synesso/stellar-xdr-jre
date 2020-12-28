@@ -60,7 +60,7 @@ public class Hash implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Hash)) {
+    if (!(object instanceof Hash)) {
       return false;
     }
 

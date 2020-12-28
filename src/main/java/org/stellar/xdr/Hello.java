@@ -160,7 +160,7 @@ public class Hello implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Hello)) {
+    if (!(object instanceof Hello)) {
       return false;
     }
 
@@ -170,5 +170,76 @@ public class Hello implements XdrElement {
         this.networkID, other.networkID) && Objects.equal(this.versionStr, other.versionStr) && Objects.equal(
         this.listeningPort, other.listeningPort) && Objects.equal(this.peerID, other.peerID) && Objects.equal(this.cert,
         other.cert) && Objects.equal(this.nonce, other.nonce);
+  }
+
+  public static final class Builder {
+    private Uint32 ledgerVersion;
+    private Uint32 overlayVersion;
+    private Uint32 overlayMinVersion;
+    private Hash networkID;
+    private XdrString versionStr;
+    private Integer listeningPort;
+    private NodeID peerID;
+    private AuthCert cert;
+    private Uint256 nonce;
+
+    public Builder ledgerVersion(Uint32 ledgerVersion) {
+      this.ledgerVersion = ledgerVersion;
+      return this;
+    }
+
+    public Builder overlayVersion(Uint32 overlayVersion) {
+      this.overlayVersion = overlayVersion;
+      return this;
+    }
+
+    public Builder overlayMinVersion(Uint32 overlayMinVersion) {
+      this.overlayMinVersion = overlayMinVersion;
+      return this;
+    }
+
+    public Builder networkID(Hash networkID) {
+      this.networkID = networkID;
+      return this;
+    }
+
+    public Builder versionStr(XdrString versionStr) {
+      this.versionStr = versionStr;
+      return this;
+    }
+
+    public Builder listeningPort(Integer listeningPort) {
+      this.listeningPort = listeningPort;
+      return this;
+    }
+
+    public Builder peerID(NodeID peerID) {
+      this.peerID = peerID;
+      return this;
+    }
+
+    public Builder cert(AuthCert cert) {
+      this.cert = cert;
+      return this;
+    }
+
+    public Builder nonce(Uint256 nonce) {
+      this.nonce = nonce;
+      return this;
+    }
+
+    public Hello build() {
+      Hello val = new Hello();
+      val.setLedgerVersion(ledgerVersion);
+      val.setOverlayVersion(overlayVersion);
+      val.setOverlayMinVersion(overlayMinVersion);
+      val.setNetworkID(networkID);
+      val.setVersionStr(versionStr);
+      val.setListeningPort(listeningPort);
+      val.setPeerID(peerID);
+      val.setCert(cert);
+      val.setNonce(nonce);
+      return val;
+    }
   }
 }

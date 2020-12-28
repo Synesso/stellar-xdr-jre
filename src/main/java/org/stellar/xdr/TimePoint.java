@@ -57,7 +57,7 @@ public class TimePoint implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof TimePoint)) {
+    if (!(object instanceof TimePoint)) {
       return false;
     }
 

@@ -57,7 +57,7 @@ public class Uint64 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Uint64)) {
+    if (!(object instanceof Uint64)) {
       return false;
     }
 

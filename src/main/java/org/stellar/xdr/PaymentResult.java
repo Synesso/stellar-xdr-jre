@@ -81,11 +81,26 @@ public class PaymentResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof PaymentResult)) {
+    if (!(object instanceof PaymentResult)) {
       return false;
     }
 
     PaymentResult other = (PaymentResult) object;
     return Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private PaymentResultCode discriminant;
+
+    public Builder discriminant(PaymentResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public PaymentResult build() {
+      PaymentResult val = new PaymentResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 }

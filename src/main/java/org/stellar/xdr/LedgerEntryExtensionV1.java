@@ -82,12 +82,34 @@ public class LedgerEntryExtensionV1 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof LedgerEntryExtensionV1)) {
+    if (!(object instanceof LedgerEntryExtensionV1)) {
       return false;
     }
 
     LedgerEntryExtensionV1 other = (LedgerEntryExtensionV1) object;
     return Objects.equal(this.sponsoringID, other.sponsoringID) && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private SponsorshipDescriptor sponsoringID;
+    private LedgerEntryExtensionV1Ext ext;
+
+    public Builder sponsoringID(SponsorshipDescriptor sponsoringID) {
+      this.sponsoringID = sponsoringID;
+      return this;
+    }
+
+    public Builder ext(LedgerEntryExtensionV1Ext ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public LedgerEntryExtensionV1 build() {
+      LedgerEntryExtensionV1 val = new LedgerEntryExtensionV1();
+      val.setSponsoringID(sponsoringID);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class LedgerEntryExtensionV1Ext {
@@ -148,12 +170,27 @@ public class LedgerEntryExtensionV1 implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof LedgerEntryExtensionV1Ext)) {
+      if (!(object instanceof LedgerEntryExtensionV1Ext)) {
         return false;
       }
 
       LedgerEntryExtensionV1Ext other = (LedgerEntryExtensionV1Ext) object;
       return Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public LedgerEntryExtensionV1Ext build() {
+        LedgerEntryExtensionV1Ext val = new LedgerEntryExtensionV1Ext();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
   }
 }

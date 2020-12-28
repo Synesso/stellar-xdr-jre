@@ -60,7 +60,7 @@ public class AssetCode12 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof AssetCode12)) {
+    if (!(object instanceof AssetCode12)) {
       return false;
     }
 

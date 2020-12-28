@@ -93,11 +93,33 @@ public class ManageBuyOfferResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof ManageBuyOfferResult)) {
+    if (!(object instanceof ManageBuyOfferResult)) {
       return false;
     }
 
     ManageBuyOfferResult other = (ManageBuyOfferResult) object;
     return Objects.equal(this.success, other.success) && Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private ManageBuyOfferResultCode discriminant;
+    private ManageOfferSuccessResult success;
+
+    public Builder discriminant(ManageBuyOfferResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder success(ManageOfferSuccessResult success) {
+      this.success = success;
+      return this;
+    }
+
+    public ManageBuyOfferResult build() {
+      ManageBuyOfferResult val = new ManageBuyOfferResult();
+      val.setDiscriminant(discriminant);
+      val.setSuccess(success);
+      return val;
+    }
   }
 }

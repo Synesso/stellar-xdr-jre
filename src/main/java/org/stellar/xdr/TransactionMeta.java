@@ -129,12 +129,48 @@ public class TransactionMeta implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof TransactionMeta)) {
+    if (!(object instanceof TransactionMeta)) {
       return false;
     }
 
     TransactionMeta other = (TransactionMeta) object;
     return Arrays.equals(this.operations, other.operations) && Objects.equal(this.v1, other.v1) && Objects.equal(
         this.v2, other.v2) && Objects.equal(this.v, other.v);
+  }
+
+  public static final class Builder {
+    private Integer discriminant;
+    private OperationMeta[] operations;
+    private TransactionMetaV1 v1;
+    private TransactionMetaV2 v2;
+
+    public Builder discriminant(Integer discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder operations(OperationMeta[] operations) {
+      this.operations = operations;
+      return this;
+    }
+
+    public Builder v1(TransactionMetaV1 v1) {
+      this.v1 = v1;
+      return this;
+    }
+
+    public Builder v2(TransactionMetaV2 v2) {
+      this.v2 = v2;
+      return this;
+    }
+
+    public TransactionMeta build() {
+      TransactionMeta val = new TransactionMeta();
+      val.setDiscriminant(discriminant);
+      val.setOperations(operations);
+      val.setV1(v1);
+      val.setV2(v2);
+      return val;
+    }
   }
 }

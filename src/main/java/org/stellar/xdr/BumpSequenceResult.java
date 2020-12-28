@@ -82,11 +82,26 @@ public class BumpSequenceResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof BumpSequenceResult)) {
+    if (!(object instanceof BumpSequenceResult)) {
       return false;
     }
 
     BumpSequenceResult other = (BumpSequenceResult) object;
     return Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private BumpSequenceResultCode discriminant;
+
+    public Builder discriminant(BumpSequenceResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public BumpSequenceResult build() {
+      BumpSequenceResult val = new BumpSequenceResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 }

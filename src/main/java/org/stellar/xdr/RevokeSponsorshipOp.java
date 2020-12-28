@@ -109,13 +109,42 @@ public class RevokeSponsorshipOp implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof RevokeSponsorshipOp)) {
+    if (!(object instanceof RevokeSponsorshipOp)) {
       return false;
     }
 
     RevokeSponsorshipOp other = (RevokeSponsorshipOp) object;
     return Objects.equal(this.ledgerKey, other.ledgerKey) && Objects.equal(this.signer, other.signer) && Objects.equal(
         this.type, other.type);
+  }
+
+  public static final class Builder {
+    private RevokeSponsorshipType discriminant;
+    private LedgerKey ledgerKey;
+    private RevokeSponsorshipOpSigner signer;
+
+    public Builder discriminant(RevokeSponsorshipType discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder ledgerKey(LedgerKey ledgerKey) {
+      this.ledgerKey = ledgerKey;
+      return this;
+    }
+
+    public Builder signer(RevokeSponsorshipOpSigner signer) {
+      this.signer = signer;
+      return this;
+    }
+
+    public RevokeSponsorshipOp build() {
+      RevokeSponsorshipOp val = new RevokeSponsorshipOp();
+      val.setDiscriminant(discriminant);
+      val.setLedgerKey(ledgerKey);
+      val.setSigner(signer);
+      return val;
+    }
   }
 
   public static class RevokeSponsorshipOpSigner {
@@ -176,12 +205,34 @@ public class RevokeSponsorshipOp implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof RevokeSponsorshipOpSigner)) {
+      if (!(object instanceof RevokeSponsorshipOpSigner)) {
         return false;
       }
 
       RevokeSponsorshipOpSigner other = (RevokeSponsorshipOpSigner) object;
       return Objects.equal(this.accountID, other.accountID) && Objects.equal(this.signerKey, other.signerKey);
+    }
+
+    public static final class Builder {
+      private AccountID accountID;
+      private SignerKey signerKey;
+
+      public Builder accountID(AccountID accountID) {
+        this.accountID = accountID;
+        return this;
+      }
+
+      public Builder signerKey(SignerKey signerKey) {
+        this.signerKey = signerKey;
+        return this;
+      }
+
+      public RevokeSponsorshipOpSigner build() {
+        RevokeSponsorshipOpSigner val = new RevokeSponsorshipOpSigner();
+        val.setAccountID(accountID);
+        val.setSignerKey(signerKey);
+        return val;
+      }
     }
   }
 }

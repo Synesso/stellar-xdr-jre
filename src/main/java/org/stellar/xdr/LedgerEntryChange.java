@@ -137,12 +137,55 @@ public class LedgerEntryChange implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof LedgerEntryChange)) {
+    if (!(object instanceof LedgerEntryChange)) {
       return false;
     }
 
     LedgerEntryChange other = (LedgerEntryChange) object;
     return Objects.equal(this.created, other.created) && Objects.equal(this.updated, other.updated) && Objects.equal(
         this.removed, other.removed) && Objects.equal(this.state, other.state) && Objects.equal(this.type, other.type);
+  }
+
+  public static final class Builder {
+    private LedgerEntryChangeType discriminant;
+    private LedgerEntry created;
+    private LedgerEntry updated;
+    private LedgerKey removed;
+    private LedgerEntry state;
+
+    public Builder discriminant(LedgerEntryChangeType discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder created(LedgerEntry created) {
+      this.created = created;
+      return this;
+    }
+
+    public Builder updated(LedgerEntry updated) {
+      this.updated = updated;
+      return this;
+    }
+
+    public Builder removed(LedgerKey removed) {
+      this.removed = removed;
+      return this;
+    }
+
+    public Builder state(LedgerEntry state) {
+      this.state = state;
+      return this;
+    }
+
+    public LedgerEntryChange build() {
+      LedgerEntryChange val = new LedgerEntryChange();
+      val.setDiscriminant(discriminant);
+      val.setCreated(created);
+      val.setUpdated(updated);
+      val.setRemoved(removed);
+      val.setState(state);
+      return val;
+    }
   }
 }

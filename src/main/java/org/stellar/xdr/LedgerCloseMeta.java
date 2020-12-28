@@ -86,11 +86,33 @@ public class LedgerCloseMeta implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof LedgerCloseMeta)) {
+    if (!(object instanceof LedgerCloseMeta)) {
       return false;
     }
 
     LedgerCloseMeta other = (LedgerCloseMeta) object;
     return Objects.equal(this.v0, other.v0) && Objects.equal(this.v, other.v);
+  }
+
+  public static final class Builder {
+    private Integer discriminant;
+    private LedgerCloseMetaV0 v0;
+
+    public Builder discriminant(Integer discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder v0(LedgerCloseMetaV0 v0) {
+      this.v0 = v0;
+      return this;
+    }
+
+    public LedgerCloseMeta build() {
+      LedgerCloseMeta val = new LedgerCloseMeta();
+      val.setDiscriminant(discriminant);
+      val.setV0(v0);
+      return val;
+    }
   }
 }

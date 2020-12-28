@@ -61,7 +61,7 @@ public class Signature implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Signature)) {
+    if (!(object instanceof Signature)) {
       return false;
     }
 

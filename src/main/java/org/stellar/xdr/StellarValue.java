@@ -123,7 +123,7 @@ public class StellarValue implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof StellarValue)) {
+    if (!(object instanceof StellarValue)) {
       return false;
     }
 
@@ -132,6 +132,42 @@ public class StellarValue implements XdrElement {
         && Objects.equal(this.closeTime, other.closeTime)
         && Arrays.equals(this.upgrades, other.upgrades)
         && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private Hash txSetHash;
+    private TimePoint closeTime;
+    private UpgradeType[] upgrades;
+    private StellarValueExt ext;
+
+    public Builder txSetHash(Hash txSetHash) {
+      this.txSetHash = txSetHash;
+      return this;
+    }
+
+    public Builder closeTime(TimePoint closeTime) {
+      this.closeTime = closeTime;
+      return this;
+    }
+
+    public Builder upgrades(UpgradeType[] upgrades) {
+      this.upgrades = upgrades;
+      return this;
+    }
+
+    public Builder ext(StellarValueExt ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public StellarValue build() {
+      StellarValue val = new StellarValue();
+      val.setTxSetHash(txSetHash);
+      val.setCloseTime(closeTime);
+      val.setUpgrades(upgrades);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class StellarValueExt {
@@ -206,12 +242,34 @@ public class StellarValue implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof StellarValueExt)) {
+      if (!(object instanceof StellarValueExt)) {
         return false;
       }
 
       StellarValueExt other = (StellarValueExt) object;
       return Objects.equal(this.lcValueSignature, other.lcValueSignature) && Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private StellarValueType discriminant;
+      private LedgerCloseValueSignature lcValueSignature;
+
+      public Builder discriminant(StellarValueType discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public Builder lcValueSignature(LedgerCloseValueSignature lcValueSignature) {
+        this.lcValueSignature = lcValueSignature;
+        return this;
+      }
+
+      public StellarValueExt build() {
+        StellarValueExt val = new StellarValueExt();
+        val.setDiscriminant(discriminant);
+        val.setLcValueSignature(lcValueSignature);
+        return val;
+      }
     }
   }
 }

@@ -115,7 +115,7 @@ public class AccountEntryExtensionV2 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof AccountEntryExtensionV2)) {
+    if (!(object instanceof AccountEntryExtensionV2)) {
       return false;
     }
 
@@ -123,6 +123,42 @@ public class AccountEntryExtensionV2 implements XdrElement {
     return Objects.equal(this.numSponsored, other.numSponsored) && Objects.equal(this.numSponsoring,
         other.numSponsoring) && Arrays.equals(this.signerSponsoringIDs, other.signerSponsoringIDs) && Objects.equal(
         this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private Uint32 numSponsored;
+    private Uint32 numSponsoring;
+    private SponsorshipDescriptor[] signerSponsoringIDs;
+    private AccountEntryExtensionV2Ext ext;
+
+    public Builder numSponsored(Uint32 numSponsored) {
+      this.numSponsored = numSponsored;
+      return this;
+    }
+
+    public Builder numSponsoring(Uint32 numSponsoring) {
+      this.numSponsoring = numSponsoring;
+      return this;
+    }
+
+    public Builder signerSponsoringIDs(SponsorshipDescriptor[] signerSponsoringIDs) {
+      this.signerSponsoringIDs = signerSponsoringIDs;
+      return this;
+    }
+
+    public Builder ext(AccountEntryExtensionV2Ext ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public AccountEntryExtensionV2 build() {
+      AccountEntryExtensionV2 val = new AccountEntryExtensionV2();
+      val.setNumSponsored(numSponsored);
+      val.setNumSponsoring(numSponsoring);
+      val.setSignerSponsoringIDs(signerSponsoringIDs);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class AccountEntryExtensionV2Ext {
@@ -183,12 +219,27 @@ public class AccountEntryExtensionV2 implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof AccountEntryExtensionV2Ext)) {
+      if (!(object instanceof AccountEntryExtensionV2Ext)) {
         return false;
       }
 
       AccountEntryExtensionV2Ext other = (AccountEntryExtensionV2Ext) object;
       return Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public AccountEntryExtensionV2Ext build() {
+        AccountEntryExtensionV2Ext val = new AccountEntryExtensionV2Ext();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
   }
 }

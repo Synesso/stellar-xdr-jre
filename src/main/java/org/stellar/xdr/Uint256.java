@@ -60,7 +60,7 @@ public class Uint256 implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Uint256)) {
+    if (!(object instanceof Uint256)) {
       return false;
     }
 

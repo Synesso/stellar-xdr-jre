@@ -87,11 +87,33 @@ public class ClaimableBalanceID implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof ClaimableBalanceID)) {
+    if (!(object instanceof ClaimableBalanceID)) {
       return false;
     }
 
     ClaimableBalanceID other = (ClaimableBalanceID) object;
     return Objects.equal(this.v0, other.v0) && Objects.equal(this.type, other.type);
+  }
+
+  public static final class Builder {
+    private ClaimableBalanceIDType discriminant;
+    private Hash v0;
+
+    public Builder discriminant(ClaimableBalanceIDType discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder v0(Hash v0) {
+      this.v0 = v0;
+      return this;
+    }
+
+    public ClaimableBalanceID build() {
+      ClaimableBalanceID val = new ClaimableBalanceID();
+      val.setDiscriminant(discriminant);
+      val.setV0(v0);
+      return val;
+    }
   }
 }

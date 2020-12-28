@@ -169,7 +169,7 @@ public class Transaction implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof Transaction)) {
+    if (!(object instanceof Transaction)) {
       return false;
     }
 
@@ -181,6 +181,63 @@ public class Transaction implements XdrElement {
         && Objects.equal(this.memo, other.memo)
         && Arrays.equals(this.operations, other.operations)
         && Objects.equal(this.ext, other.ext);
+  }
+
+  public static final class Builder {
+    private MuxedAccount sourceAccount;
+    private Uint32 fee;
+    private SequenceNumber seqNum;
+    private TimeBounds timeBounds;
+    private Memo memo;
+    private Operation[] operations;
+    private TransactionExt ext;
+
+    public Builder sourceAccount(MuxedAccount sourceAccount) {
+      this.sourceAccount = sourceAccount;
+      return this;
+    }
+
+    public Builder fee(Uint32 fee) {
+      this.fee = fee;
+      return this;
+    }
+
+    public Builder seqNum(SequenceNumber seqNum) {
+      this.seqNum = seqNum;
+      return this;
+    }
+
+    public Builder timeBounds(TimeBounds timeBounds) {
+      this.timeBounds = timeBounds;
+      return this;
+    }
+
+    public Builder memo(Memo memo) {
+      this.memo = memo;
+      return this;
+    }
+
+    public Builder operations(Operation[] operations) {
+      this.operations = operations;
+      return this;
+    }
+
+    public Builder ext(TransactionExt ext) {
+      this.ext = ext;
+      return this;
+    }
+
+    public Transaction build() {
+      Transaction val = new Transaction();
+      val.setSourceAccount(sourceAccount);
+      val.setFee(fee);
+      val.setSeqNum(seqNum);
+      val.setTimeBounds(timeBounds);
+      val.setMemo(memo);
+      val.setOperations(operations);
+      val.setExt(ext);
+      return val;
+    }
   }
 
   public static class TransactionExt {
@@ -240,12 +297,27 @@ public class Transaction implements XdrElement {
 
     @Override
     public boolean equals(Object object) {
-      if (object == null || !(object instanceof TransactionExt)) {
+      if (!(object instanceof TransactionExt)) {
         return false;
       }
 
       TransactionExt other = (TransactionExt) object;
       return Objects.equal(this.v, other.v);
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public TransactionExt build() {
+        TransactionExt val = new TransactionExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
   }
 }

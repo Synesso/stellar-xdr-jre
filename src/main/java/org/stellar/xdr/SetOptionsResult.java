@@ -81,11 +81,26 @@ public class SetOptionsResult implements XdrElement {
 
   @Override
   public boolean equals(Object object) {
-    if (object == null || !(object instanceof SetOptionsResult)) {
+    if (!(object instanceof SetOptionsResult)) {
       return false;
     }
 
     SetOptionsResult other = (SetOptionsResult) object;
     return Objects.equal(this.code, other.code);
+  }
+
+  public static final class Builder {
+    private SetOptionsResultCode discriminant;
+
+    public Builder discriminant(SetOptionsResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public SetOptionsResult build() {
+      SetOptionsResult val = new SetOptionsResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 }
