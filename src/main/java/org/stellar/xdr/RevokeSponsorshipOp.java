@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -43,6 +46,10 @@ public class RevokeSponsorshipOp implements XdrElement {
         RevokeSponsorshipOpSigner.encode(stream, encodedRevokeSponsorshipOp.signer);
         break;
     }
+  }
+
+  public static RevokeSponsorshipOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static RevokeSponsorshipOp decode(XdrDataInputStream stream) throws IOException {
@@ -88,6 +95,13 @@ public class RevokeSponsorshipOp implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.ledgerKey, this.signer, this.type);
@@ -117,6 +131,10 @@ public class RevokeSponsorshipOp implements XdrElement {
       SignerKey.encode(stream, encodedRevokeSponsorshipOpSigner.signerKey);
     }
 
+    public static RevokeSponsorshipOpSigner decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static RevokeSponsorshipOpSigner decode(XdrDataInputStream stream) throws IOException {
       RevokeSponsorshipOpSigner decodedRevokeSponsorshipOpSigner = new RevokeSponsorshipOpSigner();
       decodedRevokeSponsorshipOpSigner.accountID = AccountID.decode(stream);
@@ -142,6 +160,13 @@ public class RevokeSponsorshipOp implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

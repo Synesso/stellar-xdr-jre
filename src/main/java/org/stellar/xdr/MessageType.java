@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -12,24 +15,24 @@ import java.io.IOException;
 //      ERROR_MSG = 0,
 //      AUTH = 2,
 //      DONT_HAVE = 3,
-//  
+//
 //      GET_PEERS = 4, // gets a list of peers this guy knows about
 //      PEERS = 5,
-//  
+//
 //      GET_TX_SET = 6, // gets a particular txset by hash
 //      TX_SET = 7,
-//  
+//
 //      TRANSACTION = 8, // pass on a tx you have heard about
-//  
+//
 //      // SCP
 //      GET_SCP_QUORUMSET = 9,
 //      SCP_QUORUMSET = 10,
 //      SCP_MESSAGE = 11,
 //      GET_SCP_STATE = 12,
-//  
+//
 //      // new messages
 //      HELLO = 13,
-//  
+//
 //      SURVEY_REQUEST = 14,
 //      SURVEY_RESPONSE = 15
 //  };
@@ -56,6 +59,10 @@ public enum MessageType implements XdrElement {
 
   MessageType(int value) {
     mValue = value;
+  }
+
+  public static MessageType decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static MessageType decode(XdrDataInputStream stream) throws IOException {
@@ -106,5 +113,12 @@ public enum MessageType implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -13,16 +16,16 @@ import java.util.Arrays;
 //  {
 //      // Unique identifier for this ClaimableBalanceEntry
 //      ClaimableBalanceID balanceID;
-//  
+//
 //      // List of claimants with associated predicate
 //      Claimant claimants<10>;
-//  
+//
 //      // Any asset including native
 //      Asset asset;
-//  
+//
 //      // Amount of asset
 //      int64 amount;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -54,6 +57,10 @@ public class ClaimableBalanceEntry implements XdrElement {
     Asset.encode(stream, encodedClaimableBalanceEntry.asset);
     Int64.encode(stream, encodedClaimableBalanceEntry.amount);
     ClaimableBalanceEntryExt.encode(stream, encodedClaimableBalanceEntry.ext);
+  }
+
+  public static ClaimableBalanceEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ClaimableBalanceEntry decode(XdrDataInputStream stream) throws IOException {
@@ -114,6 +121,13 @@ public class ClaimableBalanceEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.balanceID, Arrays.hashCode(this.claimants), this.asset, this.amount, this.ext);
@@ -150,6 +164,10 @@ public class ClaimableBalanceEntry implements XdrElement {
       }
     }
 
+    public static ClaimableBalanceEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static ClaimableBalanceEntryExt decode(XdrDataInputStream stream) throws IOException {
       ClaimableBalanceEntryExt decodedClaimableBalanceEntryExt = new ClaimableBalanceEntryExt();
       Integer discriminant = stream.readInt();
@@ -171,6 +189,13 @@ public class ClaimableBalanceEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

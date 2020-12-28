@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -12,7 +15,7 @@ import java.io.IOException;
 //  {
 //      PeerStatList inboundPeers;
 //      PeerStatList outboundPeers;
-//  
+//
 //      uint32 totalInboundPeerCount;
 //      uint32 totalOutboundPeerCount;
 //  };
@@ -33,6 +36,10 @@ public class TopologyResponseBody implements XdrElement {
     PeerStatList.encode(stream, encodedTopologyResponseBody.outboundPeers);
     Uint32.encode(stream, encodedTopologyResponseBody.totalInboundPeerCount);
     Uint32.encode(stream, encodedTopologyResponseBody.totalOutboundPeerCount);
+  }
+
+  public static TopologyResponseBody decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static TopologyResponseBody decode(XdrDataInputStream stream) throws IOException {
@@ -78,6 +85,13 @@ public class TopologyResponseBody implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

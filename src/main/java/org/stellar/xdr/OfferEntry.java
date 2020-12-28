@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -15,7 +18,7 @@ import java.io.IOException;
 //      Asset selling; // A
 //      Asset buying;  // B
 //      int64 amount;  // amount of A
-//  
+//
 //      /* price for this offer:
 //          price of A in terms of B
 //          price=AmountB/AmountA=priceNumerator/priceDenominator
@@ -23,7 +26,7 @@ import java.io.IOException;
 //      */
 //      Price price;
 //      uint32 flags; // see OfferEntryFlags
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -56,6 +59,10 @@ public class OfferEntry implements XdrElement {
     Price.encode(stream, encodedOfferEntry.price);
     Uint32.encode(stream, encodedOfferEntry.flags);
     OfferEntryExt.encode(stream, encodedOfferEntry.ext);
+  }
+
+  public static OfferEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static OfferEntry decode(XdrDataInputStream stream) throws IOException {
@@ -139,6 +146,13 @@ public class OfferEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.sellerID, this.offerID, this.selling, this.buying, this.amount, this.price, this.flags,
@@ -178,6 +192,10 @@ public class OfferEntry implements XdrElement {
       }
     }
 
+    public static OfferEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static OfferEntryExt decode(XdrDataInputStream stream) throws IOException {
       OfferEntryExt decodedOfferEntryExt = new OfferEntryExt();
       Integer discriminant = stream.readInt();
@@ -199,6 +217,13 @@ public class OfferEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

@@ -4,25 +4,28 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  struct SetOptionsOp
 //  {
 //      AccountID* inflationDest; // sets the inflation destination
-//  
+//
 //      uint32* clearFlags; // which flags to clear
 //      uint32* setFlags;   // which flags to set
-//  
+//
 //      // account threshold manipulation
 //      uint32* masterWeight; // weight of the master account
 //      uint32* lowThreshold;
 //      uint32* medThreshold;
 //      uint32* highThreshold;
-//  
+//
 //      string32* homeDomain; // sets the home domain
-//  
+//
 //      // Add, update or remove a signer for the account
 //      // signer is deleted if the weight is 0
 //      Signer* signer;
@@ -98,6 +101,10 @@ public class SetOptionsOp implements XdrElement {
     } else {
       stream.writeInt(0);
     }
+  }
+
+  public static SetOptionsOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static SetOptionsOp decode(XdrDataInputStream stream) throws IOException {
@@ -215,6 +222,13 @@ public class SetOptionsOp implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      REVOKE_SPONSORSHIP_SUCCESS = 0,
-//  
+//
 //      // codes considered as "failure" for the operation
 //      REVOKE_SPONSORSHIP_DOES_NOT_EXIST = -1,
 //      REVOKE_SPONSORSHIP_NOT_SPONSOR = -2,
@@ -31,6 +34,10 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
 
   RevokeSponsorshipResultCode(int value) {
     mValue = value;
+  }
+
+  public static RevokeSponsorshipResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static RevokeSponsorshipResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -61,5 +68,12 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -36,6 +39,10 @@ public class PeerAddress implements XdrElement {
     PeerAddressIp.encode(stream, encodedPeerAddress.ip);
     Uint32.encode(stream, encodedPeerAddress.port);
     Uint32.encode(stream, encodedPeerAddress.numFailures);
+  }
+
+  public static PeerAddress decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static PeerAddress decode(XdrDataInputStream stream) throws IOException {
@@ -72,6 +79,13 @@ public class PeerAddress implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -112,6 +126,10 @@ public class PeerAddress implements XdrElement {
           stream.write(encodedPeerAddressIp.getIpv6(), 0, ipv6size);
           break;
       }
+    }
+
+    public static PeerAddressIp decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static PeerAddressIp decode(XdrDataInputStream stream) throws IOException {
@@ -159,6 +177,13 @@ public class PeerAddress implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

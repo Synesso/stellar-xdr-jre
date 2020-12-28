@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -25,6 +28,10 @@ public class UpgradeEntryMeta implements XdrElement {
   public static void encode(XdrDataOutputStream stream, UpgradeEntryMeta encodedUpgradeEntryMeta) throws IOException {
     LedgerUpgrade.encode(stream, encodedUpgradeEntryMeta.upgrade);
     LedgerEntryChanges.encode(stream, encodedUpgradeEntryMeta.changes);
+  }
+
+  public static UpgradeEntryMeta decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static UpgradeEntryMeta decode(XdrDataInputStream stream) throws IOException {
@@ -52,6 +59,13 @@ public class UpgradeEntryMeta implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

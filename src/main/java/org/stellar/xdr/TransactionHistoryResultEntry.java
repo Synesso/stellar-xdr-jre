@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -12,7 +15,7 @@ import java.io.IOException;
 //  {
 //      uint32 ledgerSeq;
 //      TransactionResultSet txResultSet;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -36,6 +39,10 @@ public class TransactionHistoryResultEntry implements XdrElement {
     Uint32.encode(stream, encodedTransactionHistoryResultEntry.ledgerSeq);
     TransactionResultSet.encode(stream, encodedTransactionHistoryResultEntry.txResultSet);
     TransactionHistoryResultEntryExt.encode(stream, encodedTransactionHistoryResultEntry.ext);
+  }
+
+  public static TransactionHistoryResultEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static TransactionHistoryResultEntry decode(XdrDataInputStream stream) throws IOException {
@@ -74,6 +81,13 @@ public class TransactionHistoryResultEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.ledgerSeq, this.txResultSet, this.ext);
@@ -108,6 +122,10 @@ public class TransactionHistoryResultEntry implements XdrElement {
       }
     }
 
+    public static TransactionHistoryResultEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static TransactionHistoryResultEntryExt decode(XdrDataInputStream stream) throws IOException {
       TransactionHistoryResultEntryExt decodedTransactionHistoryResultEntryExt = new TransactionHistoryResultEntryExt();
       Integer discriminant = stream.readInt();
@@ -129,6 +147,13 @@ public class TransactionHistoryResultEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

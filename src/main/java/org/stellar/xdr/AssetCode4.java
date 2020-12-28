@@ -3,8 +3,11 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -17,6 +20,10 @@ public class AssetCode4 implements XdrElement {
   public static void encode(XdrDataOutputStream stream, AssetCode4 encodedAssetCode4) throws IOException {
     int AssetCode4size = encodedAssetCode4.AssetCode4.length;
     stream.write(encodedAssetCode4.getAssetCode4(), 0, AssetCode4size);
+  }
+
+  public static AssetCode4 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static AssetCode4 decode(XdrDataInputStream stream) throws IOException {
@@ -37,6 +44,13 @@ public class AssetCode4 implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

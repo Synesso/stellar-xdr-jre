@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      PAYMENT_SUCCESS = 0, // payment successfuly completed
-//  
+//
 //      // codes considered as "failure" for the operation
 //      PAYMENT_MALFORMED = -1,          // bad input
 //      PAYMENT_UNDERFUNDED = -2,        // not enough funds in source account
@@ -41,6 +44,10 @@ public enum PaymentResultCode implements XdrElement {
 
   PaymentResultCode(int value) {
     mValue = value;
+  }
+
+  public static PaymentResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static PaymentResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -81,5 +88,12 @@ public enum PaymentResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

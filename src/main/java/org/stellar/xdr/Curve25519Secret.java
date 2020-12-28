@@ -3,8 +3,11 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -25,6 +28,10 @@ public class Curve25519Secret implements XdrElement {
     stream.write(encodedCurve25519Secret.getKey(), 0, keysize);
   }
 
+  public static Curve25519Secret decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
   public static Curve25519Secret decode(XdrDataInputStream stream) throws IOException {
     Curve25519Secret decodedCurve25519Secret = new Curve25519Secret();
     int keysize = 32;
@@ -43,6 +50,13 @@ public class Curve25519Secret implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

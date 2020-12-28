@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -36,6 +39,10 @@ public class TransactionSignaturePayload implements XdrElement {
     TransactionSignaturePayloadTaggedTransaction.encode(stream, encodedTransactionSignaturePayload.taggedTransaction);
   }
 
+  public static TransactionSignaturePayload decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
   public static TransactionSignaturePayload decode(XdrDataInputStream stream) throws IOException {
     TransactionSignaturePayload decodedTransactionSignaturePayload = new TransactionSignaturePayload();
     decodedTransactionSignaturePayload.networkId = Hash.decode(stream);
@@ -61,6 +68,13 @@ public class TransactionSignaturePayload implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -101,6 +115,10 @@ public class TransactionSignaturePayload implements XdrElement {
           FeeBumpTransaction.encode(stream, encodedTransactionSignaturePayloadTaggedTransaction.feeBump);
           break;
       }
+    }
+
+    public static TransactionSignaturePayloadTaggedTransaction decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static TransactionSignaturePayloadTaggedTransaction decode(XdrDataInputStream stream) throws IOException {
@@ -145,6 +163,13 @@ public class TransactionSignaturePayload implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

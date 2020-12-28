@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -35,6 +38,10 @@ public class Claimant implements XdrElement {
         ClaimantV0.encode(stream, encodedClaimant.v0);
         break;
     }
+  }
+
+  public static Claimant decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static Claimant decode(XdrDataInputStream stream) throws IOException {
@@ -69,6 +76,13 @@ public class Claimant implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.v0, this.type);
@@ -96,6 +110,10 @@ public class Claimant implements XdrElement {
       ClaimPredicate.encode(stream, encodedClaimantV0.predicate);
     }
 
+    public static ClaimantV0 decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static ClaimantV0 decode(XdrDataInputStream stream) throws IOException {
       ClaimantV0 decodedClaimantV0 = new ClaimantV0();
       decodedClaimantV0.destination = AccountID.decode(stream);
@@ -121,6 +139,13 @@ public class Claimant implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

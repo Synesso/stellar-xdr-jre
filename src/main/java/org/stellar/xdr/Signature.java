@@ -3,8 +3,11 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -18,6 +21,10 @@ public class Signature implements XdrElement {
     int Signaturesize = encodedSignature.Signature.length;
     stream.writeInt(Signaturesize);
     stream.write(encodedSignature.getSignature(), 0, Signaturesize);
+  }
+
+  public static Signature decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static Signature decode(XdrDataInputStream stream) throws IOException {
@@ -38,6 +45,13 @@ public class Signature implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

@@ -4,14 +4,17 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  struct LedgerEntry
 //  {
 //      uint32 lastModifiedLedgerSeq; // ledger the LedgerEntry was last changed
-//  
+//
 //      union switch (LedgerEntryType type)
 //      {
 //      case ACCOUNT:
@@ -26,7 +29,7 @@ import java.io.IOException;
 //          ClaimableBalanceEntry claimableBalance;
 //      }
 //      data;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -51,6 +54,10 @@ public class LedgerEntry implements XdrElement {
     Uint32.encode(stream, encodedLedgerEntry.lastModifiedLedgerSeq);
     LedgerEntryData.encode(stream, encodedLedgerEntry.data);
     LedgerEntryExt.encode(stream, encodedLedgerEntry.ext);
+  }
+
+  public static LedgerEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static LedgerEntry decode(XdrDataInputStream stream) throws IOException {
@@ -87,6 +94,13 @@ public class LedgerEntry implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -137,6 +151,10 @@ public class LedgerEntry implements XdrElement {
           ClaimableBalanceEntry.encode(stream, encodedLedgerEntryData.claimableBalance);
           break;
       }
+    }
+
+    public static LedgerEntryData decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static LedgerEntryData decode(XdrDataInputStream stream) throws IOException {
@@ -215,6 +233,13 @@ public class LedgerEntry implements XdrElement {
       encode(stream, this);
     }
 
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
     @Override
     public int hashCode() {
       return Objects.hashCode(this.account, this.trustLine, this.offer, this.data, this.claimableBalance, this.type);
@@ -256,6 +281,10 @@ public class LedgerEntry implements XdrElement {
       }
     }
 
+    public static LedgerEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static LedgerEntryExt decode(XdrDataInputStream stream) throws IOException {
       LedgerEntryExt decodedLedgerEntryExt = new LedgerEntryExt();
       Integer discriminant = stream.readInt();
@@ -288,6 +317,13 @@ public class LedgerEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

@@ -4,14 +4,17 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  struct ChangeTrustOp
 //  {
 //      Asset line;
-//  
+//
 //      // if limit is set to 0, deletes the trust line
 //      int64 limit;
 //  };
@@ -27,6 +30,10 @@ public class ChangeTrustOp implements XdrElement {
   public static void encode(XdrDataOutputStream stream, ChangeTrustOp encodedChangeTrustOp) throws IOException {
     Asset.encode(stream, encodedChangeTrustOp.line);
     Int64.encode(stream, encodedChangeTrustOp.limit);
+  }
+
+  public static ChangeTrustOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ChangeTrustOp decode(XdrDataInputStream stream) throws IOException {
@@ -54,6 +61,13 @@ public class ChangeTrustOp implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

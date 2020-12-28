@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -17,12 +20,12 @@ import java.io.IOException;
 //      uint64 bytesRead;
 //      uint64 bytesWritten;
 //      uint64 secondsConnected;
-//  
+//
 //      uint64 uniqueFloodBytesRecv;
 //      uint64 duplicateFloodBytesRecv;
 //      uint64 uniqueFetchBytesRecv;
 //      uint64 duplicateFetchBytesRecv;
-//  
+//
 //      uint64 uniqueFloodMessageRecv;
 //      uint64 duplicateFloodMessageRecv;
 //      uint64 uniqueFetchMessageRecv;
@@ -66,6 +69,10 @@ public class PeerStats implements XdrElement {
     Uint64.encode(stream, encodedPeerStats.duplicateFloodMessageRecv);
     Uint64.encode(stream, encodedPeerStats.uniqueFetchMessageRecv);
     Uint64.encode(stream, encodedPeerStats.duplicateFetchMessageRecv);
+  }
+
+  public static PeerStats decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static PeerStats decode(XdrDataInputStream stream) throws IOException {
@@ -210,6 +217,13 @@ public class PeerStats implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

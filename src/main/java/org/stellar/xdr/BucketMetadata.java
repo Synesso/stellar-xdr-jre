@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -12,7 +15,7 @@ import java.io.IOException;
 //  {
 //      // Indicates the protocol version used to create / merge this bucket.
 //      uint32 ledgerVersion;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -33,6 +36,10 @@ public class BucketMetadata implements XdrElement {
   public static void encode(XdrDataOutputStream stream, BucketMetadata encodedBucketMetadata) throws IOException {
     Uint32.encode(stream, encodedBucketMetadata.ledgerVersion);
     BucketMetadataExt.encode(stream, encodedBucketMetadata.ext);
+  }
+
+  public static BucketMetadata decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static BucketMetadata decode(XdrDataInputStream stream) throws IOException {
@@ -60,6 +67,13 @@ public class BucketMetadata implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -94,6 +108,10 @@ public class BucketMetadata implements XdrElement {
       }
     }
 
+    public static BucketMetadataExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static BucketMetadataExt decode(XdrDataInputStream stream) throws IOException {
       BucketMetadataExt decodedBucketMetadataExt = new BucketMetadataExt();
       Integer discriminant = stream.readInt();
@@ -115,6 +133,13 @@ public class BucketMetadata implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

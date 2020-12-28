@@ -3,14 +3,17 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  enum OperationResultCode
 //  {
 //      opINNER = 0, // inner object result is valid
-//  
+//
 //      opBAD_AUTH = -1,            // too few valid signatures / wrong network
 //      opNO_ACCOUNT = -2,          // source account was not found
 //      opNOT_SUPPORTED = -3,       // operation not supported at this time
@@ -33,6 +36,10 @@ public enum OperationResultCode implements XdrElement {
 
   OperationResultCode(int value) {
     mValue = value;
+  }
+
+  public static OperationResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static OperationResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -67,5 +74,12 @@ public enum OperationResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

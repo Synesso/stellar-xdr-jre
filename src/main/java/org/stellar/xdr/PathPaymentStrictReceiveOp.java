@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -15,11 +18,11 @@ import java.util.Arrays;
 //      int64 sendMax;   // the maximum amount of sendAsset to
 //                       // send (excluding fees).
 //                       // The operation will fail if can't be met
-//  
+//
 //      MuxedAccount destination; // recipient of the payment
 //      Asset destAsset;          // what they end up with
 //      int64 destAmount;         // amount they end up with
-//  
+//
 //      Asset path<5>; // additional hops it must go through to get there
 //  };
 
@@ -47,6 +50,10 @@ public class PathPaymentStrictReceiveOp implements XdrElement {
     for (int i = 0; i < pathsize; i++) {
       Asset.encode(stream, encodedPathPaymentStrictReceiveOp.path[i]);
     }
+  }
+
+  public static PathPaymentStrictReceiveOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static PathPaymentStrictReceiveOp decode(XdrDataInputStream stream) throws IOException {
@@ -114,6 +121,13 @@ public class PathPaymentStrictReceiveOp implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

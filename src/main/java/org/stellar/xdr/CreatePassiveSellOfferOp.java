@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -32,6 +35,10 @@ public class CreatePassiveSellOfferOp implements XdrElement {
     Asset.encode(stream, encodedCreatePassiveSellOfferOp.buying);
     Int64.encode(stream, encodedCreatePassiveSellOfferOp.amount);
     Price.encode(stream, encodedCreatePassiveSellOfferOp.price);
+  }
+
+  public static CreatePassiveSellOfferOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static CreatePassiveSellOfferOp decode(XdrDataInputStream stream) throws IOException {
@@ -77,6 +84,13 @@ public class CreatePassiveSellOfferOp implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

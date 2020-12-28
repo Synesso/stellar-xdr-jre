@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      MANAGE_SELL_OFFER_SUCCESS = 0,
-//  
+//
 //      // codes considered as "failure" for the operation
 //      MANAGE_SELL_OFFER_MALFORMED = -1, // generated offer would be invalid
 //      MANAGE_SELL_OFFER_SELL_NO_TRUST =
@@ -25,11 +28,11 @@ import java.io.IOException;
 //          -8, // would cross an offer from the same user
 //      MANAGE_SELL_OFFER_SELL_NO_ISSUER = -9, // no issuer for what we're selling
 //      MANAGE_SELL_OFFER_BUY_NO_ISSUER = -10, // no issuer for what we're buying
-//  
+//
 //      // update errors
 //      MANAGE_SELL_OFFER_NOT_FOUND =
 //          -11, // offerID does not match an existing offer
-//  
+//
 //      MANAGE_SELL_OFFER_LOW_RESERVE =
 //          -12 // not enough funds to create a new Offer
 //  };
@@ -54,6 +57,10 @@ public enum ManageSellOfferResultCode implements XdrElement {
 
   ManageSellOfferResultCode(int value) {
     mValue = value;
+  }
+
+  public static ManageSellOfferResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ManageSellOfferResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -100,5 +107,12 @@ public enum ManageSellOfferResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

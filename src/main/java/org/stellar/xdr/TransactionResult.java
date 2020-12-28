@@ -4,15 +4,18 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  struct TransactionResult
 //  {
 //      int64 feeCharged; // actual fee charged for the transaction
-//  
+//
 //      union switch (TransactionResultCode code)
 //      {
 //      case txFEE_BUMP_INNER_SUCCESS:
@@ -25,7 +28,7 @@ import java.util.Arrays;
 //          void;
 //      }
 //      result;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -48,6 +51,10 @@ public class TransactionResult implements XdrElement {
     Int64.encode(stream, encodedTransactionResult.feeCharged);
     TransactionResultResult.encode(stream, encodedTransactionResult.result);
     TransactionResultExt.encode(stream, encodedTransactionResult.ext);
+  }
+
+  public static TransactionResult decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static TransactionResult decode(XdrDataInputStream stream) throws IOException {
@@ -84,6 +91,13 @@ public class TransactionResult implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -132,6 +146,10 @@ public class TransactionResult implements XdrElement {
         default:
           break;
       }
+    }
+
+    public static TransactionResultResult decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static TransactionResultResult decode(XdrDataInputStream stream) throws IOException {
@@ -185,6 +203,13 @@ public class TransactionResult implements XdrElement {
       encode(stream, this);
     }
 
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
     @Override
     public int hashCode() {
       return Objects.hashCode(this.innerResultPair, Arrays.hashCode(this.results), this.code);
@@ -220,6 +245,10 @@ public class TransactionResult implements XdrElement {
       }
     }
 
+    public static TransactionResultExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static TransactionResultExt decode(XdrDataInputStream stream) throws IOException {
       TransactionResultExt decodedTransactionResultExt = new TransactionResultExt();
       Integer discriminant = stream.readInt();
@@ -241,6 +270,13 @@ public class TransactionResult implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

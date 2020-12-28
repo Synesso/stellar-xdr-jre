@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -14,7 +17,7 @@ import java.io.IOException;
 //      // if not set, the runtime defaults to "sourceAccount" specified at
 //      // the transaction level
 //      MuxedAccount* sourceAccount;
-//  
+//
 //      union switch (OperationType type)
 //      {
 //      case CREATE_ACCOUNT:
@@ -77,6 +80,10 @@ public class Operation implements XdrElement {
     OperationBody.encode(stream, encodedOperation.body);
   }
 
+  public static Operation decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
   public static Operation decode(XdrDataInputStream stream) throws IOException {
     Operation decodedOperation = new Operation();
     int sourceAccountPresent = stream.readInt();
@@ -105,6 +112,13 @@ public class Operation implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -206,6 +220,10 @@ public class Operation implements XdrElement {
           RevokeSponsorshipOp.encode(stream, encodedOperationBody.revokeSponsorshipOp);
           break;
       }
+    }
+
+    public static OperationBody decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static OperationBody decode(XdrDataInputStream stream) throws IOException {
@@ -418,6 +436,13 @@ public class Operation implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

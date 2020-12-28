@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -15,7 +18,7 @@ import java.io.IOException;
 //      int64 buyAmount; // amount being bought. if set to 0, delete the offer
 //      Price price;     // price of thing being bought in terms of what you are
 //                       // selling
-//  
+//
 //      // 0=create a new offer, otherwise edit an existing offer
 //      int64 offerID;
 //  };
@@ -37,6 +40,10 @@ public class ManageBuyOfferOp implements XdrElement {
     Int64.encode(stream, encodedManageBuyOfferOp.buyAmount);
     Price.encode(stream, encodedManageBuyOfferOp.price);
     Int64.encode(stream, encodedManageBuyOfferOp.offerID);
+  }
+
+  public static ManageBuyOfferOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ManageBuyOfferOp decode(XdrDataInputStream stream) throws IOException {
@@ -91,6 +98,13 @@ public class ManageBuyOfferOp implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
