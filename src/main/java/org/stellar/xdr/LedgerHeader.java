@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -16,28 +19,28 @@ import java.util.Arrays;
 //      StellarValue scpValue;   // what consensus agreed to
 //      Hash txSetResultHash;    // the TransactionResultSet that led to this ledger
 //      Hash bucketListHash;     // hash of the ledger state
-//  
+//
 //      uint32 ledgerSeq; // sequence number of this ledger
-//  
+//
 //      int64 totalCoins; // total number of stroops in existence.
 //                        // 10,000,000 stroops in 1 XLM
-//  
+//
 //      int64 feePool;       // fees burned since last inflation run
 //      uint32 inflationSeq; // inflation sequence number
-//  
+//
 //      uint64 idPool; // last used global ID, used for generating objects
-//  
+//
 //      uint32 baseFee;     // base fee per operation in stroops
 //      uint32 baseReserve; // account base reserve in stroops
-//  
+//
 //      uint32 maxTxSetSize; // maximum size a transaction set can be
-//  
+//
 //      Hash skipList[4]; // hashes of ledgers in the past. allows you to jump back
 //                        // in time without walking the chain back ledger by ledger
 //                        // each slot contains the oldest ledger that is mod of
 //                        // either 50  5000  50000 or 500000 depending on index
 //                        // skipList[0] mod(50), skipList[1] mod(5000), etc
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -87,6 +90,10 @@ public class LedgerHeader implements XdrElement {
       Hash.encode(stream, encodedLedgerHeader.skipList[i]);
     }
     LedgerHeaderExt.encode(stream, encodedLedgerHeader.ext);
+  }
+
+  public static LedgerHeader decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static LedgerHeader decode(XdrDataInputStream stream) throws IOException {
@@ -237,6 +244,13 @@ public class LedgerHeader implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.ledgerVersion, this.previousLedgerHash, this.scpValue, this.txSetResultHash,
@@ -277,6 +291,10 @@ public class LedgerHeader implements XdrElement {
       }
     }
 
+    public static LedgerHeaderExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static LedgerHeaderExt decode(XdrDataInputStream stream) throws IOException {
       LedgerHeaderExt decodedLedgerHeaderExt = new LedgerHeaderExt();
       Integer discriminant = stream.readInt();
@@ -298,6 +316,13 @@ public class LedgerHeader implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

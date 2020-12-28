@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      CREATE_ACCOUNT_SUCCESS = 0, // account was created
-//  
+//
 //      // codes considered as "failure" for the operation
 //      CREATE_ACCOUNT_MALFORMED = -1,   // invalid destination
 //      CREATE_ACCOUNT_UNDERFUNDED = -2, // not enough funds in source account
@@ -32,6 +35,10 @@ public enum CreateAccountResultCode implements XdrElement {
 
   CreateAccountResultCode(int value) {
     mValue = value;
+  }
+
+  public static CreateAccountResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static CreateAccountResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -62,5 +69,12 @@ public enum CreateAccountResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

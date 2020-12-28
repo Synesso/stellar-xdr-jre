@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -24,6 +27,10 @@ public enum BumpSequenceResultCode implements XdrElement {
 
   BumpSequenceResultCode(int value) {
     mValue = value;
+  }
+
+  public static BumpSequenceResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static BumpSequenceResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -48,5 +55,12 @@ public enum BumpSequenceResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -16,14 +19,14 @@ import java.io.IOException;
 //      // ASSET_TYPE_NATIVE is not allowed
 //      case ASSET_TYPE_CREDIT_ALPHANUM4:
 //          AssetCode4 assetCode4;
-//  
+//
 //      case ASSET_TYPE_CREDIT_ALPHANUM12:
 //          AssetCode12 assetCode12;
-//  
+//
 //          // add other asset types here in the future
 //      }
 //      asset;
-//  
+//
 //      // 0, or any bitwise combination of TrustLineFlags
 //      uint32 authorize;
 //  };
@@ -41,6 +44,10 @@ public class AllowTrustOp implements XdrElement {
     AccountID.encode(stream, encodedAllowTrustOp.trustor);
     AllowTrustOpAsset.encode(stream, encodedAllowTrustOp.asset);
     Uint32.encode(stream, encodedAllowTrustOp.authorize);
+  }
+
+  public static AllowTrustOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static AllowTrustOp decode(XdrDataInputStream stream) throws IOException {
@@ -77,6 +84,13 @@ public class AllowTrustOp implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -116,6 +130,10 @@ public class AllowTrustOp implements XdrElement {
           AssetCode12.encode(stream, encodedAllowTrustOpAsset.assetCode12);
           break;
       }
+    }
+
+    public static AllowTrustOpAsset decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static AllowTrustOpAsset decode(XdrDataInputStream stream) throws IOException {
@@ -159,6 +177,13 @@ public class AllowTrustOp implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

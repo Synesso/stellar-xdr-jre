@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -39,6 +42,10 @@ public class AuthenticatedMessage implements XdrElement {
     }
   }
 
+  public static AuthenticatedMessage decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
   public static AuthenticatedMessage decode(XdrDataInputStream stream) throws IOException {
     AuthenticatedMessage decodedAuthenticatedMessage = new AuthenticatedMessage();
     Uint32 discriminant = Uint32.decode(stream);
@@ -71,6 +78,13 @@ public class AuthenticatedMessage implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.v0, this.v);
@@ -99,6 +113,10 @@ public class AuthenticatedMessage implements XdrElement {
       Uint64.encode(stream, encodedAuthenticatedMessageV0.sequence);
       StellarMessage.encode(stream, encodedAuthenticatedMessageV0.message);
       HmacSha256Mac.encode(stream, encodedAuthenticatedMessageV0.mac);
+    }
+
+    public static AuthenticatedMessageV0 decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
     }
 
     public static AuthenticatedMessageV0 decode(XdrDataInputStream stream) throws IOException {
@@ -135,6 +153,13 @@ public class AuthenticatedMessage implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

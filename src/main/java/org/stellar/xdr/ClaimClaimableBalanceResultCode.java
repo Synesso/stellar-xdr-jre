@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -15,7 +18,7 @@ import java.io.IOException;
 //      CLAIM_CLAIMABLE_BALANCE_LINE_FULL = -3,
 //      CLAIM_CLAIMABLE_BALANCE_NO_TRUST = -4,
 //      CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED = -5
-//  
+//
 //  };
 
 //  ===========================================================================
@@ -31,6 +34,10 @@ public enum ClaimClaimableBalanceResultCode implements XdrElement {
 
   ClaimClaimableBalanceResultCode(int value) {
     mValue = value;
+  }
+
+  public static ClaimClaimableBalanceResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ClaimClaimableBalanceResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -63,5 +70,12 @@ public enum ClaimClaimableBalanceResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

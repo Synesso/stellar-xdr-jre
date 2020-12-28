@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      BEGIN_SPONSORING_FUTURE_RESERVES_SUCCESS = 0,
-//  
+//
 //      // codes considered as "failure" for the operation
 //      BEGIN_SPONSORING_FUTURE_RESERVES_MALFORMED = -1,
 //      BEGIN_SPONSORING_FUTURE_RESERVES_ALREADY_SPONSORED = -2,
@@ -29,6 +32,10 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
 
   BeginSponsoringFutureReservesResultCode(int value) {
     mValue = value;
+  }
+
+  public static BeginSponsoringFutureReservesResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static BeginSponsoringFutureReservesResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -58,5 +65,12 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

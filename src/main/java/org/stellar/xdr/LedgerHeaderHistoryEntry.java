@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -12,7 +15,7 @@ import java.io.IOException;
 //  {
 //      Hash hash;
 //      LedgerHeader header;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -36,6 +39,10 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
     Hash.encode(stream, encodedLedgerHeaderHistoryEntry.hash);
     LedgerHeader.encode(stream, encodedLedgerHeaderHistoryEntry.header);
     LedgerHeaderHistoryEntryExt.encode(stream, encodedLedgerHeaderHistoryEntry.ext);
+  }
+
+  public static LedgerHeaderHistoryEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static LedgerHeaderHistoryEntry decode(XdrDataInputStream stream) throws IOException {
@@ -74,6 +81,13 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.hash, this.header, this.ext);
@@ -107,6 +121,10 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
       }
     }
 
+    public static LedgerHeaderHistoryEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static LedgerHeaderHistoryEntryExt decode(XdrDataInputStream stream) throws IOException {
       LedgerHeaderHistoryEntryExt decodedLedgerHeaderHistoryEntryExt = new LedgerHeaderHistoryEntryExt();
       Integer discriminant = stream.readInt();
@@ -128,6 +146,13 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

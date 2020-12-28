@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      END_SPONSORING_FUTURE_RESERVES_SUCCESS = 0,
-//  
+//
 //      // codes considered as "failure" for the operation
 //      END_SPONSORING_FUTURE_RESERVES_NOT_SPONSORED = -1
 //  };
@@ -25,6 +28,10 @@ public enum EndSponsoringFutureReservesResultCode implements XdrElement {
 
   EndSponsoringFutureReservesResultCode(int value) {
     mValue = value;
+  }
+
+  public static EndSponsoringFutureReservesResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static EndSponsoringFutureReservesResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -50,5 +57,12 @@ public enum EndSponsoringFutureReservesResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

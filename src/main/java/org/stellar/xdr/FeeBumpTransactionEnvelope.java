@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -33,6 +36,10 @@ public class FeeBumpTransactionEnvelope implements XdrElement {
     for (int i = 0; i < signaturessize; i++) {
       DecoratedSignature.encode(stream, encodedFeeBumpTransactionEnvelope.signatures[i]);
     }
+  }
+
+  public static FeeBumpTransactionEnvelope decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static FeeBumpTransactionEnvelope decode(XdrDataInputStream stream) throws IOException {
@@ -64,6 +71,13 @@ public class FeeBumpTransactionEnvelope implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

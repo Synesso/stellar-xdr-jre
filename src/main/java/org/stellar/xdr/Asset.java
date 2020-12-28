@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -12,21 +15,21 @@ import java.io.IOException;
 //  {
 //  case ASSET_TYPE_NATIVE: // Not credit
 //      void;
-//  
+//
 //  case ASSET_TYPE_CREDIT_ALPHANUM4:
 //      struct
 //      {
 //          AssetCode4 assetCode;
 //          AccountID issuer;
 //      } alphaNum4;
-//  
+//
 //  case ASSET_TYPE_CREDIT_ALPHANUM12:
 //      struct
 //      {
 //          AssetCode12 assetCode;
 //          AccountID issuer;
 //      } alphaNum12;
-//  
+//
 //      // add other asset types here in the future
 //  };
 
@@ -53,6 +56,10 @@ public class Asset implements XdrElement {
         AssetAlphaNum12.encode(stream, encodedAsset.alphaNum12);
         break;
     }
+  }
+
+  public static Asset decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static Asset decode(XdrDataInputStream stream) throws IOException {
@@ -100,6 +107,13 @@ public class Asset implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.alphaNum4, this.alphaNum12, this.type);
@@ -128,6 +142,10 @@ public class Asset implements XdrElement {
       AccountID.encode(stream, encodedAssetAlphaNum4.issuer);
     }
 
+    public static AssetAlphaNum4 decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static AssetAlphaNum4 decode(XdrDataInputStream stream) throws IOException {
       AssetAlphaNum4 decodedAssetAlphaNum4 = new AssetAlphaNum4();
       decodedAssetAlphaNum4.assetCode = AssetCode4.decode(stream);
@@ -153,6 +171,13 @@ public class Asset implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override
@@ -183,6 +208,10 @@ public class Asset implements XdrElement {
       AccountID.encode(stream, encodedAssetAlphaNum12.issuer);
     }
 
+    public static AssetAlphaNum12 decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static AssetAlphaNum12 decode(XdrDataInputStream stream) throws IOException {
       AssetAlphaNum12 decodedAssetAlphaNum12 = new AssetAlphaNum12();
       decodedAssetAlphaNum12.assetCode = AssetCode12.decode(stream);
@@ -208,6 +237,13 @@ public class Asset implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

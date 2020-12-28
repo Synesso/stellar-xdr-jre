@@ -3,13 +3,16 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  enum AccountFlags
 //  { // masks for each flag
-//  
+//
 //      // Flags set on issuer accounts
 //      // TrustLines are created with authorized set to "false" requiring
 //      // the issuer to set it for each TrustLine
@@ -31,6 +34,10 @@ public enum AccountFlags implements XdrElement {
 
   AccountFlags(int value) {
     mValue = value;
+  }
+
+  public static AccountFlags decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static AccountFlags decode(XdrDataInputStream stream) throws IOException {
@@ -57,5 +64,12 @@ public enum AccountFlags implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

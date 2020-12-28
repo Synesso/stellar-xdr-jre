@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -14,15 +17,15 @@ import java.util.Arrays;
 //      LedgerHeaderHistoryEntry ledgerHeader;
 //      // NB: txSet is sorted in "Hash order"
 //      TransactionSet txSet;
-//  
+//
 //      // NB: transactions are sorted in apply order here
 //      // fees for all transactions are processed first
 //      // followed by applying transactions
 //      TransactionResultMeta txProcessing<>;
-//  
+//
 //      // upgrades are applied last
 //      UpgradeEntryMeta upgradesProcessing<>;
-//  
+//
 //      // other misc information attached to the ledger close
 //      SCPHistoryEntry scpInfo<>;
 //  };
@@ -56,6 +59,10 @@ public class LedgerCloseMetaV0 implements XdrElement {
     for (int i = 0; i < scpInfosize; i++) {
       SCPHistoryEntry.encode(stream, encodedLedgerCloseMetaV0.scpInfo[i]);
     }
+  }
+
+  public static LedgerCloseMetaV0 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static LedgerCloseMetaV0 decode(XdrDataInputStream stream) throws IOException {
@@ -122,6 +129,13 @@ public class LedgerCloseMetaV0 implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -13,14 +16,14 @@ import java.util.Arrays;
 //  {
 //      Hash txSetHash;      // transaction set to apply to previous ledger
 //      TimePoint closeTime; // network close time
-//  
+//
 //      // upgrades to apply to the previous ledger (usually empty)
 //      // this is a vector of encoded 'LedgerUpgrade' so that nodes can drop
 //      // unknown steps during consensus if needed.
 //      // see notes below on 'LedgerUpgrade' for more detail
 //      // max size is dictated by number of upgrade types (+ room for future)
 //      UpgradeType upgrades<6>;
-//  
+//
 //      // reserved for future use
 //      union switch (StellarValueType v)
 //      {
@@ -51,6 +54,10 @@ public class StellarValue implements XdrElement {
       UpgradeType.encode(stream, encodedStellarValue.upgrades[i]);
     }
     StellarValueExt.encode(stream, encodedStellarValue.ext);
+  }
+
+  public static StellarValue decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static StellarValue decode(XdrDataInputStream stream) throws IOException {
@@ -102,6 +109,13 @@ public class StellarValue implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.txSetHash, this.closeTime, Arrays.hashCode(this.upgrades), this.ext);
@@ -140,6 +154,10 @@ public class StellarValue implements XdrElement {
       }
     }
 
+    public static StellarValueExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static StellarValueExt decode(XdrDataInputStream stream) throws IOException {
       StellarValueExt decodedStellarValueExt = new StellarValueExt();
       StellarValueType discriminant = StellarValueType.decode(stream);
@@ -172,6 +190,13 @@ public class StellarValue implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -13,7 +16,7 @@ import java.util.Arrays;
 //  {
 //      // offers that got claimed while creating this offer
 //      ClaimOfferAtom offersClaimed<>;
-//  
+//
 //      union switch (ManageOfferEffect effect)
 //      {
 //      case MANAGE_OFFER_CREATED:
@@ -41,6 +44,10 @@ public class ManageOfferSuccessResult implements XdrElement {
       ClaimOfferAtom.encode(stream, encodedManageOfferSuccessResult.offersClaimed[i]);
     }
     ManageOfferSuccessResultOffer.encode(stream, encodedManageOfferSuccessResult.offer);
+  }
+
+  public static ManageOfferSuccessResult decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ManageOfferSuccessResult decode(XdrDataInputStream stream) throws IOException {
@@ -72,6 +79,13 @@ public class ManageOfferSuccessResult implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -111,6 +125,10 @@ public class ManageOfferSuccessResult implements XdrElement {
       }
     }
 
+    public static ManageOfferSuccessResultOffer decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static ManageOfferSuccessResultOffer decode(XdrDataInputStream stream) throws IOException {
       ManageOfferSuccessResultOffer decodedManageOfferSuccessResultOffer = new ManageOfferSuccessResultOffer();
       ManageOfferEffect discriminant = ManageOfferEffect.decode(stream);
@@ -144,6 +162,13 @@ public class ManageOfferSuccessResult implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

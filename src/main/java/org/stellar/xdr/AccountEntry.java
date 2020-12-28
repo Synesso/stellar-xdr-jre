@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -18,15 +21,15 @@ import java.util.Arrays;
 //                                // drives the reserve
 //      AccountID* inflationDest; // Account to vote for during inflation
 //      uint32 flags;             // see AccountFlags
-//  
+//
 //      string32 homeDomain; // can be used for reverse federation and memo lookup
-//  
+//
 //      // fields used for signatures
 //      // thresholds stores unsigned bytes: [weight of master|low|medium|high]
 //      Thresholds thresholds;
-//  
+//
 //      Signer signers<MAX_SIGNERS>; // possible signers for this account
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -74,6 +77,10 @@ public class AccountEntry implements XdrElement {
       Signer.encode(stream, encodedAccountEntry.signers[i]);
     }
     AccountEntryExt.encode(stream, encodedAccountEntry.ext);
+  }
+
+  public static AccountEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static AccountEntry decode(XdrDataInputStream stream) throws IOException {
@@ -182,6 +189,13 @@ public class AccountEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.accountID, this.balance, this.seqNum, this.numSubEntries, this.inflationDest,
@@ -227,6 +241,10 @@ public class AccountEntry implements XdrElement {
       }
     }
 
+    public static AccountEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static AccountEntryExt decode(XdrDataInputStream stream) throws IOException {
       AccountEntryExt decodedAccountEntryExt = new AccountEntryExt();
       Integer discriminant = stream.readInt();
@@ -259,6 +277,13 @@ public class AccountEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

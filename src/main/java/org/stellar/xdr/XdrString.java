@@ -1,9 +1,13 @@
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import okio.ByteString;
 
 public class XdrString implements XdrElement {
   private final byte[] bytes;
@@ -26,10 +30,21 @@ public class XdrString implements XdrElement {
     return new XdrString(bytes);
   }
 
+  public static XdrString decode(ByteString bs, int maxSize) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())), maxSize);
+  }
+
   @Override
   public void encode(XdrDataOutputStream stream) throws IOException {
     stream.writeInt(this.bytes.length);
     stream.write(this.bytes, 0, this.bytes.length);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public byte[] getBytes() {

@@ -3,8 +3,11 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -25,6 +28,10 @@ public class HmacSha256Mac implements XdrElement {
     stream.write(encodedHmacSha256Mac.getMac(), 0, macsize);
   }
 
+  public static HmacSha256Mac decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
   public static HmacSha256Mac decode(XdrDataInputStream stream) throws IOException {
     HmacSha256Mac decodedHmacSha256Mac = new HmacSha256Mac();
     int macsize = 32;
@@ -43,6 +50,13 @@ public class HmacSha256Mac implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

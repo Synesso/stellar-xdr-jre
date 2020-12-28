@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -13,7 +16,7 @@ import java.io.IOException;
 //      AccountID accountID; // account this data belongs to
 //      string64 dataName;
 //      DataValue dataValue;
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -38,6 +41,10 @@ public class DataEntry implements XdrElement {
     String64.encode(stream, encodedDataEntry.dataName);
     DataValue.encode(stream, encodedDataEntry.dataValue);
     DataEntryExt.encode(stream, encodedDataEntry.ext);
+  }
+
+  public static DataEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static DataEntry decode(XdrDataInputStream stream) throws IOException {
@@ -85,6 +92,13 @@ public class DataEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.accountID, this.dataName, this.dataValue, this.ext);
@@ -119,6 +133,10 @@ public class DataEntry implements XdrElement {
       }
     }
 
+    public static DataEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static DataEntryExt decode(XdrDataInputStream stream) throws IOException {
       DataEntryExt decodedDataEntryExt = new DataEntryExt();
       Integer discriminant = stream.readInt();
@@ -140,6 +158,13 @@ public class DataEntry implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

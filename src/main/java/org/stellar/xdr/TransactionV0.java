@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -55,6 +58,10 @@ public class TransactionV0 implements XdrElement {
       Operation.encode(stream, encodedTransactionV0.operations[i]);
     }
     TransactionV0Ext.encode(stream, encodedTransactionV0.ext);
+  }
+
+  public static TransactionV0 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static TransactionV0 decode(XdrDataInputStream stream) throws IOException {
@@ -136,6 +143,13 @@ public class TransactionV0 implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.sourceAccountEd25519, this.fee, this.seqNum, this.timeBounds, this.memo,
@@ -174,6 +188,10 @@ public class TransactionV0 implements XdrElement {
       }
     }
 
+    public static TransactionV0Ext decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static TransactionV0Ext decode(XdrDataInputStream stream) throws IOException {
       TransactionV0Ext decodedTransactionV0Ext = new TransactionV0Ext();
       Integer discriminant = stream.readInt();
@@ -195,6 +213,13 @@ public class TransactionV0 implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -23,21 +26,21 @@ import java.util.Arrays;
 //      void;
 //  case PEERS:
 //      PeerAddress peers<100>;
-//  
+//
 //  case GET_TX_SET:
 //      uint256 txSetHash;
 //  case TX_SET:
 //      TransactionSet txSet;
-//  
+//
 //  case TRANSACTION:
 //      TransactionEnvelope transaction;
-//  
+//
 //  case SURVEY_REQUEST:
 //      SignedSurveyRequestMessage signedSurveyRequestMessage;
-//  
+//
 //  case SURVEY_RESPONSE:
 //      SignedSurveyResponseMessage signedSurveyResponseMessage;
-//  
+//
 //  // SCP
 //  case GET_SCP_QUORUMSET:
 //      uint256 qSetHash;
@@ -124,6 +127,10 @@ public class StellarMessage implements XdrElement {
         Uint32.encode(stream, encodedStellarMessage.getSCPLedgerSeq);
         break;
     }
+  }
+
+  public static StellarMessage decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static StellarMessage decode(XdrDataInputStream stream) throws IOException {
@@ -305,6 +312,13 @@ public class StellarMessage implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

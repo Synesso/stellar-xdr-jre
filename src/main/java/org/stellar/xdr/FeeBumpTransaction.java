@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -42,6 +45,10 @@ public class FeeBumpTransaction implements XdrElement {
     Int64.encode(stream, encodedFeeBumpTransaction.fee);
     FeeBumpTransactionInnerTx.encode(stream, encodedFeeBumpTransaction.innerTx);
     FeeBumpTransactionExt.encode(stream, encodedFeeBumpTransaction.ext);
+  }
+
+  public static FeeBumpTransaction decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static FeeBumpTransaction decode(XdrDataInputStream stream) throws IOException {
@@ -89,6 +96,13 @@ public class FeeBumpTransaction implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.feeSource, this.fee, this.innerTx, this.ext);
@@ -124,6 +138,10 @@ public class FeeBumpTransaction implements XdrElement {
       }
     }
 
+    public static FeeBumpTransactionInnerTx decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static FeeBumpTransactionInnerTx decode(XdrDataInputStream stream) throws IOException {
       FeeBumpTransactionInnerTx decodedFeeBumpTransactionInnerTx = new FeeBumpTransactionInnerTx();
       EnvelopeType discriminant = EnvelopeType.decode(stream);
@@ -154,6 +172,13 @@ public class FeeBumpTransaction implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override
@@ -189,6 +214,10 @@ public class FeeBumpTransaction implements XdrElement {
       }
     }
 
+    public static FeeBumpTransactionExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static FeeBumpTransactionExt decode(XdrDataInputStream stream) throws IOException {
       FeeBumpTransactionExt decodedFeeBumpTransactionExt = new FeeBumpTransactionExt();
       Integer discriminant = stream.readInt();
@@ -210,6 +239,13 @@ public class FeeBumpTransaction implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

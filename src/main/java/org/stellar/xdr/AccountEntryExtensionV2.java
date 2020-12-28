@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -14,7 +17,7 @@ import java.util.Arrays;
 //      uint32 numSponsored;
 //      uint32 numSponsoring;
 //      SponsorshipDescriptor signerSponsoringIDs<MAX_SIGNERS>;
-//  
+//
 //      union switch (int v)
 //      {
 //      case 0:
@@ -43,6 +46,10 @@ public class AccountEntryExtensionV2 implements XdrElement {
       SponsorshipDescriptor.encode(stream, encodedAccountEntryExtensionV2.signerSponsoringIDs[i]);
     }
     AccountEntryExtensionV2Ext.encode(stream, encodedAccountEntryExtensionV2.ext);
+  }
+
+  public static AccountEntryExtensionV2 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static AccountEntryExtensionV2 decode(XdrDataInputStream stream) throws IOException {
@@ -94,6 +101,13 @@ public class AccountEntryExtensionV2 implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.numSponsored, this.numSponsoring, Arrays.hashCode(this.signerSponsoringIDs), this.ext);
@@ -128,6 +142,10 @@ public class AccountEntryExtensionV2 implements XdrElement {
       }
     }
 
+    public static AccountEntryExtensionV2Ext decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static AccountEntryExtensionV2Ext decode(XdrDataInputStream stream) throws IOException {
       AccountEntryExtensionV2Ext decodedAccountEntryExtensionV2Ext = new AccountEntryExtensionV2Ext();
       Integer discriminant = stream.readInt();
@@ -149,6 +167,13 @@ public class AccountEntryExtensionV2 implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

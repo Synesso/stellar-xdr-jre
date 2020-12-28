@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -13,7 +16,7 @@ import java.io.IOException;
 //  case LIVEENTRY:
 //  case INITENTRY:
 //      LedgerEntry liveEntry;
-//  
+//
 //  case DEADENTRY:
 //      LedgerKey deadEntry;
 //  case METAENTRY:
@@ -46,6 +49,10 @@ public class BucketEntry implements XdrElement {
         BucketMetadata.encode(stream, encodedBucketEntry.metaEntry);
         break;
     }
+  }
+
+  public static BucketEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static BucketEntry decode(XdrDataInputStream stream) throws IOException {
@@ -101,6 +108,13 @@ public class BucketEntry implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

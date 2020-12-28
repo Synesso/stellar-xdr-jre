@@ -3,7 +3,10 @@
 
 package org.stellar.xdr;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 //  {
 //      // codes considered as "success" for the operation
 //      MANAGE_BUY_OFFER_SUCCESS = 0,
-//  
+//
 //      // codes considered as "failure" for the operation
 //      MANAGE_BUY_OFFER_MALFORMED = -1,     // generated offer would be invalid
 //      MANAGE_BUY_OFFER_SELL_NO_TRUST = -2, // no trust line for what we're selling
@@ -23,11 +26,11 @@ import java.io.IOException;
 //      MANAGE_BUY_OFFER_CROSS_SELF = -8, // would cross an offer from the same user
 //      MANAGE_BUY_OFFER_SELL_NO_ISSUER = -9, // no issuer for what we're selling
 //      MANAGE_BUY_OFFER_BUY_NO_ISSUER = -10, // no issuer for what we're buying
-//  
+//
 //      // update errors
 //      MANAGE_BUY_OFFER_NOT_FOUND =
 //          -11, // offerID does not match an existing offer
-//  
+//
 //      MANAGE_BUY_OFFER_LOW_RESERVE = -12 // not enough funds to create a new Offer
 //  };
 
@@ -51,6 +54,10 @@ public enum ManageBuyOfferResultCode implements XdrElement {
 
   ManageBuyOfferResultCode(int value) {
     mValue = value;
+  }
+
+  public static ManageBuyOfferResultCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static ManageBuyOfferResultCode decode(XdrDataInputStream stream) throws IOException {
@@ -97,5 +104,12 @@ public enum ManageBuyOfferResultCode implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 }

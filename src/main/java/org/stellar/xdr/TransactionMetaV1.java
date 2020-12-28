@@ -4,8 +4,11 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -30,6 +33,10 @@ public class TransactionMetaV1 implements XdrElement {
     for (int i = 0; i < operationssize; i++) {
       OperationMeta.encode(stream, encodedTransactionMetaV1.operations[i]);
     }
+  }
+
+  public static TransactionMetaV1 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static TransactionMetaV1 decode(XdrDataInputStream stream) throws IOException {
@@ -61,6 +68,13 @@ public class TransactionMetaV1 implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

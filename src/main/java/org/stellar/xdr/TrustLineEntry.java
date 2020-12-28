@@ -4,7 +4,10 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
@@ -14,10 +17,10 @@ import java.io.IOException;
 //      Asset asset;         // type of asset (with issuer)
 //      int64 balance;       // how much of this asset the user has.
 //                           // Asset defines the unit for this;
-//  
+//
 //      int64 limit;  // balance cannot be above this
 //      uint32 flags; // see TrustLineFlags
-//  
+//
 //      // reserved for future use
 //      union switch (int v)
 //      {
@@ -27,7 +30,7 @@ import java.io.IOException;
 //          struct
 //          {
 //              Liabilities liabilities;
-//  
+//
 //              union switch (int v)
 //              {
 //              case 0:
@@ -58,6 +61,10 @@ public class TrustLineEntry implements XdrElement {
     Int64.encode(stream, encodedTrustLineEntry.limit);
     Uint32.encode(stream, encodedTrustLineEntry.flags);
     TrustLineEntryExt.encode(stream, encodedTrustLineEntry.ext);
+  }
+
+  public static TrustLineEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static TrustLineEntry decode(XdrDataInputStream stream) throws IOException {
@@ -123,6 +130,13 @@ public class TrustLineEntry implements XdrElement {
     encode(stream, this);
   }
 
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   @Override
   public int hashCode() {
     return Objects.hashCode(this.accountID, this.asset, this.balance, this.limit, this.flags, this.ext);
@@ -164,6 +178,10 @@ public class TrustLineEntry implements XdrElement {
       }
     }
 
+    public static TrustLineEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static TrustLineEntryExt decode(XdrDataInputStream stream) throws IOException {
       TrustLineEntryExt decodedTrustLineEntryExt = new TrustLineEntryExt();
       Integer discriminant = stream.readInt();
@@ -198,6 +216,13 @@ public class TrustLineEntry implements XdrElement {
       encode(stream, this);
     }
 
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v1, this.v);
@@ -226,6 +251,10 @@ public class TrustLineEntry implements XdrElement {
         TrustLineEntryV1Ext.encode(stream, encodedTrustLineEntryV1.ext);
       }
 
+      public static TrustLineEntryV1 decode(ByteString bs) throws IOException {
+        return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+      }
+
       public static TrustLineEntryV1 decode(XdrDataInputStream stream) throws IOException {
         TrustLineEntryV1 decodedTrustLineEntryV1 = new TrustLineEntryV1();
         decodedTrustLineEntryV1.liabilities = Liabilities.decode(stream);
@@ -251,6 +280,13 @@ public class TrustLineEntry implements XdrElement {
 
       public void encode(XdrDataOutputStream stream) throws IOException {
         encode(stream, this);
+      }
+
+      public ByteString encode() throws IOException {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+        encode(xdrOutputStream);
+        return new ByteString(byteStream.toByteArray());
       }
 
       @Override
@@ -285,6 +321,10 @@ public class TrustLineEntry implements XdrElement {
           }
         }
 
+        public static TrustLineEntryV1Ext decode(ByteString bs) throws IOException {
+          return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+        }
+
         public static TrustLineEntryV1Ext decode(XdrDataInputStream stream) throws IOException {
           TrustLineEntryV1Ext decodedTrustLineEntryV1Ext = new TrustLineEntryV1Ext();
           Integer discriminant = stream.readInt();
@@ -306,6 +346,13 @@ public class TrustLineEntry implements XdrElement {
 
         public void encode(XdrDataOutputStream stream) throws IOException {
           encode(stream, this);
+        }
+
+        public ByteString encode() throws IOException {
+          ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+          XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+          encode(xdrOutputStream);
+          return new ByteString(byteStream.toByteArray());
         }
 
         @Override

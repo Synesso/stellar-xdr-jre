@@ -4,14 +4,17 @@
 package org.stellar.xdr;
 
 import com.google.common.base.Objects;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import okio.ByteString;
 
 // === xdr source ============================================================
 
 //  struct LedgerEntryExtensionV1
 //  {
 //      SponsorshipDescriptor sponsoringID;
-//  
+//
 //      union switch (int v)
 //      {
 //      case 0:
@@ -32,6 +35,10 @@ public class LedgerEntryExtensionV1 implements XdrElement {
       throws IOException {
     SponsorshipDescriptor.encode(stream, encodedLedgerEntryExtensionV1.sponsoringID);
     LedgerEntryExtensionV1Ext.encode(stream, encodedLedgerEntryExtensionV1.ext);
+  }
+
+  public static LedgerEntryExtensionV1 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
 
   public static LedgerEntryExtensionV1 decode(XdrDataInputStream stream) throws IOException {
@@ -59,6 +66,13 @@ public class LedgerEntryExtensionV1 implements XdrElement {
 
   public void encode(XdrDataOutputStream stream) throws IOException {
     encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -93,6 +107,10 @@ public class LedgerEntryExtensionV1 implements XdrElement {
       }
     }
 
+    public static LedgerEntryExtensionV1Ext decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
     public static LedgerEntryExtensionV1Ext decode(XdrDataInputStream stream) throws IOException {
       LedgerEntryExtensionV1Ext decodedLedgerEntryExtensionV1Ext = new LedgerEntryExtensionV1Ext();
       Integer discriminant = stream.readInt();
@@ -114,6 +132,13 @@ public class LedgerEntryExtensionV1 implements XdrElement {
 
     public void encode(XdrDataOutputStream stream) throws IOException {
       encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     @Override
