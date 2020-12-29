@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Int32 implements XdrElement {
   private Integer int32;
 
+  public Int32() {
+  }
+
+  public Int32(Integer int32) {
+    this.int32 = int32;
+  }
+
   public static void encode(XdrDataOutputStream stream, Int32 encodedInt32) throws IOException {
     stream.writeInt(encodedInt32.int32);
   }

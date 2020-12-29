@@ -17,6 +17,13 @@ import okio.ByteString;
 public class AccountID implements XdrElement {
   private PublicKey AccountID;
 
+  public AccountID() {
+  }
+
+  public AccountID(PublicKey AccountID) {
+    this.AccountID = AccountID;
+  }
+
   public static void encode(XdrDataOutputStream stream, AccountID encodedAccountID) throws IOException {
     PublicKey.encode(stream, encodedAccountID.AccountID);
   }

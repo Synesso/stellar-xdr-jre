@@ -17,6 +17,13 @@ import okio.ByteString;
 public class UpgradeType implements XdrElement {
   private byte[] UpgradeType;
 
+  public UpgradeType() {
+  }
+
+  public UpgradeType(byte[] UpgradeType) {
+    this.UpgradeType = UpgradeType;
+  }
+
   public static void encode(XdrDataOutputStream stream, UpgradeType encodedUpgradeType) throws IOException {
     int UpgradeTypesize = encodedUpgradeType.UpgradeType.length;
     stream.writeInt(UpgradeTypesize);

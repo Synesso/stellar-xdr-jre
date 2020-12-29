@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Value implements XdrElement {
   private byte[] Value;
 
+  public Value() {
+  }
+
+  public Value(byte[] Value) {
+    this.Value = Value;
+  }
+
   public static void encode(XdrDataOutputStream stream, Value encodedValue) throws IOException {
     int Valuesize = encodedValue.Value.length;
     stream.writeInt(Valuesize);

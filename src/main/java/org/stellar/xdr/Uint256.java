@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Uint256 implements XdrElement {
   private byte[] uint256;
 
+  public Uint256() {
+  }
+
+  public Uint256(byte[] uint256) {
+    this.uint256 = uint256;
+  }
+
   public static void encode(XdrDataOutputStream stream, Uint256 encodedUint256) throws IOException {
     int uint256size = encodedUint256.uint256.length;
     stream.write(encodedUint256.getUint256(), 0, uint256size);

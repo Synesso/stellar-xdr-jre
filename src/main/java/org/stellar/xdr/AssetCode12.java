@@ -17,6 +17,13 @@ import okio.ByteString;
 public class AssetCode12 implements XdrElement {
   private byte[] AssetCode12;
 
+  public AssetCode12() {
+  }
+
+  public AssetCode12(byte[] AssetCode12) {
+    this.AssetCode12 = AssetCode12;
+  }
+
   public static void encode(XdrDataOutputStream stream, AssetCode12 encodedAssetCode12) throws IOException {
     int AssetCode12size = encodedAssetCode12.AssetCode12.length;
     stream.write(encodedAssetCode12.getAssetCode12(), 0, AssetCode12size);

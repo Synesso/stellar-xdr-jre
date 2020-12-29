@@ -17,6 +17,13 @@ import okio.ByteString;
 public class TimePoint implements XdrElement {
   private Uint64 TimePoint;
 
+  public TimePoint() {
+  }
+
+  public TimePoint(Uint64 TimePoint) {
+    this.TimePoint = TimePoint;
+  }
+
   public static void encode(XdrDataOutputStream stream, TimePoint encodedTimePoint) throws IOException {
     Uint64.encode(stream, encodedTimePoint.TimePoint);
   }

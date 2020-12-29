@@ -17,6 +17,13 @@ import okio.ByteString;
 public class PeerStatList implements XdrElement {
   private PeerStats[] PeerStatList;
 
+  public PeerStatList() {
+  }
+
+  public PeerStatList(PeerStats[] PeerStatList) {
+    this.PeerStatList = PeerStatList;
+  }
+
   public static void encode(XdrDataOutputStream stream, PeerStatList encodedPeerStatList) throws IOException {
     int PeerStatListsize = encodedPeerStatList.getPeerStatList().length;
     stream.writeInt(PeerStatListsize);

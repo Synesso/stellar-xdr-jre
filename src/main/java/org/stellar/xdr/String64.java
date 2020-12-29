@@ -17,6 +17,13 @@ import okio.ByteString;
 public class String64 implements XdrElement {
   private XdrString string64;
 
+  public String64() {
+  }
+
+  public String64(XdrString string64) {
+    this.string64 = string64;
+  }
+
   public static void encode(XdrDataOutputStream stream, String64 encodedString64) throws IOException {
     encodedString64.string64.encode(stream);
   }
