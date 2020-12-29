@@ -17,6 +17,13 @@ import okio.ByteString;
 public class SignatureHint implements XdrElement {
   private byte[] SignatureHint;
 
+  public SignatureHint() {
+  }
+
+  public SignatureHint(byte[] SignatureHint) {
+    this.SignatureHint = SignatureHint;
+  }
+
   public static void encode(XdrDataOutputStream stream, SignatureHint encodedSignatureHint) throws IOException {
     int SignatureHintsize = encodedSignatureHint.SignatureHint.length;
     stream.write(encodedSignatureHint.getSignatureHint(), 0, SignatureHintsize);

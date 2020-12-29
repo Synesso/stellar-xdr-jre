@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Signature implements XdrElement {
   private byte[] Signature;
 
+  public Signature() {
+  }
+
+  public Signature(byte[] Signature) {
+    this.Signature = Signature;
+  }
+
   public static void encode(XdrDataOutputStream stream, Signature encodedSignature) throws IOException {
     int Signaturesize = encodedSignature.Signature.length;
     stream.writeInt(Signaturesize);

@@ -17,6 +17,13 @@ import okio.ByteString;
 public class LedgerEntryChanges implements XdrElement {
   private LedgerEntryChange[] LedgerEntryChanges;
 
+  public LedgerEntryChanges() {
+  }
+
+  public LedgerEntryChanges(LedgerEntryChange[] LedgerEntryChanges) {
+    this.LedgerEntryChanges = LedgerEntryChanges;
+  }
+
   public static void encode(XdrDataOutputStream stream, LedgerEntryChanges encodedLedgerEntryChanges)
       throws IOException {
     int LedgerEntryChangessize = encodedLedgerEntryChanges.getLedgerEntryChanges().length;

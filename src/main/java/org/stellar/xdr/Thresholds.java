@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Thresholds implements XdrElement {
   private byte[] Thresholds;
 
+  public Thresholds() {
+  }
+
+  public Thresholds(byte[] Thresholds) {
+    this.Thresholds = Thresholds;
+  }
+
   public static void encode(XdrDataOutputStream stream, Thresholds encodedThresholds) throws IOException {
     int Thresholdssize = encodedThresholds.Thresholds.length;
     stream.write(encodedThresholds.getThresholds(), 0, Thresholdssize);

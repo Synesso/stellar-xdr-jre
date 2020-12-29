@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Hash implements XdrElement {
   private byte[] Hash;
 
+  public Hash() {
+  }
+
+  public Hash(byte[] Hash) {
+    this.Hash = Hash;
+  }
+
   public static void encode(XdrDataOutputStream stream, Hash encodedHash) throws IOException {
     int Hashsize = encodedHash.Hash.length;
     stream.write(encodedHash.getHash(), 0, Hashsize);

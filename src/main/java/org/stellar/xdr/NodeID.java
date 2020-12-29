@@ -17,6 +17,13 @@ import okio.ByteString;
 public class NodeID implements XdrElement {
   private PublicKey NodeID;
 
+  public NodeID() {
+  }
+
+  public NodeID(PublicKey NodeID) {
+    this.NodeID = NodeID;
+  }
+
   public static void encode(XdrDataOutputStream stream, NodeID encodedNodeID) throws IOException {
     PublicKey.encode(stream, encodedNodeID.NodeID);
   }

@@ -17,6 +17,13 @@ import okio.ByteString;
 public class SequenceNumber implements XdrElement {
   private Int64 SequenceNumber;
 
+  public SequenceNumber() {
+  }
+
+  public SequenceNumber(Int64 SequenceNumber) {
+    this.SequenceNumber = SequenceNumber;
+  }
+
   public static void encode(XdrDataOutputStream stream, SequenceNumber encodedSequenceNumber) throws IOException {
     Int64.encode(stream, encodedSequenceNumber.SequenceNumber);
   }

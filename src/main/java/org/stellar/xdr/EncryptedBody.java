@@ -17,6 +17,13 @@ import okio.ByteString;
 public class EncryptedBody implements XdrElement {
   private byte[] EncryptedBody;
 
+  public EncryptedBody() {
+  }
+
+  public EncryptedBody(byte[] EncryptedBody) {
+    this.EncryptedBody = EncryptedBody;
+  }
+
   public static void encode(XdrDataOutputStream stream, EncryptedBody encodedEncryptedBody) throws IOException {
     int EncryptedBodysize = encodedEncryptedBody.EncryptedBody.length;
     stream.writeInt(EncryptedBodysize);

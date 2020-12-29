@@ -17,6 +17,13 @@ import okio.ByteString;
 public class Int64 implements XdrElement {
   private Long int64;
 
+  public Int64() {
+  }
+
+  public Int64(Long int64) {
+    this.int64 = int64;
+  }
+
   public static void encode(XdrDataOutputStream stream, Int64 encodedInt64) throws IOException {
     stream.writeLong(encodedInt64.int64);
   }

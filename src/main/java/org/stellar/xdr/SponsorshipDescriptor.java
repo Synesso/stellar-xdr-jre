@@ -17,6 +17,13 @@ import okio.ByteString;
 public class SponsorshipDescriptor implements XdrElement {
   private AccountID SponsorshipDescriptor;
 
+  public SponsorshipDescriptor() {
+  }
+
+  public SponsorshipDescriptor(AccountID SponsorshipDescriptor) {
+    this.SponsorshipDescriptor = SponsorshipDescriptor;
+  }
+
   public static void encode(XdrDataOutputStream stream, SponsorshipDescriptor encodedSponsorshipDescriptor)
       throws IOException {
     if (encodedSponsorshipDescriptor.SponsorshipDescriptor != null) {
