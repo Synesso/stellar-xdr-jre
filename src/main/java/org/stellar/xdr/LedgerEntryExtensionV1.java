@@ -31,8 +31,10 @@ public class LedgerEntryExtensionV1 implements XdrElement {
   public LedgerEntryExtensionV1() {
   }
 
-  public static void encode(XdrDataOutputStream stream, LedgerEntryExtensionV1 encodedLedgerEntryExtensionV1)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      LedgerEntryExtensionV1 encodedLedgerEntryExtensionV1
+  ) throws IOException {
     SponsorshipDescriptor.encode(stream, encodedLedgerEntryExtensionV1.sponsoringID);
     LedgerEntryExtensionV1Ext.encode(stream, encodedLedgerEntryExtensionV1.ext);
   }
@@ -118,8 +120,10 @@ public class LedgerEntryExtensionV1 implements XdrElement {
     public LedgerEntryExtensionV1Ext() {
     }
 
-    public static void encode(XdrDataOutputStream stream, LedgerEntryExtensionV1Ext encodedLedgerEntryExtensionV1Ext)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        LedgerEntryExtensionV1Ext encodedLedgerEntryExtensionV1Ext
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedLedgerEntryExtensionV1Ext.getDiscriminant().intValue());
@@ -192,5 +196,6 @@ public class LedgerEntryExtensionV1 implements XdrElement {
         return val;
       }
     }
+
   }
 }

@@ -15,7 +15,7 @@ import okio.ByteString;
 //  {
 //      Asset selling; // A
 //      Asset buying;  // B
-//      int64 amount;  // amount taker gets. if set to 0, delete the offer
+//      int64 amount;  // amount taker gets
 //      Price price;   // cost of A in terms of B
 //  };
 
@@ -29,8 +29,10 @@ public class CreatePassiveSellOfferOp implements XdrElement {
   public CreatePassiveSellOfferOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, CreatePassiveSellOfferOp encodedCreatePassiveSellOfferOp)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      CreatePassiveSellOfferOp encodedCreatePassiveSellOfferOp
+  ) throws IOException {
     Asset.encode(stream, encodedCreatePassiveSellOfferOp.selling);
     Asset.encode(stream, encodedCreatePassiveSellOfferOp.buying);
     Int64.encode(stream, encodedCreatePassiveSellOfferOp.amount);
@@ -105,8 +107,8 @@ public class CreatePassiveSellOfferOp implements XdrElement {
     }
 
     CreatePassiveSellOfferOp other = (CreatePassiveSellOfferOp) object;
-    return Objects.equal(this.selling, other.selling) && Objects.equal(this.buying, other.buying) && Objects.equal(
-        this.amount, other.amount) && Objects.equal(this.price, other.price);
+    return Objects.equal(this.selling, other.selling) && Objects.equal(this.buying, other.buying) && Objects
+        .equal(this.amount, other.amount) && Objects.equal(this.price, other.price);
   }
 
   public static final class Builder {

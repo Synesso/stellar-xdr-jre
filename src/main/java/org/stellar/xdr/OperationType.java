@@ -30,7 +30,10 @@ import okio.ByteString;
 //      CLAIM_CLAIMABLE_BALANCE = 15,
 //      BEGIN_SPONSORING_FUTURE_RESERVES = 16,
 //      END_SPONSORING_FUTURE_RESERVES = 17,
-//      REVOKE_SPONSORSHIP = 18
+//      REVOKE_SPONSORSHIP = 18,
+//      CLAWBACK = 19,
+//      CLAWBACK_CLAIMABLE_BALANCE = 20,
+//      SET_TRUST_LINE_FLAGS = 21
 //  };
 
 //  ===========================================================================
@@ -54,8 +57,11 @@ public enum OperationType implements XdrElement {
   BEGIN_SPONSORING_FUTURE_RESERVES(16),
   END_SPONSORING_FUTURE_RESERVES(17),
   REVOKE_SPONSORSHIP(18),
+  CLAWBACK(19),
+  CLAWBACK_CLAIMABLE_BALANCE(20),
+  SET_TRUST_LINE_FLAGS(21),
   ;
-  private final int mValue;
+  private int mValue;
 
   OperationType(int value) {
     mValue = value;
@@ -106,6 +112,12 @@ public enum OperationType implements XdrElement {
         return END_SPONSORING_FUTURE_RESERVES;
       case 18:
         return REVOKE_SPONSORSHIP;
+      case 19:
+        return CLAWBACK;
+      case 20:
+        return CLAWBACK_CLAIMABLE_BALANCE;
+      case 21:
+        return SET_TRUST_LINE_FLAGS;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -129,4 +141,5 @@ public enum OperationType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

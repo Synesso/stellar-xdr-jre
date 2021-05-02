@@ -25,7 +25,7 @@ public enum LedgerEntryChangeType implements XdrElement {
   LEDGER_ENTRY_REMOVED(2),
   LEDGER_ENTRY_STATE(3),
   ;
-  private final int mValue;
+  private int mValue;
 
   LedgerEntryChangeType(int value) {
     mValue = value;
@@ -69,4 +69,5 @@ public enum LedgerEntryChangeType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

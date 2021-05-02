@@ -123,8 +123,8 @@ public class ClaimOfferAtom implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.sellerID, this.offerID, this.assetSold, this.amountSold, this.assetBought,
-        this.amountBought);
+    return Objects
+        .hashCode(this.sellerID, this.offerID, this.assetSold, this.amountSold, this.assetBought, this.amountBought);
   }
 
   @Override
@@ -134,9 +134,9 @@ public class ClaimOfferAtom implements XdrElement {
     }
 
     ClaimOfferAtom other = (ClaimOfferAtom) object;
-    return Objects.equal(this.sellerID, other.sellerID) && Objects.equal(this.offerID, other.offerID) && Objects.equal(
-        this.assetSold, other.assetSold) && Objects.equal(this.amountSold, other.amountSold) && Objects.equal(
-        this.assetBought, other.assetBought) && Objects.equal(this.amountBought, other.amountBought);
+    return Objects.equal(this.sellerID, other.sellerID) && Objects.equal(this.offerID, other.offerID) && Objects
+        .equal(this.assetSold, other.assetSold) && Objects.equal(this.amountSold, other.amountSold) && Objects
+        .equal(this.assetBought, other.assetBought) && Objects.equal(this.amountBought, other.amountBought);
   }
 
   public static final class Builder {

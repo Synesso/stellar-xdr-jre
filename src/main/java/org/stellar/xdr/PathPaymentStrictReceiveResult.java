@@ -36,8 +36,10 @@ public class PathPaymentStrictReceiveResult implements XdrElement {
   public PathPaymentStrictReceiveResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream,
-      PathPaymentStrictReceiveResult encodedPathPaymentStrictReceiveResult) throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      PathPaymentStrictReceiveResult encodedPathPaymentStrictReceiveResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //PathPaymentStrictReceiveResultCode
     stream.writeInt(encodedPathPaymentStrictReceiveResult.getDiscriminant().getValue());
@@ -121,8 +123,8 @@ public class PathPaymentStrictReceiveResult implements XdrElement {
     }
 
     PathPaymentStrictReceiveResult other = (PathPaymentStrictReceiveResult) object;
-    return Objects.equal(this.success, other.success) && Objects.equal(this.noIssuer, other.noIssuer) && Objects.equal(
-        this.code, other.code);
+    return Objects.equal(this.success, other.success) && Objects.equal(this.noIssuer, other.noIssuer) && Objects
+        .equal(this.code, other.code);
   }
 
   public static final class Builder {
@@ -161,8 +163,10 @@ public class PathPaymentStrictReceiveResult implements XdrElement {
     public PathPaymentStrictReceiveResultSuccess() {
     }
 
-    public static void encode(XdrDataOutputStream stream,
-        PathPaymentStrictReceiveResultSuccess encodedPathPaymentStrictReceiveResultSuccess) throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        PathPaymentStrictReceiveResultSuccess encodedPathPaymentStrictReceiveResultSuccess
+    ) throws IOException {
       int offerssize = encodedPathPaymentStrictReceiveResultSuccess.getOffers().length;
       stream.writeInt(offerssize);
       for (int i = 0; i < offerssize; i++) {
@@ -250,5 +254,6 @@ public class PathPaymentStrictReceiveResult implements XdrElement {
         return val;
       }
     }
+
   }
 }

@@ -23,7 +23,9 @@ import okio.ByteString;
 //      SET_OPTIONS_UNKNOWN_FLAG = -6,           // can't set an unknown flag
 //      SET_OPTIONS_THRESHOLD_OUT_OF_RANGE = -7, // bad value for weight/threshold
 //      SET_OPTIONS_BAD_SIGNER = -8,             // signer cannot be masterkey
-//      SET_OPTIONS_INVALID_HOME_DOMAIN = -9     // malformed home domain
+//      SET_OPTIONS_INVALID_HOME_DOMAIN = -9,    // malformed home domain
+//      SET_OPTIONS_AUTH_REVOCABLE_REQUIRED =
+//          -10 // auth revocable is required for clawback
 //  };
 
 //  ===========================================================================
@@ -38,8 +40,9 @@ public enum SetOptionsResultCode implements XdrElement {
   SET_OPTIONS_THRESHOLD_OUT_OF_RANGE(-7),
   SET_OPTIONS_BAD_SIGNER(-8),
   SET_OPTIONS_INVALID_HOME_DOMAIN(-9),
+  SET_OPTIONS_AUTH_REVOCABLE_REQUIRED(-10),
   ;
-  private final int mValue;
+  private int mValue;
 
   SetOptionsResultCode(int value) {
     mValue = value;
@@ -72,6 +75,8 @@ public enum SetOptionsResultCode implements XdrElement {
         return SET_OPTIONS_BAD_SIGNER;
       case -9:
         return SET_OPTIONS_INVALID_HOME_DOMAIN;
+      case -10:
+        return SET_OPTIONS_AUTH_REVOCABLE_REQUIRED;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -95,4 +100,5 @@ public enum SetOptionsResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

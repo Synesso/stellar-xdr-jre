@@ -100,8 +100,8 @@ public class PeerAddress implements XdrElement {
     }
 
     PeerAddress other = (PeerAddress) object;
-    return Objects.equal(this.ip, other.ip) && Objects.equal(this.port, other.port) && Objects.equal(this.numFailures,
-        other.numFailures);
+    return Objects.equal(this.ip, other.ip) && Objects.equal(this.port, other.port) && Objects
+        .equal(this.numFailures, other.numFailures);
   }
 
   public static final class Builder {
@@ -227,8 +227,8 @@ public class PeerAddress implements XdrElement {
       }
 
       PeerAddressIp other = (PeerAddressIp) object;
-      return Arrays.equals(this.ipv4, other.ipv4) && Arrays.equals(this.ipv6, other.ipv6) && Objects.equal(this.type,
-          other.type);
+      return Arrays.equals(this.ipv4, other.ipv4) && Arrays.equals(this.ipv6, other.ipv6) && Objects
+          .equal(this.type, other.type);
     }
 
     public static final class Builder {
@@ -259,5 +259,6 @@ public class PeerAddress implements XdrElement {
         return val;
       }
     }
+
   }
 }

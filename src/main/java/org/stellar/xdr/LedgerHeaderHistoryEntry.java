@@ -34,8 +34,10 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
   public LedgerHeaderHistoryEntry() {
   }
 
-  public static void encode(XdrDataOutputStream stream, LedgerHeaderHistoryEntry encodedLedgerHeaderHistoryEntry)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      LedgerHeaderHistoryEntry encodedLedgerHeaderHistoryEntry
+  ) throws IOException {
     Hash.encode(stream, encodedLedgerHeaderHistoryEntry.hash);
     LedgerHeader.encode(stream, encodedLedgerHeaderHistoryEntry.header);
     LedgerHeaderHistoryEntryExt.encode(stream, encodedLedgerHeaderHistoryEntry.ext);
@@ -100,8 +102,8 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
     }
 
     LedgerHeaderHistoryEntry other = (LedgerHeaderHistoryEntry) object;
-    return Objects.equal(this.hash, other.hash) && Objects.equal(this.header, other.header) && Objects.equal(this.ext,
-        other.ext);
+    return Objects.equal(this.hash, other.hash) && Objects.equal(this.header, other.header) && Objects
+        .equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -139,8 +141,10 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
     public LedgerHeaderHistoryEntryExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream,
-        LedgerHeaderHistoryEntryExt encodedLedgerHeaderHistoryEntryExt) throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        LedgerHeaderHistoryEntryExt encodedLedgerHeaderHistoryEntryExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedLedgerHeaderHistoryEntryExt.getDiscriminant().intValue());
@@ -213,5 +217,6 @@ public class LedgerHeaderHistoryEntry implements XdrElement {
         return val;
       }
     }
+
   }
 }

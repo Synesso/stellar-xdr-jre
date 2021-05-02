@@ -27,8 +27,10 @@ public class SimplePaymentResult implements XdrElement {
   public SimplePaymentResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, SimplePaymentResult encodedSimplePaymentResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      SimplePaymentResult encodedSimplePaymentResult
+  ) throws IOException {
     AccountID.encode(stream, encodedSimplePaymentResult.destination);
     Asset.encode(stream, encodedSimplePaymentResult.asset);
     Int64.encode(stream, encodedSimplePaymentResult.amount);
@@ -93,9 +95,8 @@ public class SimplePaymentResult implements XdrElement {
     }
 
     SimplePaymentResult other = (SimplePaymentResult) object;
-    return Objects.equal(this.destination, other.destination)
-        && Objects.equal(this.asset, other.asset)
-        && Objects.equal(this.amount, other.amount);
+    return Objects.equal(this.destination, other.destination) && Objects.equal(this.asset, other.asset) && Objects
+        .equal(this.amount, other.amount);
   }
 
   public static final class Builder {

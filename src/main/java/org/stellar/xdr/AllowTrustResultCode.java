@@ -32,7 +32,7 @@ public enum AllowTrustResultCode implements XdrElement {
   ALLOW_TRUST_CANT_REVOKE(-4),
   ALLOW_TRUST_SELF_NOT_ALLOWED(-5),
   ;
-  private final int mValue;
+  private int mValue;
 
   AllowTrustResultCode(int value) {
     mValue = value;
@@ -80,4 +80,5 @@ public enum AllowTrustResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

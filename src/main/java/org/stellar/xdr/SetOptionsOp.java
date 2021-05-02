@@ -244,15 +244,12 @@ public class SetOptionsOp implements XdrElement {
     }
 
     SetOptionsOp other = (SetOptionsOp) object;
-    return Objects.equal(this.inflationDest, other.inflationDest)
-        && Objects.equal(this.clearFlags, other.clearFlags)
-        && Objects.equal(this.setFlags, other.setFlags)
-        && Objects.equal(this.masterWeight, other.masterWeight)
-        && Objects.equal(this.lowThreshold, other.lowThreshold)
-        && Objects.equal(this.medThreshold, other.medThreshold)
-        && Objects.equal(this.highThreshold, other.highThreshold)
-        && Objects.equal(this.homeDomain, other.homeDomain)
-        && Objects.equal(this.signer, other.signer);
+    return Objects.equal(this.inflationDest, other.inflationDest) && Objects
+        .equal(this.clearFlags, other.clearFlags) && Objects.equal(this.setFlags, other.setFlags) && Objects
+        .equal(this.masterWeight, other.masterWeight) && Objects.equal(this.lowThreshold, other.lowThreshold) && Objects
+        .equal(this.medThreshold, other.medThreshold) && Objects
+        .equal(this.highThreshold, other.highThreshold) && Objects.equal(this.homeDomain, other.homeDomain) && Objects
+        .equal(this.signer, other.signer);
   }
 
   public static final class Builder {

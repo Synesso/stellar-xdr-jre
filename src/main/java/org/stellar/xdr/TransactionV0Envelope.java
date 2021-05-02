@@ -28,8 +28,10 @@ public class TransactionV0Envelope implements XdrElement {
   public TransactionV0Envelope() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TransactionV0Envelope encodedTransactionV0Envelope)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionV0Envelope encodedTransactionV0Envelope
+  ) throws IOException {
     TransactionV0.encode(stream, encodedTransactionV0Envelope.tx);
     int signaturessize = encodedTransactionV0Envelope.getSignatures().length;
     stream.writeInt(signaturessize);

@@ -29,7 +29,7 @@ public enum CreateClaimableBalanceResultCode implements XdrElement {
   CREATE_CLAIMABLE_BALANCE_NOT_AUTHORIZED(-4),
   CREATE_CLAIMABLE_BALANCE_UNDERFUNDED(-5),
   ;
-  private final int mValue;
+  private int mValue;
 
   CreateClaimableBalanceResultCode(int value) {
     mValue = value;
@@ -77,4 +77,5 @@ public enum CreateClaimableBalanceResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

@@ -109,9 +109,8 @@ public class SCPQuorumSet implements XdrElement {
     }
 
     SCPQuorumSet other = (SCPQuorumSet) object;
-    return Objects.equal(this.threshold, other.threshold)
-        && Arrays.equals(this.validators, other.validators)
-        && Arrays.equals(this.innerSets, other.innerSets);
+    return Objects.equal(this.threshold, other.threshold) && Arrays.equals(this.validators, other.validators) && Arrays
+        .equals(this.innerSets, other.innerSets);
   }
 
   public static final class Builder {

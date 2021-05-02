@@ -80,8 +80,8 @@ public class CreateAccountOp implements XdrElement {
     }
 
     CreateAccountOp other = (CreateAccountOp) object;
-    return Objects.equal(this.destination, other.destination) && Objects.equal(this.startingBalance,
-        other.startingBalance);
+    return Objects.equal(this.destination, other.destination) && Objects
+        .equal(this.startingBalance, other.startingBalance);
   }
 
   public static final class Builder {

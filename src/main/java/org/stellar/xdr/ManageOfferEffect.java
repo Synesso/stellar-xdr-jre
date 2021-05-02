@@ -23,7 +23,7 @@ public enum ManageOfferEffect implements XdrElement {
   MANAGE_OFFER_UPDATED(1),
   MANAGE_OFFER_DELETED(2),
   ;
-  private final int mValue;
+  private int mValue;
 
   ManageOfferEffect(int value) {
     mValue = value;
@@ -65,4 +65,5 @@ public enum ManageOfferEffect implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

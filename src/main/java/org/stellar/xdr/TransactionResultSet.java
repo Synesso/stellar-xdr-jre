@@ -23,8 +23,10 @@ public class TransactionResultSet implements XdrElement {
   public TransactionResultSet() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TransactionResultSet encodedTransactionResultSet)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionResultSet encodedTransactionResultSet
+  ) throws IOException {
     int resultssize = encodedTransactionResultSet.getResults().length;
     stream.writeInt(resultssize);
     for (int i = 0; i < resultssize; i++) {

@@ -28,8 +28,10 @@ public class CreateClaimableBalanceOp implements XdrElement {
   public CreateClaimableBalanceOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, CreateClaimableBalanceOp encodedCreateClaimableBalanceOp)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      CreateClaimableBalanceOp encodedCreateClaimableBalanceOp
+  ) throws IOException {
     Asset.encode(stream, encodedCreateClaimableBalanceOp.asset);
     Int64.encode(stream, encodedCreateClaimableBalanceOp.amount);
     int claimantssize = encodedCreateClaimableBalanceOp.getClaimants().length;
@@ -102,8 +104,8 @@ public class CreateClaimableBalanceOp implements XdrElement {
     }
 
     CreateClaimableBalanceOp other = (CreateClaimableBalanceOp) object;
-    return Objects.equal(this.asset, other.asset) && Objects.equal(this.amount, other.amount) && Arrays.equals(
-        this.claimants, other.claimants);
+    return Objects.equal(this.asset, other.asset) && Objects.equal(this.amount, other.amount) && Arrays
+        .equals(this.claimants, other.claimants);
   }
 
   public static final class Builder {

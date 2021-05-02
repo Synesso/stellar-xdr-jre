@@ -31,7 +31,7 @@ public enum EnvelopeType implements XdrElement {
   ENVELOPE_TYPE_TX_FEE_BUMP(5),
   ENVELOPE_TYPE_OP_ID(6),
   ;
-  private final int mValue;
+  private int mValue;
 
   EnvelopeType(int value) {
     mValue = value;
@@ -81,4 +81,5 @@ public enum EnvelopeType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

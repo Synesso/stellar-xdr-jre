@@ -115,8 +115,8 @@ public class LedgerEntry implements XdrElement {
     }
 
     LedgerEntry other = (LedgerEntry) object;
-    return Objects.equal(this.lastModifiedLedgerSeq, other.lastModifiedLedgerSeq) && Objects.equal(this.data,
-        other.data) && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.lastModifiedLedgerSeq, other.lastModifiedLedgerSeq) && Objects
+        .equal(this.data, other.data) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -281,12 +281,9 @@ public class LedgerEntry implements XdrElement {
       }
 
       LedgerEntryData other = (LedgerEntryData) object;
-      return Objects.equal(this.account, other.account)
-          && Objects.equal(this.trustLine, other.trustLine)
-          && Objects.equal(this.offer, other.offer)
-          && Objects.equal(this.data, other.data)
-          && Objects.equal(this.claimableBalance, other.claimableBalance)
-          && Objects.equal(this.type, other.type);
+      return Objects.equal(this.account, other.account) && Objects.equal(this.trustLine, other.trustLine) && Objects
+          .equal(this.offer, other.offer) && Objects.equal(this.data, other.data) && Objects
+          .equal(this.claimableBalance, other.claimableBalance) && Objects.equal(this.type, other.type);
     }
 
     public static final class Builder {
@@ -338,6 +335,7 @@ public class LedgerEntry implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class LedgerEntryExt {
@@ -441,5 +439,6 @@ public class LedgerEntry implements XdrElement {
         return val;
       }
     }
+
   }
 }

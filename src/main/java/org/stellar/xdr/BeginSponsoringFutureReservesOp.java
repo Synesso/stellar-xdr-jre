@@ -23,8 +23,10 @@ public class BeginSponsoringFutureReservesOp implements XdrElement {
   public BeginSponsoringFutureReservesOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream,
-      BeginSponsoringFutureReservesOp encodedBeginSponsoringFutureReservesOp) throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      BeginSponsoringFutureReservesOp encodedBeginSponsoringFutureReservesOp
+  ) throws IOException {
     AccountID.encode(stream, encodedBeginSponsoringFutureReservesOp.sponsoredID);
   }
 

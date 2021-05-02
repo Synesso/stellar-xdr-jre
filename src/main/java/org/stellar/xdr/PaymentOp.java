@@ -92,9 +92,8 @@ public class PaymentOp implements XdrElement {
     }
 
     PaymentOp other = (PaymentOp) object;
-    return Objects.equal(this.destination, other.destination)
-        && Objects.equal(this.asset, other.asset)
-        && Objects.equal(this.amount, other.amount);
+    return Objects.equal(this.destination, other.destination) && Objects.equal(this.asset, other.asset) && Objects
+        .equal(this.amount, other.amount);
   }
 
   public static final class Builder {

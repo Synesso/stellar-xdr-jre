@@ -21,7 +21,11 @@ import okio.ByteString;
 //      // otherwise, authorization cannot be revoked
 //      AUTH_REVOCABLE_FLAG = 0x2,
 //      // Once set, causes all AUTH_* flags to be read-only
-//      AUTH_IMMUTABLE_FLAG = 0x4
+//      AUTH_IMMUTABLE_FLAG = 0x4,
+//      // Trustlines are created with clawback enabled set to "true",
+//      // and claimable balances created from those trustlines are created
+//      // with clawback enabled set to "true"
+//      AUTH_CLAWBACK_ENABLED_FLAG = 0x8
 //  };
 
 //  ===========================================================================
@@ -29,8 +33,9 @@ public enum AccountFlags implements XdrElement {
   AUTH_REQUIRED_FLAG(1),
   AUTH_REVOCABLE_FLAG(2),
   AUTH_IMMUTABLE_FLAG(4),
+  AUTH_CLAWBACK_ENABLED_FLAG(8),
   ;
-  private final int mValue;
+  private int mValue;
 
   AccountFlags(int value) {
     mValue = value;
@@ -49,6 +54,8 @@ public enum AccountFlags implements XdrElement {
         return AUTH_REVOCABLE_FLAG;
       case 4:
         return AUTH_IMMUTABLE_FLAG;
+      case 8:
+        return AUTH_CLAWBACK_ENABLED_FLAG;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -72,4 +79,5 @@ public enum AccountFlags implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

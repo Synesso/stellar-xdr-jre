@@ -31,8 +31,10 @@ public class SurveyRequestMessage implements XdrElement {
   public SurveyRequestMessage() {
   }
 
-  public static void encode(XdrDataOutputStream stream, SurveyRequestMessage encodedSurveyRequestMessage)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      SurveyRequestMessage encodedSurveyRequestMessage
+  ) throws IOException {
     NodeID.encode(stream, encodedSurveyRequestMessage.surveyorPeerID);
     NodeID.encode(stream, encodedSurveyRequestMessage.surveyedPeerID);
     Uint32.encode(stream, encodedSurveyRequestMessage.ledgerNum);
@@ -107,8 +109,8 @@ public class SurveyRequestMessage implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.surveyorPeerID, this.surveyedPeerID, this.ledgerNum, this.encryptionKey,
-        this.commandType);
+    return Objects
+        .hashCode(this.surveyorPeerID, this.surveyedPeerID, this.ledgerNum, this.encryptionKey, this.commandType);
   }
 
   @Override
@@ -118,9 +120,9 @@ public class SurveyRequestMessage implements XdrElement {
     }
 
     SurveyRequestMessage other = (SurveyRequestMessage) object;
-    return Objects.equal(this.surveyorPeerID, other.surveyorPeerID) && Objects.equal(this.surveyedPeerID,
-        other.surveyedPeerID) && Objects.equal(this.ledgerNum, other.ledgerNum) && Objects.equal(this.encryptionKey,
-        other.encryptionKey) && Objects.equal(this.commandType, other.commandType);
+    return Objects.equal(this.surveyorPeerID, other.surveyorPeerID) && Objects
+        .equal(this.surveyedPeerID, other.surveyedPeerID) && Objects.equal(this.ledgerNum, other.ledgerNum) && Objects
+        .equal(this.encryptionKey, other.encryptionKey) && Objects.equal(this.commandType, other.commandType);
   }
 
   public static final class Builder {

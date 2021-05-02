@@ -20,8 +20,7 @@ import okio.ByteString;
 //      {
 //          AccountID accountID;
 //          SignerKey signerKey;
-//      }
-//      signer;
+//      } signer;
 //  };
 
 //  ===========================================================================
@@ -33,8 +32,10 @@ public class RevokeSponsorshipOp implements XdrElement {
   public RevokeSponsorshipOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, RevokeSponsorshipOp encodedRevokeSponsorshipOp)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      RevokeSponsorshipOp encodedRevokeSponsorshipOp
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //RevokeSponsorshipType
     stream.writeInt(encodedRevokeSponsorshipOp.getDiscriminant().getValue());
@@ -114,8 +115,8 @@ public class RevokeSponsorshipOp implements XdrElement {
     }
 
     RevokeSponsorshipOp other = (RevokeSponsorshipOp) object;
-    return Objects.equal(this.ledgerKey, other.ledgerKey) && Objects.equal(this.signer, other.signer) && Objects.equal(
-        this.type, other.type);
+    return Objects.equal(this.ledgerKey, other.ledgerKey) && Objects.equal(this.signer, other.signer) && Objects
+        .equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -154,8 +155,10 @@ public class RevokeSponsorshipOp implements XdrElement {
     public RevokeSponsorshipOpSigner() {
     }
 
-    public static void encode(XdrDataOutputStream stream, RevokeSponsorshipOpSigner encodedRevokeSponsorshipOpSigner)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        RevokeSponsorshipOpSigner encodedRevokeSponsorshipOpSigner
+    ) throws IOException {
       AccountID.encode(stream, encodedRevokeSponsorshipOpSigner.accountID);
       SignerKey.encode(stream, encodedRevokeSponsorshipOpSigner.signerKey);
     }
@@ -234,5 +237,6 @@ public class RevokeSponsorshipOp implements XdrElement {
         return val;
       }
     }
+
   }
 }

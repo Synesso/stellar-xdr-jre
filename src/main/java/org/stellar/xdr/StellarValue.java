@@ -128,10 +128,8 @@ public class StellarValue implements XdrElement {
     }
 
     StellarValue other = (StellarValue) object;
-    return Objects.equal(this.txSetHash, other.txSetHash)
-        && Objects.equal(this.closeTime, other.closeTime)
-        && Arrays.equals(this.upgrades, other.upgrades)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.txSetHash, other.txSetHash) && Objects.equal(this.closeTime, other.closeTime) && Arrays
+        .equals(this.upgrades, other.upgrades) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -271,5 +269,6 @@ public class StellarValue implements XdrElement {
         return val;
       }
     }
+
   }
 }

@@ -134,8 +134,8 @@ public class TransactionMeta implements XdrElement {
     }
 
     TransactionMeta other = (TransactionMeta) object;
-    return Arrays.equals(this.operations, other.operations) && Objects.equal(this.v1, other.v1) && Objects.equal(
-        this.v2, other.v2) && Objects.equal(this.v, other.v);
+    return Arrays.equals(this.operations, other.operations) && Objects.equal(this.v1, other.v1) && Objects
+        .equal(this.v2, other.v2) && Objects.equal(this.v, other.v);
   }
 
   public static final class Builder {

@@ -194,9 +194,8 @@ public class OperationID implements XdrElement {
       }
 
       OperationIDId other = (OperationIDId) object;
-      return Objects.equal(this.sourceAccount, other.sourceAccount)
-          && Objects.equal(this.seqNum, other.seqNum)
-          && Objects.equal(this.opNum, other.opNum);
+      return Objects.equal(this.sourceAccount, other.sourceAccount) && Objects
+          .equal(this.seqNum, other.seqNum) && Objects.equal(this.opNum, other.opNum);
     }
 
     public static final class Builder {
@@ -227,5 +226,6 @@ public class OperationID implements XdrElement {
         return val;
       }
     }
+
   }
 }

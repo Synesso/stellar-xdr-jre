@@ -27,7 +27,7 @@ public enum ErrorCode implements XdrElement {
   ERR_AUTH(3),
   ERR_LOAD(4),
   ;
-  private final int mValue;
+  private int mValue;
 
   ErrorCode(int value) {
     mValue = value;
@@ -73,4 +73,5 @@ public enum ErrorCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

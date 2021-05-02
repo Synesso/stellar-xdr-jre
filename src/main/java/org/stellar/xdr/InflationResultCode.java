@@ -23,7 +23,7 @@ public enum InflationResultCode implements XdrElement {
   INFLATION_SUCCESS(0),
   INFLATION_NOT_TIME(-1),
   ;
-  private final int mValue;
+  private int mValue;
 
   InflationResultCode(int value) {
     mValue = value;
@@ -63,4 +63,5 @@ public enum InflationResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

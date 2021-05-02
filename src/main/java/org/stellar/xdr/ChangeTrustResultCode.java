@@ -33,7 +33,7 @@ public enum ChangeTrustResultCode implements XdrElement {
   CHANGE_TRUST_LOW_RESERVE(-4),
   CHANGE_TRUST_SELF_NOT_ALLOWED(-5),
   ;
-  private final int mValue;
+  private int mValue;
 
   ChangeTrustResultCode(int value) {
     mValue = value;
@@ -81,4 +81,5 @@ public enum ChangeTrustResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

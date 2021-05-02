@@ -14,7 +14,7 @@ import okio.ByteString;
 //  union AccountMergeResult switch (AccountMergeResultCode code)
 //  {
 //  case ACCOUNT_MERGE_SUCCESS:
-//      int64 sourceAccountBalance; // how much got transfered from source account
+//      int64 sourceAccountBalance; // how much got transferred from source account
 //  default:
 //      void;
 //  };
@@ -27,8 +27,10 @@ public class AccountMergeResult implements XdrElement {
   public AccountMergeResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, AccountMergeResult encodedAccountMergeResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      AccountMergeResult encodedAccountMergeResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //AccountMergeResultCode
     stream.writeInt(encodedAccountMergeResult.getDiscriminant().getValue());

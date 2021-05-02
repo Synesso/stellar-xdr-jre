@@ -27,7 +27,7 @@ public enum LedgerEntryType implements XdrElement {
   DATA(3),
   CLAIMABLE_BALANCE(4),
   ;
-  private final int mValue;
+  private int mValue;
 
   LedgerEntryType(int value) {
     mValue = value;
@@ -73,4 +73,5 @@ public enum LedgerEntryType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

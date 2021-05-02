@@ -30,8 +30,10 @@ public class AuthenticatedMessage implements XdrElement {
   public AuthenticatedMessage() {
   }
 
-  public static void encode(XdrDataOutputStream stream, AuthenticatedMessage encodedAuthenticatedMessage)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      AuthenticatedMessage encodedAuthenticatedMessage
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //Uint32
     stream.writeInt(encodedAuthenticatedMessage.getDiscriminant().getUint32());
@@ -130,8 +132,10 @@ public class AuthenticatedMessage implements XdrElement {
     public AuthenticatedMessageV0() {
     }
 
-    public static void encode(XdrDataOutputStream stream, AuthenticatedMessageV0 encodedAuthenticatedMessageV0)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        AuthenticatedMessageV0 encodedAuthenticatedMessageV0
+    ) throws IOException {
       Uint64.encode(stream, encodedAuthenticatedMessageV0.sequence);
       StellarMessage.encode(stream, encodedAuthenticatedMessageV0.message);
       HmacSha256Mac.encode(stream, encodedAuthenticatedMessageV0.mac);
@@ -196,9 +200,8 @@ public class AuthenticatedMessage implements XdrElement {
       }
 
       AuthenticatedMessageV0 other = (AuthenticatedMessageV0) object;
-      return Objects.equal(this.sequence, other.sequence)
-          && Objects.equal(this.message, other.message)
-          && Objects.equal(this.mac, other.mac);
+      return Objects.equal(this.sequence, other.sequence) && Objects.equal(this.message, other.message) && Objects
+          .equal(this.mac, other.mac);
     }
 
     public static final class Builder {
@@ -229,5 +232,6 @@ public class AuthenticatedMessage implements XdrElement {
         return val;
       }
     }
+
   }
 }

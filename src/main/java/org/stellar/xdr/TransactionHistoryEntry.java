@@ -34,8 +34,10 @@ public class TransactionHistoryEntry implements XdrElement {
   public TransactionHistoryEntry() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TransactionHistoryEntry encodedTransactionHistoryEntry)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionHistoryEntry encodedTransactionHistoryEntry
+  ) throws IOException {
     Uint32.encode(stream, encodedTransactionHistoryEntry.ledgerSeq);
     TransactionSet.encode(stream, encodedTransactionHistoryEntry.txSet);
     TransactionHistoryEntryExt.encode(stream, encodedTransactionHistoryEntry.ext);
@@ -100,8 +102,8 @@ public class TransactionHistoryEntry implements XdrElement {
     }
 
     TransactionHistoryEntry other = (TransactionHistoryEntry) object;
-    return Objects.equal(this.ledgerSeq, other.ledgerSeq) && Objects.equal(this.txSet, other.txSet) && Objects.equal(
-        this.ext, other.ext);
+    return Objects.equal(this.ledgerSeq, other.ledgerSeq) && Objects.equal(this.txSet, other.txSet) && Objects
+        .equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -139,8 +141,10 @@ public class TransactionHistoryEntry implements XdrElement {
     public TransactionHistoryEntryExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, TransactionHistoryEntryExt encodedTransactionHistoryEntryExt)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        TransactionHistoryEntryExt encodedTransactionHistoryEntryExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedTransactionHistoryEntryExt.getDiscriminant().intValue());
@@ -213,5 +217,6 @@ public class TransactionHistoryEntry implements XdrElement {
         return val;
       }
     }
+
   }
 }

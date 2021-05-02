@@ -148,8 +148,9 @@ public class Memo implements XdrElement {
     }
 
     Memo other = (Memo) object;
-    return Objects.equal(this.text, other.text) && Objects.equal(this.id, other.id) && Objects.equal(this.hash,
-        other.hash) && Objects.equal(this.retHash, other.retHash) && Objects.equal(this.type, other.type);
+    return Objects.equal(this.text, other.text) && Objects.equal(this.id, other.id) && Objects
+        .equal(this.hash, other.hash) && Objects.equal(this.retHash, other.retHash) && Objects
+        .equal(this.type, other.type);
   }
 
   public static final class Builder {

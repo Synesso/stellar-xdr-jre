@@ -149,12 +149,9 @@ public class TrustLineEntry implements XdrElement {
     }
 
     TrustLineEntry other = (TrustLineEntry) object;
-    return Objects.equal(this.accountID, other.accountID)
-        && Objects.equal(this.asset, other.asset)
-        && Objects.equal(this.balance, other.balance)
-        && Objects.equal(this.limit, other.limit)
-        && Objects.equal(this.flags, other.flags)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.accountID, other.accountID) && Objects.equal(this.asset, other.asset) && Objects
+        .equal(this.balance, other.balance) && Objects.equal(this.limit, other.limit) && Objects
+        .equal(this.flags, other.flags) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -214,8 +211,10 @@ public class TrustLineEntry implements XdrElement {
     public TrustLineEntryExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, TrustLineEntryExt encodedTrustLineEntryExt)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        TrustLineEntryExt encodedTrustLineEntryExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedTrustLineEntryExt.getDiscriminant().intValue());
@@ -317,8 +316,10 @@ public class TrustLineEntry implements XdrElement {
       public TrustLineEntryV1() {
       }
 
-      public static void encode(XdrDataOutputStream stream, TrustLineEntryV1 encodedTrustLineEntryV1)
-          throws IOException {
+      public static void encode(
+          XdrDataOutputStream stream,
+          TrustLineEntryV1 encodedTrustLineEntryV1
+      ) throws IOException {
         Liabilities.encode(stream, encodedTrustLineEntryV1.liabilities);
         TrustLineEntryV1Ext.encode(stream, encodedTrustLineEntryV1.ext);
       }
@@ -404,8 +405,10 @@ public class TrustLineEntry implements XdrElement {
         public TrustLineEntryV1Ext() {
         }
 
-        public static void encode(XdrDataOutputStream stream, TrustLineEntryV1Ext encodedTrustLineEntryV1Ext)
-            throws IOException {
+        public static void encode(
+            XdrDataOutputStream stream,
+            TrustLineEntryV1Ext encodedTrustLineEntryV1Ext
+        ) throws IOException {
           //Xdrgen::AST::Typespecs::Int
           //Integer
           stream.writeInt(encodedTrustLineEntryV1Ext.getDiscriminant().intValue());
@@ -478,6 +481,7 @@ public class TrustLineEntry implements XdrElement {
             return val;
           }
         }
+
       }
     }
   }

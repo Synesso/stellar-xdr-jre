@@ -129,10 +129,8 @@ public class BucketEntry implements XdrElement {
     }
 
     BucketEntry other = (BucketEntry) object;
-    return Objects.equal(this.liveEntry, other.liveEntry)
-        && Objects.equal(this.deadEntry, other.deadEntry)
-        && Objects.equal(this.metaEntry, other.metaEntry)
-        && Objects.equal(this.type, other.type);
+    return Objects.equal(this.liveEntry, other.liveEntry) && Objects.equal(this.deadEntry, other.deadEntry) && Objects
+        .equal(this.metaEntry, other.metaEntry) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {

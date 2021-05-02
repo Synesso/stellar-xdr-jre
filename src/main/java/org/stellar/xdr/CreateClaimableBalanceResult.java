@@ -28,8 +28,10 @@ public class CreateClaimableBalanceResult implements XdrElement {
   public CreateClaimableBalanceResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream,
-      CreateClaimableBalanceResult encodedCreateClaimableBalanceResult) throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      CreateClaimableBalanceResult encodedCreateClaimableBalanceResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //CreateClaimableBalanceResultCode
     stream.writeInt(encodedCreateClaimableBalanceResult.getDiscriminant().getValue());

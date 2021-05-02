@@ -181,12 +181,9 @@ public class LedgerKey implements XdrElement {
     }
 
     LedgerKey other = (LedgerKey) object;
-    return Objects.equal(this.account, other.account)
-        && Objects.equal(this.trustLine, other.trustLine)
-        && Objects.equal(this.offer, other.offer)
-        && Objects.equal(this.data, other.data)
-        && Objects.equal(this.claimableBalance, other.claimableBalance)
-        && Objects.equal(this.type, other.type);
+    return Objects.equal(this.account, other.account) && Objects.equal(this.trustLine, other.trustLine) && Objects
+        .equal(this.offer, other.offer) && Objects.equal(this.data, other.data) && Objects
+        .equal(this.claimableBalance, other.claimableBalance) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -307,6 +304,7 @@ public class LedgerKey implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class LedgerKeyTrustLine {
@@ -316,8 +314,10 @@ public class LedgerKey implements XdrElement {
     public LedgerKeyTrustLine() {
     }
 
-    public static void encode(XdrDataOutputStream stream, LedgerKeyTrustLine encodedLedgerKeyTrustLine)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        LedgerKeyTrustLine encodedLedgerKeyTrustLine
+    ) throws IOException {
       AccountID.encode(stream, encodedLedgerKeyTrustLine.accountID);
       Asset.encode(stream, encodedLedgerKeyTrustLine.asset);
     }
@@ -396,6 +396,7 @@ public class LedgerKey implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class LedgerKeyOffer {
@@ -484,6 +485,7 @@ public class LedgerKey implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class LedgerKeyData {
@@ -572,6 +574,7 @@ public class LedgerKey implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class LedgerKeyClaimableBalance {
@@ -580,8 +583,10 @@ public class LedgerKey implements XdrElement {
     public LedgerKeyClaimableBalance() {
     }
 
-    public static void encode(XdrDataOutputStream stream, LedgerKeyClaimableBalance encodedLedgerKeyClaimableBalance)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        LedgerKeyClaimableBalance encodedLedgerKeyClaimableBalance
+    ) throws IOException {
       ClaimableBalanceID.encode(stream, encodedLedgerKeyClaimableBalance.balanceID);
     }
 
@@ -643,5 +648,6 @@ public class LedgerKey implements XdrElement {
         return val;
       }
     }
+
   }
 }

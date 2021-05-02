@@ -198,8 +198,9 @@ public class AccountEntry implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.accountID, this.balance, this.seqNum, this.numSubEntries, this.inflationDest,
-        this.flags, this.homeDomain, this.thresholds, Arrays.hashCode(this.signers), this.ext);
+    return Objects
+        .hashCode(this.accountID, this.balance, this.seqNum, this.numSubEntries, this.inflationDest, this.flags,
+            this.homeDomain, this.thresholds, Arrays.hashCode(this.signers), this.ext);
   }
 
   @Override
@@ -209,16 +210,11 @@ public class AccountEntry implements XdrElement {
     }
 
     AccountEntry other = (AccountEntry) object;
-    return Objects.equal(this.accountID, other.accountID)
-        && Objects.equal(this.balance, other.balance)
-        && Objects.equal(this.seqNum, other.seqNum)
-        && Objects.equal(this.numSubEntries, other.numSubEntries)
-        && Objects.equal(this.inflationDest, other.inflationDest)
-        && Objects.equal(this.flags, other.flags)
-        && Objects.equal(this.homeDomain, other.homeDomain)
-        && Objects.equal(this.thresholds, other.thresholds)
-        && Arrays.equals(this.signers, other.signers)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.accountID, other.accountID) && Objects.equal(this.balance, other.balance) && Objects
+        .equal(this.seqNum, other.seqNum) && Objects.equal(this.numSubEntries, other.numSubEntries) && Objects
+        .equal(this.inflationDest, other.inflationDest) && Objects.equal(this.flags, other.flags) && Objects
+        .equal(this.homeDomain, other.homeDomain) && Objects.equal(this.thresholds, other.thresholds) && Arrays
+        .equals(this.signers, other.signers) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -400,5 +396,6 @@ public class AccountEntry implements XdrElement {
         return val;
       }
     }
+
   }
 }

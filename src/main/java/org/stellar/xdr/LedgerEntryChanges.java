@@ -24,8 +24,10 @@ public class LedgerEntryChanges implements XdrElement {
     this.LedgerEntryChanges = LedgerEntryChanges;
   }
 
-  public static void encode(XdrDataOutputStream stream, LedgerEntryChanges encodedLedgerEntryChanges)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      LedgerEntryChanges encodedLedgerEntryChanges
+  ) throws IOException {
     int LedgerEntryChangessize = encodedLedgerEntryChanges.getLedgerEntryChanges().length;
     stream.writeInt(LedgerEntryChangessize);
     for (int i = 0; i < LedgerEntryChangessize; i++) {

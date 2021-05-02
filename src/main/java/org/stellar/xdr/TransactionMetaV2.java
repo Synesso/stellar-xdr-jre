@@ -103,8 +103,8 @@ public class TransactionMetaV2 implements XdrElement {
     }
 
     TransactionMetaV2 other = (TransactionMetaV2) object;
-    return Objects.equal(this.txChangesBefore, other.txChangesBefore) && Arrays.equals(this.operations,
-        other.operations) && Objects.equal(this.txChangesAfter, other.txChangesAfter);
+    return Objects.equal(this.txChangesBefore, other.txChangesBefore) && Arrays
+        .equals(this.operations, other.operations) && Objects.equal(this.txChangesAfter, other.txChangesAfter);
   }
 
   public static final class Builder {

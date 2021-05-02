@@ -245,6 +245,7 @@ public class Asset implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class AssetAlphaNum12 {
@@ -333,5 +334,6 @@ public class Asset implements XdrElement {
         return val;
       }
     }
+
   }
 }

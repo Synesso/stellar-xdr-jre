@@ -36,8 +36,10 @@ public class ManageOfferSuccessResult implements XdrElement {
   public ManageOfferSuccessResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, ManageOfferSuccessResult encodedManageOfferSuccessResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      ManageOfferSuccessResult encodedManageOfferSuccessResult
+  ) throws IOException {
     int offersClaimedsize = encodedManageOfferSuccessResult.getOffersClaimed().length;
     stream.writeInt(offersClaimedsize);
     for (int i = 0; i < offersClaimedsize; i++) {
@@ -132,8 +134,10 @@ public class ManageOfferSuccessResult implements XdrElement {
     public ManageOfferSuccessResultOffer() {
     }
 
-    public static void encode(XdrDataOutputStream stream,
-        ManageOfferSuccessResultOffer encodedManageOfferSuccessResultOffer) throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        ManageOfferSuccessResultOffer encodedManageOfferSuccessResultOffer
+    ) throws IOException {
       //Xdrgen::AST::Identifier
       //ManageOfferEffect
       stream.writeInt(encodedManageOfferSuccessResultOffer.getDiscriminant().getValue());
@@ -229,5 +233,6 @@ public class ManageOfferSuccessResult implements XdrElement {
         return val;
       }
     }
+
   }
 }

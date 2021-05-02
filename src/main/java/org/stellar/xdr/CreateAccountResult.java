@@ -26,8 +26,10 @@ public class CreateAccountResult implements XdrElement {
   public CreateAccountResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, CreateAccountResult encodedCreateAccountResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      CreateAccountResult encodedCreateAccountResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //CreateAccountResultCode
     stream.writeInt(encodedCreateAccountResult.getDiscriminant().getValue());

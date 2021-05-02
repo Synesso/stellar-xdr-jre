@@ -21,7 +21,7 @@ public enum StellarValueType implements XdrElement {
   STELLAR_VALUE_BASIC(0),
   STELLAR_VALUE_SIGNED(1),
   ;
-  private final int mValue;
+  private int mValue;
 
   StellarValueType(int value) {
     mValue = value;
@@ -61,4 +61,5 @@ public enum StellarValueType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

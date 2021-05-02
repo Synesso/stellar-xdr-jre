@@ -19,7 +19,7 @@ import okio.ByteString;
 public enum PublicKeyType implements XdrElement {
   PUBLIC_KEY_TYPE_ED25519(0),
   ;
-  private final int mValue;
+  private int mValue;
 
   PublicKeyType(int value) {
     mValue = value;
@@ -57,4 +57,5 @@ public enum PublicKeyType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

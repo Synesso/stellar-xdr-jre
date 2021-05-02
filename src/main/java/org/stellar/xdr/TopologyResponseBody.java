@@ -30,8 +30,10 @@ public class TopologyResponseBody implements XdrElement {
   public TopologyResponseBody() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TopologyResponseBody encodedTopologyResponseBody)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TopologyResponseBody encodedTopologyResponseBody
+  ) throws IOException {
     PeerStatList.encode(stream, encodedTopologyResponseBody.inboundPeers);
     PeerStatList.encode(stream, encodedTopologyResponseBody.outboundPeers);
     Uint32.encode(stream, encodedTopologyResponseBody.totalInboundPeerCount);
@@ -96,8 +98,8 @@ public class TopologyResponseBody implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.inboundPeers, this.outboundPeers, this.totalInboundPeerCount,
-        this.totalOutboundPeerCount);
+    return Objects
+        .hashCode(this.inboundPeers, this.outboundPeers, this.totalInboundPeerCount, this.totalOutboundPeerCount);
   }
 
   @Override
@@ -107,9 +109,10 @@ public class TopologyResponseBody implements XdrElement {
     }
 
     TopologyResponseBody other = (TopologyResponseBody) object;
-    return Objects.equal(this.inboundPeers, other.inboundPeers) && Objects.equal(this.outboundPeers,
-        other.outboundPeers) && Objects.equal(this.totalInboundPeerCount, other.totalInboundPeerCount) && Objects.equal(
-        this.totalOutboundPeerCount, other.totalOutboundPeerCount);
+    return Objects.equal(this.inboundPeers, other.inboundPeers) && Objects
+        .equal(this.outboundPeers, other.outboundPeers) && Objects
+        .equal(this.totalInboundPeerCount, other.totalInboundPeerCount) && Objects
+        .equal(this.totalOutboundPeerCount, other.totalOutboundPeerCount);
   }
 
   public static final class Builder {

@@ -25,8 +25,10 @@ public class InnerTransactionResultPair implements XdrElement {
   public InnerTransactionResultPair() {
   }
 
-  public static void encode(XdrDataOutputStream stream, InnerTransactionResultPair encodedInnerTransactionResultPair)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      InnerTransactionResultPair encodedInnerTransactionResultPair
+  ) throws IOException {
     Hash.encode(stream, encodedInnerTransactionResultPair.transactionHash);
     InnerTransactionResult.encode(stream, encodedInnerTransactionResultPair.result);
   }

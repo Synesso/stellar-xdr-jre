@@ -228,10 +228,11 @@ public class PeerStats implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.id, this.versionStr, this.messagesRead, this.messagesWritten, this.bytesRead,
-        this.bytesWritten, this.secondsConnected, this.uniqueFloodBytesRecv, this.duplicateFloodBytesRecv,
-        this.uniqueFetchBytesRecv, this.duplicateFetchBytesRecv, this.uniqueFloodMessageRecv,
-        this.duplicateFloodMessageRecv, this.uniqueFetchMessageRecv, this.duplicateFetchMessageRecv);
+    return Objects
+        .hashCode(this.id, this.versionStr, this.messagesRead, this.messagesWritten, this.bytesRead, this.bytesWritten,
+            this.secondsConnected, this.uniqueFloodBytesRecv, this.duplicateFloodBytesRecv, this.uniqueFetchBytesRecv,
+            this.duplicateFetchBytesRecv, this.uniqueFloodMessageRecv, this.duplicateFloodMessageRecv,
+            this.uniqueFetchMessageRecv, this.duplicateFetchMessageRecv);
   }
 
   @Override
@@ -241,21 +242,19 @@ public class PeerStats implements XdrElement {
     }
 
     PeerStats other = (PeerStats) object;
-    return Objects.equal(this.id, other.id)
-        && Objects.equal(this.versionStr, other.versionStr)
-        && Objects.equal(this.messagesRead, other.messagesRead)
-        && Objects.equal(this.messagesWritten, other.messagesWritten)
-        && Objects.equal(this.bytesRead, other.bytesRead)
-        && Objects.equal(this.bytesWritten, other.bytesWritten)
-        && Objects.equal(this.secondsConnected, other.secondsConnected)
-        && Objects.equal(this.uniqueFloodBytesRecv, other.uniqueFloodBytesRecv)
-        && Objects.equal(this.duplicateFloodBytesRecv, other.duplicateFloodBytesRecv)
-        && Objects.equal(this.uniqueFetchBytesRecv, other.uniqueFetchBytesRecv)
-        && Objects.equal(this.duplicateFetchBytesRecv, other.duplicateFetchBytesRecv)
-        && Objects.equal(this.uniqueFloodMessageRecv, other.uniqueFloodMessageRecv)
-        && Objects.equal(this.duplicateFloodMessageRecv, other.duplicateFloodMessageRecv)
-        && Objects.equal(this.uniqueFetchMessageRecv, other.uniqueFetchMessageRecv)
-        && Objects.equal(this.duplicateFetchMessageRecv, other.duplicateFetchMessageRecv);
+    return Objects.equal(this.id, other.id) && Objects.equal(this.versionStr, other.versionStr) && Objects
+        .equal(this.messagesRead, other.messagesRead) && Objects
+        .equal(this.messagesWritten, other.messagesWritten) && Objects.equal(this.bytesRead, other.bytesRead) && Objects
+        .equal(this.bytesWritten, other.bytesWritten) && Objects
+        .equal(this.secondsConnected, other.secondsConnected) && Objects
+        .equal(this.uniqueFloodBytesRecv, other.uniqueFloodBytesRecv) && Objects
+        .equal(this.duplicateFloodBytesRecv, other.duplicateFloodBytesRecv) && Objects
+        .equal(this.uniqueFetchBytesRecv, other.uniqueFetchBytesRecv) && Objects
+        .equal(this.duplicateFetchBytesRecv, other.duplicateFetchBytesRecv) && Objects
+        .equal(this.uniqueFloodMessageRecv, other.uniqueFloodMessageRecv) && Objects
+        .equal(this.duplicateFloodMessageRecv, other.duplicateFloodMessageRecv) && Objects
+        .equal(this.uniqueFetchMessageRecv, other.uniqueFetchMessageRecv) && Objects
+        .equal(this.duplicateFetchMessageRecv, other.duplicateFetchMessageRecv);
   }
 
   public static final class Builder {

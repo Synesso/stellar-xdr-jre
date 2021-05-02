@@ -163,13 +163,10 @@ public class TransactionV0 implements XdrElement {
     }
 
     TransactionV0 other = (TransactionV0) object;
-    return Objects.equal(this.sourceAccountEd25519, other.sourceAccountEd25519)
-        && Objects.equal(this.fee, other.fee)
-        && Objects.equal(this.seqNum, other.seqNum)
-        && Objects.equal(this.timeBounds, other.timeBounds)
-        && Objects.equal(this.memo, other.memo)
-        && Arrays.equals(this.operations, other.operations)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.sourceAccountEd25519, other.sourceAccountEd25519) && Objects
+        .equal(this.fee, other.fee) && Objects.equal(this.seqNum, other.seqNum) && Objects
+        .equal(this.timeBounds, other.timeBounds) && Objects.equal(this.memo, other.memo) && Arrays
+        .equals(this.operations, other.operations) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -308,5 +305,6 @@ public class TransactionV0 implements XdrElement {
         return val;
       }
     }
+
   }
 }

@@ -25,7 +25,7 @@ public enum ThresholdIndexes implements XdrElement {
   THRESHOLD_MED(2),
   THRESHOLD_HIGH(3),
   ;
-  private final int mValue;
+  private int mValue;
 
   ThresholdIndexes(int value) {
     mValue = value;
@@ -69,4 +69,5 @@ public enum ThresholdIndexes implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

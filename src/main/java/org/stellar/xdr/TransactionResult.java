@@ -112,9 +112,8 @@ public class TransactionResult implements XdrElement {
     }
 
     TransactionResult other = (TransactionResult) object;
-    return Objects.equal(this.feeCharged, other.feeCharged)
-        && Objects.equal(this.result, other.result)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.feeCharged, other.feeCharged) && Objects.equal(this.result, other.result) && Objects
+        .equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -154,8 +153,10 @@ public class TransactionResult implements XdrElement {
     public TransactionResultResult() {
     }
 
-    public static void encode(XdrDataOutputStream stream, TransactionResultResult encodedTransactionResultResult)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        TransactionResultResult encodedTransactionResultResult
+    ) throws IOException {
       //Xdrgen::AST::Identifier
       //TransactionResultCode
       stream.writeInt(encodedTransactionResultResult.getDiscriminant().getValue());
@@ -251,9 +252,8 @@ public class TransactionResult implements XdrElement {
       }
 
       TransactionResultResult other = (TransactionResultResult) object;
-      return Objects.equal(this.innerResultPair, other.innerResultPair)
-          && Arrays.equals(this.results, other.results)
-          && Objects.equal(this.code, other.code);
+      return Objects.equal(this.innerResultPair, other.innerResultPair) && Arrays
+          .equals(this.results, other.results) && Objects.equal(this.code, other.code);
     }
 
     public static final class Builder {
@@ -284,6 +284,7 @@ public class TransactionResult implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class TransactionResultExt {
@@ -292,8 +293,10 @@ public class TransactionResult implements XdrElement {
     public TransactionResultExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, TransactionResultExt encodedTransactionResultExt)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        TransactionResultExt encodedTransactionResultExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedTransactionResultExt.getDiscriminant().intValue());
@@ -366,5 +369,6 @@ public class TransactionResult implements XdrElement {
         return val;
       }
     }
+
   }
 }

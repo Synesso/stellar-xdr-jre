@@ -253,9 +253,10 @@ public class LedgerHeader implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.ledgerVersion, this.previousLedgerHash, this.scpValue, this.txSetResultHash,
-        this.bucketListHash, this.ledgerSeq, this.totalCoins, this.feePool, this.inflationSeq, this.idPool,
-        this.baseFee, this.baseReserve, this.maxTxSetSize, Arrays.hashCode(this.skipList), this.ext);
+    return Objects
+        .hashCode(this.ledgerVersion, this.previousLedgerHash, this.scpValue, this.txSetResultHash, this.bucketListHash,
+            this.ledgerSeq, this.totalCoins, this.feePool, this.inflationSeq, this.idPool, this.baseFee,
+            this.baseReserve, this.maxTxSetSize, Arrays.hashCode(this.skipList), this.ext);
   }
 
   @Override
@@ -265,14 +266,15 @@ public class LedgerHeader implements XdrElement {
     }
 
     LedgerHeader other = (LedgerHeader) object;
-    return Objects.equal(this.ledgerVersion, other.ledgerVersion) && Objects.equal(this.previousLedgerHash,
-        other.previousLedgerHash) && Objects.equal(this.scpValue, other.scpValue) && Objects.equal(this.txSetResultHash,
-        other.txSetResultHash) && Objects.equal(this.bucketListHash, other.bucketListHash) && Objects.equal(
-        this.ledgerSeq, other.ledgerSeq) && Objects.equal(this.totalCoins, other.totalCoins) && Objects.equal(
-        this.feePool, other.feePool) && Objects.equal(this.inflationSeq, other.inflationSeq) && Objects.equal(
-        this.idPool, other.idPool) && Objects.equal(this.baseFee, other.baseFee) && Objects.equal(this.baseReserve,
-        other.baseReserve) && Objects.equal(this.maxTxSetSize, other.maxTxSetSize) && Arrays.equals(this.skipList,
-        other.skipList) && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.ledgerVersion, other.ledgerVersion) && Objects
+        .equal(this.previousLedgerHash, other.previousLedgerHash) && Objects
+        .equal(this.scpValue, other.scpValue) && Objects.equal(this.txSetResultHash, other.txSetResultHash) && Objects
+        .equal(this.bucketListHash, other.bucketListHash) && Objects.equal(this.ledgerSeq, other.ledgerSeq) && Objects
+        .equal(this.totalCoins, other.totalCoins) && Objects.equal(this.feePool, other.feePool) && Objects
+        .equal(this.inflationSeq, other.inflationSeq) && Objects.equal(this.idPool, other.idPool) && Objects
+        .equal(this.baseFee, other.baseFee) && Objects.equal(this.baseReserve, other.baseReserve) && Objects
+        .equal(this.maxTxSetSize, other.maxTxSetSize) && Arrays.equals(this.skipList, other.skipList) && Objects
+        .equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -467,5 +469,6 @@ public class LedgerHeader implements XdrElement {
         return val;
       }
     }
+
   }
 }

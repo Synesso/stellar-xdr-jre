@@ -32,7 +32,7 @@ public enum OperationResultCode implements XdrElement {
   opEXCEEDED_WORK_LIMIT(-5),
   opTOO_MANY_SPONSORING(-6),
   ;
-  private final int mValue;
+  private int mValue;
 
   OperationResultCode(int value) {
     mValue = value;
@@ -82,4 +82,5 @@ public enum OperationResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

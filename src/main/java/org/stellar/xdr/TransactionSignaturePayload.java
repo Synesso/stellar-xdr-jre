@@ -33,8 +33,10 @@ public class TransactionSignaturePayload implements XdrElement {
   public TransactionSignaturePayload() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TransactionSignaturePayload encodedTransactionSignaturePayload)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionSignaturePayload encodedTransactionSignaturePayload
+  ) throws IOException {
     Hash.encode(stream, encodedTransactionSignaturePayload.networkId);
     TransactionSignaturePayloadTaggedTransaction.encode(stream, encodedTransactionSignaturePayload.taggedTransaction);
   }
@@ -89,8 +91,8 @@ public class TransactionSignaturePayload implements XdrElement {
     }
 
     TransactionSignaturePayload other = (TransactionSignaturePayload) object;
-    return Objects.equal(this.networkId, other.networkId) && Objects.equal(this.taggedTransaction,
-        other.taggedTransaction);
+    return Objects.equal(this.networkId, other.networkId) && Objects
+        .equal(this.taggedTransaction, other.taggedTransaction);
   }
 
   public static final class Builder {
@@ -123,9 +125,10 @@ public class TransactionSignaturePayload implements XdrElement {
     public TransactionSignaturePayloadTaggedTransaction() {
     }
 
-    public static void encode(XdrDataOutputStream stream,
-        TransactionSignaturePayloadTaggedTransaction encodedTransactionSignaturePayloadTaggedTransaction)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        TransactionSignaturePayloadTaggedTransaction encodedTransactionSignaturePayloadTaggedTransaction
+    ) throws IOException {
       //Xdrgen::AST::Identifier
       //EnvelopeType
       stream.writeInt(encodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant().getValue());
@@ -206,8 +209,8 @@ public class TransactionSignaturePayload implements XdrElement {
       }
 
       TransactionSignaturePayloadTaggedTransaction other = (TransactionSignaturePayloadTaggedTransaction) object;
-      return Objects.equal(this.tx, other.tx) && Objects.equal(this.feeBump, other.feeBump) && Objects.equal(this.type,
-          other.type);
+      return Objects.equal(this.tx, other.tx) && Objects.equal(this.feeBump, other.feeBump) && Objects
+          .equal(this.type, other.type);
     }
 
     public static final class Builder {
@@ -238,5 +241,6 @@ public class TransactionSignaturePayload implements XdrElement {
         return val;
       }
     }
+
   }
 }

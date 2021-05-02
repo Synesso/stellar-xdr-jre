@@ -192,9 +192,10 @@ public class ClaimPredicate implements XdrElement {
     }
 
     ClaimPredicate other = (ClaimPredicate) object;
-    return Arrays.equals(this.andPredicates, other.andPredicates) && Arrays.equals(this.orPredicates,
-        other.orPredicates) && Objects.equal(this.notPredicate, other.notPredicate) && Objects.equal(this.absBefore,
-        other.absBefore) && Objects.equal(this.relBefore, other.relBefore) && Objects.equal(this.type, other.type);
+    return Arrays.equals(this.andPredicates, other.andPredicates) && Arrays
+        .equals(this.orPredicates, other.orPredicates) && Objects
+        .equal(this.notPredicate, other.notPredicate) && Objects.equal(this.absBefore, other.absBefore) && Objects
+        .equal(this.relBefore, other.relBefore) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {

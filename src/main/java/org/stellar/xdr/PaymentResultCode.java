@@ -13,7 +13,7 @@ import okio.ByteString;
 //  enum PaymentResultCode
 //  {
 //      // codes considered as "success" for the operation
-//      PAYMENT_SUCCESS = 0, // payment successfuly completed
+//      PAYMENT_SUCCESS = 0, // payment successfully completed
 //
 //      // codes considered as "failure" for the operation
 //      PAYMENT_MALFORMED = -1,          // bad input
@@ -40,7 +40,7 @@ public enum PaymentResultCode implements XdrElement {
   PAYMENT_LINE_FULL(-8),
   PAYMENT_NO_ISSUER(-9),
   ;
-  private final int mValue;
+  private int mValue;
 
   PaymentResultCode(int value) {
     mValue = value;
@@ -96,4 +96,5 @@ public enum PaymentResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

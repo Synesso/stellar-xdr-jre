@@ -29,7 +29,7 @@ public enum ClaimPredicateType implements XdrElement {
   CLAIM_PREDICATE_BEFORE_ABSOLUTE_TIME(4),
   CLAIM_PREDICATE_BEFORE_RELATIVE_TIME(5),
   ;
-  private final int mValue;
+  private int mValue;
 
   ClaimPredicateType(int value) {
     mValue = value;
@@ -77,4 +77,5 @@ public enum ClaimPredicateType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

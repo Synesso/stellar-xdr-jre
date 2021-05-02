@@ -21,7 +21,7 @@ public enum IPAddrType implements XdrElement {
   IPv4(0),
   IPv6(1),
   ;
-  private final int mValue;
+  private int mValue;
 
   IPAddrType(int value) {
     mValue = value;
@@ -61,4 +61,5 @@ public enum IPAddrType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

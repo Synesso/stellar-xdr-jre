@@ -23,7 +23,7 @@ public enum SignerKeyType implements XdrElement {
   SIGNER_KEY_TYPE_PRE_AUTH_TX(1),
   SIGNER_KEY_TYPE_HASH_X(2),
   ;
-  private final int mValue;
+  private int mValue;
 
   SignerKeyType(int value) {
     mValue = value;
@@ -65,4 +65,5 @@ public enum SignerKeyType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

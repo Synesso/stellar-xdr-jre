@@ -53,7 +53,7 @@ public enum ManageSellOfferResultCode implements XdrElement {
   MANAGE_SELL_OFFER_NOT_FOUND(-11),
   MANAGE_SELL_OFFER_LOW_RESERVE(-12),
   ;
-  private final int mValue;
+  private int mValue;
 
   ManageSellOfferResultCode(int value) {
     mValue = value;
@@ -115,4 +115,5 @@ public enum ManageSellOfferResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

@@ -55,7 +55,7 @@ public enum MessageType implements XdrElement {
   SURVEY_REQUEST(14),
   SURVEY_RESPONSE(15),
   ;
-  private final int mValue;
+  private int mValue;
 
   MessageType(int value) {
     mValue = value;
@@ -121,4 +121,5 @@ public enum MessageType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

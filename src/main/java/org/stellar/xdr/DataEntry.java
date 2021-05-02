@@ -111,10 +111,8 @@ public class DataEntry implements XdrElement {
     }
 
     DataEntry other = (DataEntry) object;
-    return Objects.equal(this.accountID, other.accountID)
-        && Objects.equal(this.dataName, other.dataName)
-        && Objects.equal(this.dataValue, other.dataValue)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.accountID, other.accountID) && Objects.equal(this.dataName, other.dataName) && Objects
+        .equal(this.dataValue, other.dataValue) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -232,5 +230,6 @@ public class DataEntry implements XdrElement {
         return val;
       }
     }
+
   }
 }

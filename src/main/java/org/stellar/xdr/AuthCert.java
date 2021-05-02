@@ -92,9 +92,8 @@ public class AuthCert implements XdrElement {
     }
 
     AuthCert other = (AuthCert) object;
-    return Objects.equal(this.pubkey, other.pubkey)
-        && Objects.equal(this.expiration, other.expiration)
-        && Objects.equal(this.sig, other.sig);
+    return Objects.equal(this.pubkey, other.pubkey) && Objects.equal(this.expiration, other.expiration) && Objects
+        .equal(this.sig, other.sig);
   }
 
   public static final class Builder {

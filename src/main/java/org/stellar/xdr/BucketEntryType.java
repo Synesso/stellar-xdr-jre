@@ -27,7 +27,7 @@ public enum BucketEntryType implements XdrElement {
   DEADENTRY(1),
   INITENTRY(2),
   ;
-  private final int mValue;
+  private int mValue;
 
   BucketEntryType(int value) {
     mValue = value;
@@ -71,4 +71,5 @@ public enum BucketEntryType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

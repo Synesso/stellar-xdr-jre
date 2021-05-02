@@ -27,8 +27,10 @@ public class TransactionResultMeta implements XdrElement {
   public TransactionResultMeta() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TransactionResultMeta encodedTransactionResultMeta)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionResultMeta encodedTransactionResultMeta
+  ) throws IOException {
     TransactionResultPair.encode(stream, encodedTransactionResultMeta.result);
     LedgerEntryChanges.encode(stream, encodedTransactionResultMeta.feeProcessing);
     TransactionMeta.encode(stream, encodedTransactionResultMeta.txApplyProcessing);

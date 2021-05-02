@@ -38,8 +38,10 @@ public class PathPaymentStrictSendOp implements XdrElement {
   public PathPaymentStrictSendOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, PathPaymentStrictSendOp encodedPathPaymentStrictSendOp)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      PathPaymentStrictSendOp encodedPathPaymentStrictSendOp
+  ) throws IOException {
     Asset.encode(stream, encodedPathPaymentStrictSendOp.sendAsset);
     Int64.encode(stream, encodedPathPaymentStrictSendOp.sendAmount);
     MuxedAccount.encode(stream, encodedPathPaymentStrictSendOp.destination);
@@ -144,8 +146,8 @@ public class PathPaymentStrictSendOp implements XdrElement {
 
     PathPaymentStrictSendOp other = (PathPaymentStrictSendOp) object;
     return Objects.equal(this.sendAsset, other.sendAsset) && Objects.equal(this.sendAmount, other.sendAmount) && Objects
-        .equal(this.destination, other.destination) && Objects.equal(this.destAsset, other.destAsset) && Objects.equal(
-        this.destMin, other.destMin) && Arrays.equals(this.path, other.path);
+        .equal(this.destination, other.destination) && Objects.equal(this.destAsset, other.destAsset) && Objects
+        .equal(this.destMin, other.destMin) && Arrays.equals(this.path, other.path);
   }
 
   public static final class Builder {

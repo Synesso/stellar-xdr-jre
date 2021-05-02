@@ -206,5 +206,6 @@ public class Claimant implements XdrElement {
         return val;
       }
     }
+
   }
 }

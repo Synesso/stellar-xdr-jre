@@ -31,7 +31,7 @@ public enum ManageDataResultCode implements XdrElement {
   MANAGE_DATA_LOW_RESERVE(-3),
   MANAGE_DATA_INVALID_NAME(-4),
   ;
-  private final int mValue;
+  private int mValue;
 
   ManageDataResultCode(int value) {
     mValue = value;
@@ -77,4 +77,5 @@ public enum ManageDataResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

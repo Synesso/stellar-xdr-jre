@@ -19,7 +19,7 @@ import okio.ByteString;
 public enum ClaimableBalanceIDType implements XdrElement {
   CLAIMABLE_BALANCE_ID_TYPE_V0(0),
   ;
-  private final int mValue;
+  private int mValue;
 
   ClaimableBalanceIDType(int value) {
     mValue = value;
@@ -57,4 +57,5 @@ public enum ClaimableBalanceIDType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

@@ -24,8 +24,10 @@ public class SponsorshipDescriptor implements XdrElement {
     this.SponsorshipDescriptor = SponsorshipDescriptor;
   }
 
-  public static void encode(XdrDataOutputStream stream, SponsorshipDescriptor encodedSponsorshipDescriptor)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      SponsorshipDescriptor encodedSponsorshipDescriptor
+  ) throws IOException {
     if (encodedSponsorshipDescriptor.SponsorshipDescriptor != null) {
       stream.writeInt(1);
       AccountID.encode(stream, encodedSponsorshipDescriptor.SponsorshipDescriptor);

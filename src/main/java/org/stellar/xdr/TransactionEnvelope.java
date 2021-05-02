@@ -31,8 +31,10 @@ public class TransactionEnvelope implements XdrElement {
   public TransactionEnvelope() {
   }
 
-  public static void encode(XdrDataOutputStream stream, TransactionEnvelope encodedTransactionEnvelope)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionEnvelope encodedTransactionEnvelope
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //EnvelopeType
     stream.writeInt(encodedTransactionEnvelope.getDiscriminant().getValue());
@@ -126,8 +128,8 @@ public class TransactionEnvelope implements XdrElement {
     }
 
     TransactionEnvelope other = (TransactionEnvelope) object;
-    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v1, other.v1) && Objects.equal(this.feeBump,
-        other.feeBump) && Objects.equal(this.type, other.type);
+    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v1, other.v1) && Objects
+        .equal(this.feeBump, other.feeBump) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {

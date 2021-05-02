@@ -30,7 +30,7 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
   REVOKE_SPONSORSHIP_LOW_RESERVE(-3),
   REVOKE_SPONSORSHIP_ONLY_TRANSFERABLE(-4),
   ;
-  private final int mValue;
+  private int mValue;
 
   RevokeSponsorshipResultCode(int value) {
     mValue = value;
@@ -76,4 +76,5 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

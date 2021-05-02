@@ -109,9 +109,8 @@ public class SCPNomination implements XdrElement {
     }
 
     SCPNomination other = (SCPNomination) object;
-    return Objects.equal(this.quorumSetHash, other.quorumSetHash)
-        && Arrays.equals(this.votes, other.votes)
-        && Arrays.equals(this.accepted, other.accepted);
+    return Objects.equal(this.quorumSetHash, other.quorumSetHash) && Arrays.equals(this.votes, other.votes) && Arrays
+        .equals(this.accepted, other.accepted);
   }
 
   public static final class Builder {

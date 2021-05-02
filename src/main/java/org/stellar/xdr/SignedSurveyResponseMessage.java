@@ -25,8 +25,10 @@ public class SignedSurveyResponseMessage implements XdrElement {
   public SignedSurveyResponseMessage() {
   }
 
-  public static void encode(XdrDataOutputStream stream, SignedSurveyResponseMessage encodedSignedSurveyResponseMessage)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      SignedSurveyResponseMessage encodedSignedSurveyResponseMessage
+  ) throws IOException {
     Signature.encode(stream, encodedSignedSurveyResponseMessage.responseSignature);
     SurveyResponseMessage.encode(stream, encodedSignedSurveyResponseMessage.response);
   }
@@ -81,8 +83,8 @@ public class SignedSurveyResponseMessage implements XdrElement {
     }
 
     SignedSurveyResponseMessage other = (SignedSurveyResponseMessage) object;
-    return Objects.equal(this.responseSignature, other.responseSignature) && Objects.equal(this.response,
-        other.response);
+    return Objects.equal(this.responseSignature, other.responseSignature) && Objects
+        .equal(this.response, other.response);
   }
 
   public static final class Builder {

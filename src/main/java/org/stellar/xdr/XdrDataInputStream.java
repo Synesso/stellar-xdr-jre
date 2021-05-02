@@ -10,7 +10,8 @@ public class XdrDataInputStream extends DataInputStream {
   private final XdrInputStream mIn;
 
   /**
-   * Creates a XdrDataInputStream that uses the specified underlying InputStream.
+   * Creates a XdrDataInputStream that uses the specified
+   * underlying InputStream.
    *
    * @param in the specified input stream
    */
@@ -64,8 +65,8 @@ public class XdrDataInputStream extends DataInputStream {
   }
 
   /**
-   * Need to provide a custom impl of InputStream as DataInputStream's read methods are final and we need to keep track
-   * of the count for padding purposes.
+   * Need to provide a custom impl of InputStream as DataInputStream's read methods
+   * are final and we need to keep track of the count for padding purposes.
    */
   private static final class XdrInputStream extends InputStream {
 

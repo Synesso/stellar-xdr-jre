@@ -27,7 +27,7 @@ public enum MemoType implements XdrElement {
   MEMO_HASH(3),
   MEMO_RETURN(4),
   ;
-  private final int mValue;
+  private int mValue;
 
   MemoType(int value) {
     mValue = value;
@@ -73,4 +73,5 @@ public enum MemoType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

@@ -19,7 +19,7 @@ import okio.ByteString;
 public enum ClaimantType implements XdrElement {
   CLAIMANT_TYPE_V0(0),
   ;
-  private final int mValue;
+  private int mValue;
 
   ClaimantType(int value) {
     mValue = value;
@@ -57,4 +57,5 @@ public enum ClaimantType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

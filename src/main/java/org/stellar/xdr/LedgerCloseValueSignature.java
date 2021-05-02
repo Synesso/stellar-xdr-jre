@@ -25,8 +25,10 @@ public class LedgerCloseValueSignature implements XdrElement {
   public LedgerCloseValueSignature() {
   }
 
-  public static void encode(XdrDataOutputStream stream, LedgerCloseValueSignature encodedLedgerCloseValueSignature)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      LedgerCloseValueSignature encodedLedgerCloseValueSignature
+  ) throws IOException {
     NodeID.encode(stream, encodedLedgerCloseValueSignature.nodeID);
     Signature.encode(stream, encodedLedgerCloseValueSignature.signature);
   }

@@ -28,8 +28,10 @@ public class FeeBumpTransactionEnvelope implements XdrElement {
   public FeeBumpTransactionEnvelope() {
   }
 
-  public static void encode(XdrDataOutputStream stream, FeeBumpTransactionEnvelope encodedFeeBumpTransactionEnvelope)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      FeeBumpTransactionEnvelope encodedFeeBumpTransactionEnvelope
+  ) throws IOException {
     FeeBumpTransaction.encode(stream, encodedFeeBumpTransactionEnvelope.tx);
     int signaturessize = encodedFeeBumpTransactionEnvelope.getSignatures().length;
     stream.writeInt(signaturessize);

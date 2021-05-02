@@ -30,7 +30,7 @@ public enum ClaimClaimableBalanceResultCode implements XdrElement {
   CLAIM_CLAIMABLE_BALANCE_NO_TRUST(-4),
   CLAIM_CLAIMABLE_BALANCE_NOT_AUTHORIZED(-5),
   ;
-  private final int mValue;
+  private int mValue;
 
   ClaimClaimableBalanceResultCode(int value) {
     mValue = value;
@@ -78,4 +78,5 @@ public enum ClaimClaimableBalanceResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

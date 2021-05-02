@@ -132,8 +132,8 @@ public class LedgerUpgrade implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.newLedgerVersion, this.newBaseFee, this.newMaxTxSetSize, this.newBaseReserve,
-        this.type);
+    return Objects
+        .hashCode(this.newLedgerVersion, this.newBaseFee, this.newMaxTxSetSize, this.newBaseReserve, this.type);
   }
 
   @Override
@@ -143,9 +143,10 @@ public class LedgerUpgrade implements XdrElement {
     }
 
     LedgerUpgrade other = (LedgerUpgrade) object;
-    return Objects.equal(this.newLedgerVersion, other.newLedgerVersion) && Objects.equal(this.newBaseFee,
-        other.newBaseFee) && Objects.equal(this.newMaxTxSetSize, other.newMaxTxSetSize) && Objects.equal(
-        this.newBaseReserve, other.newBaseReserve) && Objects.equal(this.type, other.type);
+    return Objects.equal(this.newLedgerVersion, other.newLedgerVersion) && Objects
+        .equal(this.newBaseFee, other.newBaseFee) && Objects
+        .equal(this.newMaxTxSetSize, other.newMaxTxSetSize) && Objects
+        .equal(this.newBaseReserve, other.newBaseReserve) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {

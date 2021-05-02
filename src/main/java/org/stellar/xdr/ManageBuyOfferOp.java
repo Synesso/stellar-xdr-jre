@@ -119,9 +119,9 @@ public class ManageBuyOfferOp implements XdrElement {
     }
 
     ManageBuyOfferOp other = (ManageBuyOfferOp) object;
-    return Objects.equal(this.selling, other.selling) && Objects.equal(this.buying, other.buying) && Objects.equal(
-        this.buyAmount, other.buyAmount) && Objects.equal(this.price, other.price) && Objects.equal(this.offerID,
-        other.offerID);
+    return Objects.equal(this.selling, other.selling) && Objects.equal(this.buying, other.buying) && Objects
+        .equal(this.buyAmount, other.buyAmount) && Objects.equal(this.price, other.price) && Objects
+        .equal(this.offerID, other.offerID);
   }
 
   public static final class Builder {

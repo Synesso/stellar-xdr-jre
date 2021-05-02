@@ -142,8 +142,9 @@ public class LedgerEntryChange implements XdrElement {
     }
 
     LedgerEntryChange other = (LedgerEntryChange) object;
-    return Objects.equal(this.created, other.created) && Objects.equal(this.updated, other.updated) && Objects.equal(
-        this.removed, other.removed) && Objects.equal(this.state, other.state) && Objects.equal(this.type, other.type);
+    return Objects.equal(this.created, other.created) && Objects.equal(this.updated, other.updated) && Objects
+        .equal(this.removed, other.removed) && Objects.equal(this.state, other.state) && Objects
+        .equal(this.type, other.type);
   }
 
   public static final class Builder {

@@ -23,8 +23,10 @@ public class ClaimClaimableBalanceOp implements XdrElement {
   public ClaimClaimableBalanceOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, ClaimClaimableBalanceOp encodedClaimClaimableBalanceOp)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      ClaimClaimableBalanceOp encodedClaimClaimableBalanceOp
+  ) throws IOException {
     ClaimableBalanceID.encode(stream, encodedClaimClaimableBalanceOp.balanceID);
   }
 

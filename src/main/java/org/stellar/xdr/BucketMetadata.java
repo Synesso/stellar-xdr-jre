@@ -119,8 +119,10 @@ public class BucketMetadata implements XdrElement {
     public BucketMetadataExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, BucketMetadataExt encodedBucketMetadataExt)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        BucketMetadataExt encodedBucketMetadataExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedBucketMetadataExt.getDiscriminant().intValue());
@@ -193,5 +195,6 @@ public class BucketMetadata implements XdrElement {
         return val;
       }
     }
+
   }
 }

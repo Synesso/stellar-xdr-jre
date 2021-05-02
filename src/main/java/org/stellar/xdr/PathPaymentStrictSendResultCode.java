@@ -54,7 +54,7 @@ public enum PathPaymentStrictSendResultCode implements XdrElement {
   PATH_PAYMENT_STRICT_SEND_OFFER_CROSS_SELF(-11),
   PATH_PAYMENT_STRICT_SEND_UNDER_DESTMIN(-12),
   ;
-  private final int mValue;
+  private int mValue;
 
   PathPaymentStrictSendResultCode(int value) {
     mValue = value;
@@ -116,4 +116,5 @@ public enum PathPaymentStrictSendResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

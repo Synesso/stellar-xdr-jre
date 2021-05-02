@@ -33,8 +33,10 @@ public class AccountEntryExtensionV1 implements XdrElement {
   public AccountEntryExtensionV1() {
   }
 
-  public static void encode(XdrDataOutputStream stream, AccountEntryExtensionV1 encodedAccountEntryExtensionV1)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      AccountEntryExtensionV1 encodedAccountEntryExtensionV1
+  ) throws IOException {
     Liabilities.encode(stream, encodedAccountEntryExtensionV1.liabilities);
     AccountEntryExtensionV1Ext.encode(stream, encodedAccountEntryExtensionV1.ext);
   }
@@ -121,8 +123,10 @@ public class AccountEntryExtensionV1 implements XdrElement {
     public AccountEntryExtensionV1Ext() {
     }
 
-    public static void encode(XdrDataOutputStream stream, AccountEntryExtensionV1Ext encodedAccountEntryExtensionV1Ext)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        AccountEntryExtensionV1Ext encodedAccountEntryExtensionV1Ext
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedAccountEntryExtensionV1Ext.getDiscriminant().intValue());
@@ -216,5 +220,6 @@ public class AccountEntryExtensionV1 implements XdrElement {
         return val;
       }
     }
+
   }
 }

@@ -19,7 +19,7 @@ import okio.ByteString;
 public enum SurveyMessageCommandType implements XdrElement {
   SURVEY_TOPOLOGY(0),
   ;
-  private final int mValue;
+  private int mValue;
 
   SurveyMessageCommandType(int value) {
     mValue = value;
@@ -57,4 +57,5 @@ public enum SurveyMessageCommandType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

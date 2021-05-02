@@ -26,8 +26,10 @@ public class RevokeSponsorshipResult implements XdrElement {
   public RevokeSponsorshipResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, RevokeSponsorshipResult encodedRevokeSponsorshipResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      RevokeSponsorshipResult encodedRevokeSponsorshipResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //RevokeSponsorshipResultCode
     stream.writeInt(encodedRevokeSponsorshipResult.getDiscriminant().getValue());

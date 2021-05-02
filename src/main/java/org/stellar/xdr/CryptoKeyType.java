@@ -27,7 +27,7 @@ public enum CryptoKeyType implements XdrElement {
   KEY_TYPE_HASH_X(2),
   KEY_TYPE_MUXED_ED25519(256),
   ;
-  private final int mValue;
+  private int mValue;
 
   CryptoKeyType(int value) {
     mValue = value;
@@ -71,4 +71,5 @@ public enum CryptoKeyType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

@@ -28,7 +28,7 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
   BEGIN_SPONSORING_FUTURE_RESERVES_ALREADY_SPONSORED(-2),
   BEGIN_SPONSORING_FUTURE_RESERVES_RECURSIVE(-3),
   ;
-  private final int mValue;
+  private int mValue;
 
   BeginSponsoringFutureReservesResultCode(int value) {
     mValue = value;
@@ -54,8 +54,10 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
     }
   }
 
-  public static void encode(XdrDataOutputStream stream, BeginSponsoringFutureReservesResultCode value)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      BeginSponsoringFutureReservesResultCode value
+  ) throws IOException {
     stream.writeInt(value.getValue());
   }
 
@@ -73,4 +75,5 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

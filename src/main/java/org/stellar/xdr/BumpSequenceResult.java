@@ -26,8 +26,10 @@ public class BumpSequenceResult implements XdrElement {
   public BumpSequenceResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, BumpSequenceResult encodedBumpSequenceResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      BumpSequenceResult encodedBumpSequenceResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //BumpSequenceResultCode
     stream.writeInt(encodedBumpSequenceResult.getDiscriminant().getValue());

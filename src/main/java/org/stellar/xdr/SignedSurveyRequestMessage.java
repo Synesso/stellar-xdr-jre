@@ -25,8 +25,10 @@ public class SignedSurveyRequestMessage implements XdrElement {
   public SignedSurveyRequestMessage() {
   }
 
-  public static void encode(XdrDataOutputStream stream, SignedSurveyRequestMessage encodedSignedSurveyRequestMessage)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      SignedSurveyRequestMessage encodedSignedSurveyRequestMessage
+  ) throws IOException {
     Signature.encode(stream, encodedSignedSurveyRequestMessage.requestSignature);
     SurveyRequestMessage.encode(stream, encodedSignedSurveyRequestMessage.request);
   }

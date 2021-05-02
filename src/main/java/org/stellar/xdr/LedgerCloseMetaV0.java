@@ -151,11 +151,9 @@ public class LedgerCloseMetaV0 implements XdrElement {
     }
 
     LedgerCloseMetaV0 other = (LedgerCloseMetaV0) object;
-    return Objects.equal(this.ledgerHeader, other.ledgerHeader)
-        && Objects.equal(this.txSet, other.txSet)
-        && Arrays.equals(this.txProcessing, other.txProcessing)
-        && Arrays.equals(this.upgradesProcessing, other.upgradesProcessing)
-        && Arrays.equals(this.scpInfo, other.scpInfo);
+    return Objects.equal(this.ledgerHeader, other.ledgerHeader) && Objects.equal(this.txSet, other.txSet) && Arrays
+        .equals(this.txProcessing, other.txProcessing) && Arrays
+        .equals(this.upgradesProcessing, other.upgradesProcessing) && Arrays.equals(this.scpInfo, other.scpInfo);
   }
 
   public static final class Builder {

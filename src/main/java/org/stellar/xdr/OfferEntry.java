@@ -166,14 +166,10 @@ public class OfferEntry implements XdrElement {
     }
 
     OfferEntry other = (OfferEntry) object;
-    return Objects.equal(this.sellerID, other.sellerID)
-        && Objects.equal(this.offerID, other.offerID)
-        && Objects.equal(this.selling, other.selling)
-        && Objects.equal(this.buying, other.buying)
-        && Objects.equal(this.amount, other.amount)
-        && Objects.equal(this.price, other.price)
-        && Objects.equal(this.flags, other.flags)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.sellerID, other.sellerID) && Objects.equal(this.offerID, other.offerID) && Objects
+        .equal(this.selling, other.selling) && Objects.equal(this.buying, other.buying) && Objects
+        .equal(this.amount, other.amount) && Objects.equal(this.price, other.price) && Objects
+        .equal(this.flags, other.flags) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -319,5 +315,6 @@ public class OfferEntry implements XdrElement {
         return val;
       }
     }
+
   }
 }

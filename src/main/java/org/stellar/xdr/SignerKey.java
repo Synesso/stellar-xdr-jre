@@ -127,10 +127,8 @@ public class SignerKey implements XdrElement {
     }
 
     SignerKey other = (SignerKey) object;
-    return Objects.equal(this.ed25519, other.ed25519)
-        && Objects.equal(this.preAuthTx, other.preAuthTx)
-        && Objects.equal(this.hashX, other.hashX)
-        && Objects.equal(this.type, other.type);
+    return Objects.equal(this.ed25519, other.ed25519) && Objects.equal(this.preAuthTx, other.preAuthTx) && Objects
+        .equal(this.hashX, other.hashX) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {

@@ -36,8 +36,10 @@ public class AccountEntryExtensionV2 implements XdrElement {
   public AccountEntryExtensionV2() {
   }
 
-  public static void encode(XdrDataOutputStream stream, AccountEntryExtensionV2 encodedAccountEntryExtensionV2)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      AccountEntryExtensionV2 encodedAccountEntryExtensionV2
+  ) throws IOException {
     Uint32.encode(stream, encodedAccountEntryExtensionV2.numSponsored);
     Uint32.encode(stream, encodedAccountEntryExtensionV2.numSponsoring);
     int signerSponsoringIDssize = encodedAccountEntryExtensionV2.getSignerSponsoringIDs().length;
@@ -120,9 +122,9 @@ public class AccountEntryExtensionV2 implements XdrElement {
     }
 
     AccountEntryExtensionV2 other = (AccountEntryExtensionV2) object;
-    return Objects.equal(this.numSponsored, other.numSponsored) && Objects.equal(this.numSponsoring,
-        other.numSponsoring) && Arrays.equals(this.signerSponsoringIDs, other.signerSponsoringIDs) && Objects.equal(
-        this.ext, other.ext);
+    return Objects.equal(this.numSponsored, other.numSponsored) && Objects
+        .equal(this.numSponsoring, other.numSponsoring) && Arrays
+        .equals(this.signerSponsoringIDs, other.signerSponsoringIDs) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -167,8 +169,10 @@ public class AccountEntryExtensionV2 implements XdrElement {
     public AccountEntryExtensionV2Ext() {
     }
 
-    public static void encode(XdrDataOutputStream stream, AccountEntryExtensionV2Ext encodedAccountEntryExtensionV2Ext)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        AccountEntryExtensionV2Ext encodedAccountEntryExtensionV2Ext
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedAccountEntryExtensionV2Ext.getDiscriminant().intValue());
@@ -241,5 +245,6 @@ public class AccountEntryExtensionV2 implements XdrElement {
         return val;
       }
     }
+
   }
 }

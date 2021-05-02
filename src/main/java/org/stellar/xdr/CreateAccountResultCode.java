@@ -31,7 +31,7 @@ public enum CreateAccountResultCode implements XdrElement {
   CREATE_ACCOUNT_LOW_RESERVE(-3),
   CREATE_ACCOUNT_ALREADY_EXIST(-4),
   ;
-  private final int mValue;
+  private int mValue;
 
   CreateAccountResultCode(int value) {
     mValue = value;
@@ -77,4 +77,5 @@ public enum CreateAccountResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

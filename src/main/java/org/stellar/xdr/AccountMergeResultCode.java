@@ -36,7 +36,7 @@ public enum AccountMergeResultCode implements XdrElement {
   ACCOUNT_MERGE_DEST_FULL(-6),
   ACCOUNT_MERGE_IS_SPONSOR(-7),
   ;
-  private final int mValue;
+  private int mValue;
 
   AccountMergeResultCode(int value) {
     mValue = value;
@@ -88,4 +88,5 @@ public enum AccountMergeResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

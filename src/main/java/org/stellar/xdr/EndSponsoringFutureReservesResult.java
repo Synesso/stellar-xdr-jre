@@ -11,7 +11,8 @@ import okio.ByteString;
 
 // === xdr source ============================================================
 
-//  union EndSponsoringFutureReservesResult switch (EndSponsoringFutureReservesResultCode code)
+//  union EndSponsoringFutureReservesResult switch (
+//      EndSponsoringFutureReservesResultCode code)
 //  {
 //  case END_SPONSORING_FUTURE_RESERVES_SUCCESS:
 //      void;
@@ -26,8 +27,10 @@ public class EndSponsoringFutureReservesResult implements XdrElement {
   public EndSponsoringFutureReservesResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream,
-      EndSponsoringFutureReservesResult encodedEndSponsoringFutureReservesResult) throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      EndSponsoringFutureReservesResult encodedEndSponsoringFutureReservesResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //EndSponsoringFutureReservesResultCode
     stream.writeInt(encodedEndSponsoringFutureReservesResult.getDiscriminant().getValue());

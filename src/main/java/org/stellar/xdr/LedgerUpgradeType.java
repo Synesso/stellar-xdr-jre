@@ -25,7 +25,7 @@ public enum LedgerUpgradeType implements XdrElement {
   LEDGER_UPGRADE_MAX_TX_SET_SIZE(3),
   LEDGER_UPGRADE_BASE_RESERVE(4),
   ;
-  private final int mValue;
+  private int mValue;
 
   LedgerUpgradeType(int value) {
     mValue = value;
@@ -69,4 +69,5 @@ public enum LedgerUpgradeType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

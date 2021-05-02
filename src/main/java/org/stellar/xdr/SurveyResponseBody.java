@@ -25,8 +25,10 @@ public class SurveyResponseBody implements XdrElement {
   public SurveyResponseBody() {
   }
 
-  public static void encode(XdrDataOutputStream stream, SurveyResponseBody encodedSurveyResponseBody)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      SurveyResponseBody encodedSurveyResponseBody
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //SurveyMessageCommandType
     stream.writeInt(encodedSurveyResponseBody.getDiscriminant().getValue());

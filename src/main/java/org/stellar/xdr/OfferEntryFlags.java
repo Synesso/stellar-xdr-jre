@@ -20,7 +20,7 @@ import okio.ByteString;
 public enum OfferEntryFlags implements XdrElement {
   PASSIVE_FLAG(1),
   ;
-  private final int mValue;
+  private int mValue;
 
   OfferEntryFlags(int value) {
     mValue = value;
@@ -58,4 +58,5 @@ public enum OfferEntryFlags implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

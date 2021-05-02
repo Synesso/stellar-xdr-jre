@@ -323,9 +323,10 @@ public class StellarMessage implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.error, this.hello, this.auth, this.dontHave, Arrays.hashCode(this.peers),
-        this.txSetHash, this.txSet, this.transaction, this.signedSurveyRequestMessage, this.signedSurveyResponseMessage,
-        this.qSetHash, this.qSet, this.envelope, this.getSCPLedgerSeq, this.type);
+    return Objects
+        .hashCode(this.error, this.hello, this.auth, this.dontHave, Arrays.hashCode(this.peers), this.txSetHash,
+            this.txSet, this.transaction, this.signedSurveyRequestMessage, this.signedSurveyResponseMessage,
+            this.qSetHash, this.qSet, this.envelope, this.getSCPLedgerSeq, this.type);
   }
 
   @Override
@@ -335,14 +336,15 @@ public class StellarMessage implements XdrElement {
     }
 
     StellarMessage other = (StellarMessage) object;
-    return Objects.equal(this.error, other.error) && Objects.equal(this.hello, other.hello) && Objects.equal(this.auth,
-        other.auth) && Objects.equal(this.dontHave, other.dontHave) && Arrays.equals(this.peers, other.peers) && Objects
-        .equal(this.txSetHash, other.txSetHash) && Objects.equal(this.txSet, other.txSet) && Objects.equal(
-        this.transaction, other.transaction) && Objects.equal(this.signedSurveyRequestMessage,
-        other.signedSurveyRequestMessage) && Objects.equal(this.signedSurveyResponseMessage,
-        other.signedSurveyResponseMessage) && Objects.equal(this.qSetHash, other.qSetHash) && Objects.equal(this.qSet,
-        other.qSet) && Objects.equal(this.envelope, other.envelope) && Objects.equal(this.getSCPLedgerSeq,
-        other.getSCPLedgerSeq) && Objects.equal(this.type, other.type);
+    return Objects.equal(this.error, other.error) && Objects.equal(this.hello, other.hello) && Objects
+        .equal(this.auth, other.auth) && Objects.equal(this.dontHave, other.dontHave) && Arrays
+        .equals(this.peers, other.peers) && Objects.equal(this.txSetHash, other.txSetHash) && Objects
+        .equal(this.txSet, other.txSet) && Objects.equal(this.transaction, other.transaction) && Objects
+        .equal(this.signedSurveyRequestMessage, other.signedSurveyRequestMessage) && Objects
+        .equal(this.signedSurveyResponseMessage, other.signedSurveyResponseMessage) && Objects
+        .equal(this.qSetHash, other.qSetHash) && Objects.equal(this.qSet, other.qSet) && Objects
+        .equal(this.envelope, other.envelope) && Objects.equal(this.getSCPLedgerSeq, other.getSCPLedgerSeq) && Objects
+        .equal(this.type, other.type);
   }
 
   public static final class Builder {

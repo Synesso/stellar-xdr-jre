@@ -23,7 +23,7 @@ public enum AssetType implements XdrElement {
   ASSET_TYPE_CREDIT_ALPHANUM4(1),
   ASSET_TYPE_CREDIT_ALPHANUM12(2),
   ;
-  private final int mValue;
+  private int mValue;
 
   AssetType(int value) {
     mValue = value;
@@ -65,4 +65,5 @@ public enum AssetType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

@@ -27,8 +27,10 @@ public class ManageBuyOfferResult implements XdrElement {
   public ManageBuyOfferResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, ManageBuyOfferResult encodedManageBuyOfferResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      ManageBuyOfferResult encodedManageBuyOfferResult
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //ManageBuyOfferResultCode
     stream.writeInt(encodedManageBuyOfferResult.getDiscriminant().getValue());

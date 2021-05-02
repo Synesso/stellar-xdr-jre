@@ -25,8 +25,10 @@ public class DecoratedSignature implements XdrElement {
   public DecoratedSignature() {
   }
 
-  public static void encode(XdrDataOutputStream stream, DecoratedSignature encodedDecoratedSignature)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      DecoratedSignature encodedDecoratedSignature
+  ) throws IOException {
     SignatureHint.encode(stream, encodedDecoratedSignature.hint);
     Signature.encode(stream, encodedDecoratedSignature.signature);
   }

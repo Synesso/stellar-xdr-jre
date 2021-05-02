@@ -58,8 +58,10 @@ public class InnerTransactionResult implements XdrElement {
   public InnerTransactionResult() {
   }
 
-  public static void encode(XdrDataOutputStream stream, InnerTransactionResult encodedInnerTransactionResult)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      InnerTransactionResult encodedInnerTransactionResult
+  ) throws IOException {
     Int64.encode(stream, encodedInnerTransactionResult.feeCharged);
     InnerTransactionResultResult.encode(stream, encodedInnerTransactionResult.result);
     InnerTransactionResultExt.encode(stream, encodedInnerTransactionResult.ext);
@@ -124,9 +126,8 @@ public class InnerTransactionResult implements XdrElement {
     }
 
     InnerTransactionResult other = (InnerTransactionResult) object;
-    return Objects.equal(this.feeCharged, other.feeCharged)
-        && Objects.equal(this.result, other.result)
-        && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.feeCharged, other.feeCharged) && Objects.equal(this.result, other.result) && Objects
+        .equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -165,8 +166,10 @@ public class InnerTransactionResult implements XdrElement {
     public InnerTransactionResultResult() {
     }
 
-    public static void encode(XdrDataOutputStream stream,
-        InnerTransactionResultResult encodedInnerTransactionResultResult) throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        InnerTransactionResultResult encodedInnerTransactionResultResult
+    ) throws IOException {
       //Xdrgen::AST::Identifier
       //TransactionResultCode
       stream.writeInt(encodedInnerTransactionResultResult.getDiscriminant().getValue());
@@ -292,6 +295,7 @@ public class InnerTransactionResult implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class InnerTransactionResultExt {
@@ -300,8 +304,10 @@ public class InnerTransactionResult implements XdrElement {
     public InnerTransactionResultExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, InnerTransactionResultExt encodedInnerTransactionResultExt)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        InnerTransactionResultExt encodedInnerTransactionResultExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedInnerTransactionResultExt.getDiscriminant().intValue());
@@ -374,5 +380,6 @@ public class InnerTransactionResult implements XdrElement {
         return val;
       }
     }
+
   }
 }

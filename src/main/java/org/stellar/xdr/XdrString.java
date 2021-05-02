@@ -5,19 +5,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import okio.ByteString;
 
 public class XdrString implements XdrElement {
-  private final byte[] bytes;
+  private byte[] bytes;
 
   public XdrString(byte[] bytes) {
     this.bytes = bytes;
   }
 
   public XdrString(String text) {
-    this.bytes = text.getBytes(StandardCharsets.UTF_8);
+    this.bytes = text.getBytes(Charset.forName("UTF-8"));
   }
 
   public static XdrString decode(XdrDataInputStream stream, int maxSize) throws IOException {
@@ -68,6 +67,6 @@ public class XdrString implements XdrElement {
 
   @Override
   public String toString() {
-    return new String(bytes, StandardCharsets.UTF_8);
+    return new String(bytes, Charset.forName("UTF-8"));
   }
 }

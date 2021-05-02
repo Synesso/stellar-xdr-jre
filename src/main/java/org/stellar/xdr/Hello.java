@@ -154,8 +154,9 @@ public class Hello implements XdrElement {
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(this.ledgerVersion, this.overlayVersion, this.overlayMinVersion, this.networkID,
-        this.versionStr, this.listeningPort, this.peerID, this.cert, this.nonce);
+    return Objects
+        .hashCode(this.ledgerVersion, this.overlayVersion, this.overlayMinVersion, this.networkID, this.versionStr,
+            this.listeningPort, this.peerID, this.cert, this.nonce);
   }
 
   @Override
@@ -165,11 +166,12 @@ public class Hello implements XdrElement {
     }
 
     Hello other = (Hello) object;
-    return Objects.equal(this.ledgerVersion, other.ledgerVersion) && Objects.equal(this.overlayVersion,
-        other.overlayVersion) && Objects.equal(this.overlayMinVersion, other.overlayMinVersion) && Objects.equal(
-        this.networkID, other.networkID) && Objects.equal(this.versionStr, other.versionStr) && Objects.equal(
-        this.listeningPort, other.listeningPort) && Objects.equal(this.peerID, other.peerID) && Objects.equal(this.cert,
-        other.cert) && Objects.equal(this.nonce, other.nonce);
+    return Objects.equal(this.ledgerVersion, other.ledgerVersion) && Objects
+        .equal(this.overlayVersion, other.overlayVersion) && Objects
+        .equal(this.overlayMinVersion, other.overlayMinVersion) && Objects
+        .equal(this.networkID, other.networkID) && Objects.equal(this.versionStr, other.versionStr) && Objects
+        .equal(this.listeningPort, other.listeningPort) && Objects.equal(this.peerID, other.peerID) && Objects
+        .equal(this.cert, other.cert) && Objects.equal(this.nonce, other.nonce);
   }
 
   public static final class Builder {

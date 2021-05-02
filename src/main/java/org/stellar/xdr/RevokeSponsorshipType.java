@@ -21,7 +21,7 @@ public enum RevokeSponsorshipType implements XdrElement {
   REVOKE_SPONSORSHIP_LEDGER_ENTRY(0),
   REVOKE_SPONSORSHIP_SIGNER(1),
   ;
-  private final int mValue;
+  private int mValue;
 
   RevokeSponsorshipType(int value) {
     mValue = value;
@@ -61,4 +61,5 @@ public enum RevokeSponsorshipType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

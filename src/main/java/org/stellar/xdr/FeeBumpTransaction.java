@@ -39,8 +39,10 @@ public class FeeBumpTransaction implements XdrElement {
   public FeeBumpTransaction() {
   }
 
-  public static void encode(XdrDataOutputStream stream, FeeBumpTransaction encodedFeeBumpTransaction)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      FeeBumpTransaction encodedFeeBumpTransaction
+  ) throws IOException {
     MuxedAccount.encode(stream, encodedFeeBumpTransaction.feeSource);
     Int64.encode(stream, encodedFeeBumpTransaction.fee);
     FeeBumpTransactionInnerTx.encode(stream, encodedFeeBumpTransaction.innerTx);
@@ -115,8 +117,8 @@ public class FeeBumpTransaction implements XdrElement {
     }
 
     FeeBumpTransaction other = (FeeBumpTransaction) object;
-    return Objects.equal(this.feeSource, other.feeSource) && Objects.equal(this.fee, other.fee) && Objects.equal(
-        this.innerTx, other.innerTx) && Objects.equal(this.ext, other.ext);
+    return Objects.equal(this.feeSource, other.feeSource) && Objects.equal(this.fee, other.fee) && Objects
+        .equal(this.innerTx, other.innerTx) && Objects.equal(this.ext, other.ext);
   }
 
   public static final class Builder {
@@ -162,8 +164,10 @@ public class FeeBumpTransaction implements XdrElement {
     public FeeBumpTransactionInnerTx() {
     }
 
-    public static void encode(XdrDataOutputStream stream, FeeBumpTransactionInnerTx encodedFeeBumpTransactionInnerTx)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        FeeBumpTransactionInnerTx encodedFeeBumpTransactionInnerTx
+    ) throws IOException {
       //Xdrgen::AST::Identifier
       //EnvelopeType
       stream.writeInt(encodedFeeBumpTransactionInnerTx.getDiscriminant().getValue());
@@ -253,6 +257,7 @@ public class FeeBumpTransaction implements XdrElement {
         return val;
       }
     }
+
   }
 
   public static class FeeBumpTransactionExt {
@@ -261,8 +266,10 @@ public class FeeBumpTransaction implements XdrElement {
     public FeeBumpTransactionExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, FeeBumpTransactionExt encodedFeeBumpTransactionExt)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        FeeBumpTransactionExt encodedFeeBumpTransactionExt
+    ) throws IOException {
       //Xdrgen::AST::Typespecs::Int
       //Integer
       stream.writeInt(encodedFeeBumpTransactionExt.getDiscriminant().intValue());
@@ -335,5 +342,6 @@ public class FeeBumpTransaction implements XdrElement {
         return val;
       }
     }
+
   }
 }

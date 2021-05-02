@@ -24,7 +24,7 @@ public enum EndSponsoringFutureReservesResultCode implements XdrElement {
   END_SPONSORING_FUTURE_RESERVES_SUCCESS(0),
   END_SPONSORING_FUTURE_RESERVES_NOT_SPONSORED(-1),
   ;
-  private final int mValue;
+  private int mValue;
 
   EndSponsoringFutureReservesResultCode(int value) {
     mValue = value;
@@ -46,8 +46,10 @@ public enum EndSponsoringFutureReservesResultCode implements XdrElement {
     }
   }
 
-  public static void encode(XdrDataOutputStream stream, EndSponsoringFutureReservesResultCode value)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      EndSponsoringFutureReservesResultCode value
+  ) throws IOException {
     stream.writeInt(value.getValue());
   }
 
@@ -65,4 +67,5 @@ public enum EndSponsoringFutureReservesResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

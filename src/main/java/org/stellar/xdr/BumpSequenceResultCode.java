@@ -23,7 +23,7 @@ public enum BumpSequenceResultCode implements XdrElement {
   BUMP_SEQUENCE_SUCCESS(0),
   BUMP_SEQUENCE_BAD_SEQ(-1),
   ;
-  private final int mValue;
+  private int mValue;
 
   BumpSequenceResultCode(int value) {
     mValue = value;
@@ -63,4 +63,5 @@ public enum BumpSequenceResultCode implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

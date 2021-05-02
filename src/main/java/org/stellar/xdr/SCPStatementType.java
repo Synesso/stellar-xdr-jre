@@ -25,7 +25,7 @@ public enum SCPStatementType implements XdrElement {
   SCP_ST_EXTERNALIZE(2),
   SCP_ST_NOMINATE(3),
   ;
-  private final int mValue;
+  private int mValue;
 
   SCPStatementType(int value) {
     mValue = value;
@@ -69,4 +69,5 @@ public enum SCPStatementType implements XdrElement {
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
   }
+
 }

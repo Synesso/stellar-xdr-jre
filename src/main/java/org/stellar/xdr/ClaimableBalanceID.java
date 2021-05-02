@@ -25,8 +25,10 @@ public class ClaimableBalanceID implements XdrElement {
   public ClaimableBalanceID() {
   }
 
-  public static void encode(XdrDataOutputStream stream, ClaimableBalanceID encodedClaimableBalanceID)
-      throws IOException {
+  public static void encode(
+      XdrDataOutputStream stream,
+      ClaimableBalanceID encodedClaimableBalanceID
+  ) throws IOException {
     //Xdrgen::AST::Identifier
     //ClaimableBalanceIDType
     stream.writeInt(encodedClaimableBalanceID.getDiscriminant().getValue());

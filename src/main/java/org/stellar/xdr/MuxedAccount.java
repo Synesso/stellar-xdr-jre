@@ -112,8 +112,8 @@ public class MuxedAccount implements XdrElement {
     }
 
     MuxedAccount other = (MuxedAccount) object;
-    return Objects.equal(this.ed25519, other.ed25519) && Objects.equal(this.med25519, other.med25519) && Objects.equal(
-        this.type, other.type);
+    return Objects.equal(this.ed25519, other.ed25519) && Objects.equal(this.med25519, other.med25519) && Objects
+        .equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -152,8 +152,10 @@ public class MuxedAccount implements XdrElement {
     public MuxedAccountMed25519() {
     }
 
-    public static void encode(XdrDataOutputStream stream, MuxedAccountMed25519 encodedMuxedAccountMed25519)
-        throws IOException {
+    public static void encode(
+        XdrDataOutputStream stream,
+        MuxedAccountMed25519 encodedMuxedAccountMed25519
+    ) throws IOException {
       Uint64.encode(stream, encodedMuxedAccountMed25519.id);
       Uint256.encode(stream, encodedMuxedAccountMed25519.ed25519);
     }
@@ -232,5 +234,6 @@ public class MuxedAccount implements XdrElement {
         return val;
       }
     }
+
   }
 }
