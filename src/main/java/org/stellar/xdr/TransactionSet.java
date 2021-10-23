@@ -20,10 +20,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionSet implements XdrElement {
+  public TransactionSet() {
+  }
+
   private Hash previousLedgerHash;
+
+  public Hash getPreviousLedgerHash() {
+    return this.previousLedgerHash;
+  }
+
+  public void setPreviousLedgerHash(Hash value) {
+    this.previousLedgerHash = value;
+  }
+
   private TransactionEnvelope[] txs;
 
-  public TransactionSet() {
+  public TransactionEnvelope[] getTxs() {
+    return this.txs;
+  }
+
+  public void setTxs(TransactionEnvelope[] value) {
+    this.txs = value;
   }
 
   public static void encode(XdrDataOutputStream stream, TransactionSet encodedTransactionSet) throws IOException {
@@ -33,6 +50,17 @@ public class TransactionSet implements XdrElement {
     for (int i = 0; i < txssize; i++) {
       TransactionEnvelope.encode(stream, encodedTransactionSet.txs[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionSet decode(ByteString bs) throws IOException {
@@ -49,39 +77,10 @@ public class TransactionSet implements XdrElement {
     }
     return decodedTransactionSet;
   }
-
-  public Hash getPreviousLedgerHash() {
-    return this.previousLedgerHash;
-  }
-
-  public void setPreviousLedgerHash(Hash value) {
-    this.previousLedgerHash = value;
-  }
-
-  public TransactionEnvelope[] getTxs() {
-    return this.txs;
-  }
-
-  public void setTxs(TransactionEnvelope[] value) {
-    this.txs = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.previousLedgerHash, Arrays.hashCode(this.txs));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof TransactionSet)) {

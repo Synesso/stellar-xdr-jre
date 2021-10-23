@@ -24,9 +24,28 @@ public class Hash implements XdrElement {
     this.Hash = Hash;
   }
 
+  public byte[] getHash() {
+    return this.Hash;
+  }
+
+  public void setHash(byte[] value) {
+    this.Hash = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, Hash encodedHash) throws IOException {
     int Hashsize = encodedHash.Hash.length;
     stream.write(encodedHash.getHash(), 0, Hashsize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Hash decode(ByteString bs) throws IOException {
@@ -39,25 +58,6 @@ public class Hash implements XdrElement {
     decodedHash.Hash = new byte[Hashsize];
     stream.read(decodedHash.Hash, 0, Hashsize);
     return decodedHash;
-  }
-
-  public byte[] getHash() {
-    return this.Hash;
-  }
-
-  public void setHash(byte[] value) {
-    this.Hash = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

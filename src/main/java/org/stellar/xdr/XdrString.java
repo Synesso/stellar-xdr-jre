@@ -19,6 +19,19 @@ public class XdrString implements XdrElement {
     this.bytes = text.getBytes(Charset.forName("UTF-8"));
   }
 
+  @Override
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    stream.writeInt(this.bytes.length);
+    stream.write(this.bytes, 0, this.bytes.length);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   public static XdrString decode(XdrDataInputStream stream, int maxSize) throws IOException {
     int size = stream.readInt();
     if (size > maxSize) {
@@ -31,19 +44,6 @@ public class XdrString implements XdrElement {
 
   public static XdrString decode(ByteString bs, int maxSize) throws IOException {
     return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())), maxSize);
-  }
-
-  @Override
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    stream.writeInt(this.bytes.length);
-    stream.write(this.bytes, 0, this.bytes.length);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   public byte[] getBytes() {

@@ -24,10 +24,29 @@ public class DataValue implements XdrElement {
     this.DataValue = DataValue;
   }
 
+  public byte[] getDataValue() {
+    return this.DataValue;
+  }
+
+  public void setDataValue(byte[] value) {
+    this.DataValue = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, DataValue encodedDataValue) throws IOException {
     int DataValuesize = encodedDataValue.DataValue.length;
     stream.writeInt(DataValuesize);
     stream.write(encodedDataValue.getDataValue(), 0, DataValuesize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static DataValue decode(ByteString bs) throws IOException {
@@ -40,25 +59,6 @@ public class DataValue implements XdrElement {
     decodedDataValue.DataValue = new byte[DataValuesize];
     stream.read(decodedDataValue.DataValue, 0, DataValuesize);
     return decodedDataValue;
-  }
-
-  public byte[] getDataValue() {
-    return this.DataValue;
-  }
-
-  public void setDataValue(byte[] value) {
-    this.DataValue = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

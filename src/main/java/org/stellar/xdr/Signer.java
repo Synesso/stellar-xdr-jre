@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Signer implements XdrElement {
-  private SignerKey key;
-  private Uint32 weight;
-
   public Signer() {
   }
-
-  public static void encode(XdrDataOutputStream stream, Signer encodedSigner) throws IOException {
-    SignerKey.encode(stream, encodedSigner.key);
-    Uint32.encode(stream, encodedSigner.weight);
-  }
-
-  public static Signer decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Signer decode(XdrDataInputStream stream) throws IOException {
-    Signer decodedSigner = new Signer();
-    decodedSigner.key = SignerKey.decode(stream);
-    decodedSigner.weight = Uint32.decode(stream);
-    return decodedSigner;
-  }
-
+  private SignerKey key;
   public SignerKey getKey() {
     return this.key;
   }
@@ -49,12 +30,19 @@ public class Signer implements XdrElement {
     this.key = value;
   }
 
+  private Uint32 weight;
+
   public Uint32 getWeight() {
     return this.weight;
   }
 
   public void setWeight(Uint32 value) {
     this.weight = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, Signer encodedSigner) throws IOException {
+    SignerKey.encode(stream, encodedSigner.key);
+    Uint32.encode(stream, encodedSigner.weight);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class Signer implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Signer decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Signer decode(XdrDataInputStream stream) throws IOException {
+    Signer decodedSigner = new Signer();
+    decodedSigner.key = SignerKey.decode(stream);
+    decodedSigner.weight = Uint32.decode(stream);
+    return decodedSigner;
   }
 
   @Override

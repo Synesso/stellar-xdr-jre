@@ -39,13 +39,49 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClaimableBalanceEntry implements XdrElement {
+  public ClaimableBalanceEntry() {
+  }
   private ClaimableBalanceID balanceID;
+  public ClaimableBalanceID getBalanceID() {
+    return this.balanceID;
+  }
+  public void setBalanceID(ClaimableBalanceID value) {
+    this.balanceID = value;
+  }
+
   private Claimant[] claimants;
+  public Claimant[] getClaimants() {
+    return this.claimants;
+  }
+  public void setClaimants(Claimant[] value) {
+    this.claimants = value;
+  }
+
   private Asset asset;
+  public Asset getAsset() {
+    return this.asset;
+  }
+  public void setAsset(Asset value) {
+    this.asset = value;
+  }
+
   private Int64 amount;
+  public Int64 getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount(Int64 value) {
+    this.amount = value;
+  }
+
   private ClaimableBalanceEntryExt ext;
 
-  public ClaimableBalanceEntry() {
+  public ClaimableBalanceEntryExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(ClaimableBalanceEntryExt value) {
+    this.ext = value;
   }
 
   public static void encode(
@@ -61,6 +97,17 @@ public class ClaimableBalanceEntry implements XdrElement {
     Asset.encode(stream, encodedClaimableBalanceEntry.asset);
     Int64.encode(stream, encodedClaimableBalanceEntry.amount);
     ClaimableBalanceEntryExt.encode(stream, encodedClaimableBalanceEntry.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ClaimableBalanceEntry decode(ByteString bs) throws IOException {
@@ -79,57 +126,6 @@ public class ClaimableBalanceEntry implements XdrElement {
     decodedClaimableBalanceEntry.amount = Int64.decode(stream);
     decodedClaimableBalanceEntry.ext = ClaimableBalanceEntryExt.decode(stream);
     return decodedClaimableBalanceEntry;
-  }
-
-  public ClaimableBalanceID getBalanceID() {
-    return this.balanceID;
-  }
-
-  public void setBalanceID(ClaimableBalanceID value) {
-    this.balanceID = value;
-  }
-
-  public Claimant[] getClaimants() {
-    return this.claimants;
-  }
-
-  public void setClaimants(Claimant[] value) {
-    this.claimants = value;
-  }
-
-  public Asset getAsset() {
-    return this.asset;
-  }
-
-  public void setAsset(Asset value) {
-    this.asset = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public ClaimableBalanceEntryExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(ClaimableBalanceEntryExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -193,45 +189,10 @@ public class ClaimableBalanceEntry implements XdrElement {
   }
 
   public static class ClaimableBalanceEntryExt {
-    Integer v;
-    private ClaimableBalanceEntryExtensionV1 v1;
-
     public ClaimableBalanceEntryExt() {
     }
 
-    public static void encode(
-        XdrDataOutputStream stream,
-        ClaimableBalanceEntryExt encodedClaimableBalanceEntryExt
-    ) throws IOException {
-      //Xdrgen::AST::Typespecs::Int
-      //Integer
-      stream.writeInt(encodedClaimableBalanceEntryExt.getDiscriminant().intValue());
-      switch (encodedClaimableBalanceEntryExt.getDiscriminant()) {
-        case 0:
-          break;
-        case 1:
-          ClaimableBalanceEntryExtensionV1.encode(stream, encodedClaimableBalanceEntryExt.v1);
-          break;
-      }
-    }
-
-    public static ClaimableBalanceEntryExt decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static ClaimableBalanceEntryExt decode(XdrDataInputStream stream) throws IOException {
-      ClaimableBalanceEntryExt decodedClaimableBalanceEntryExt = new ClaimableBalanceEntryExt();
-      Integer discriminant = stream.readInt();
-      decodedClaimableBalanceEntryExt.setDiscriminant(discriminant);
-      switch (decodedClaimableBalanceEntryExt.getDiscriminant()) {
-        case 0:
-          break;
-        case 1:
-          decodedClaimableBalanceEntryExt.v1 = ClaimableBalanceEntryExtensionV1.decode(stream);
-          break;
-      }
-      return decodedClaimableBalanceEntryExt;
-    }
+    Integer v;
 
     public Integer getDiscriminant() {
       return this.v;
@@ -241,38 +202,14 @@ public class ClaimableBalanceEntry implements XdrElement {
       this.v = value;
     }
 
+    private ClaimableBalanceEntryExtensionV1 v1;
+
     public ClaimableBalanceEntryExtensionV1 getV1() {
       return this.v1;
     }
 
     public void setV1(ClaimableBalanceEntryExtensionV1 value) {
       this.v1 = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(this.v1, this.v);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-      if (!(object instanceof ClaimableBalanceEntryExt)) {
-        return false;
-      }
-
-      ClaimableBalanceEntryExt other = (ClaimableBalanceEntryExt) object;
-      return Objects.equal(this.v1, other.v1) && Objects.equal(this.v, other.v);
     }
 
     public static final class Builder {
@@ -295,6 +232,64 @@ public class ClaimableBalanceEntry implements XdrElement {
         val.setV1(v1);
         return val;
       }
+    }
+
+    public static void encode(
+        XdrDataOutputStream stream,
+        ClaimableBalanceEntryExt encodedClaimableBalanceEntryExt
+    ) throws IOException {
+      //Xdrgen::AST::Typespecs::Int
+      //Integer
+      stream.writeInt(encodedClaimableBalanceEntryExt.getDiscriminant().intValue());
+      switch (encodedClaimableBalanceEntryExt.getDiscriminant()) {
+        case 0:
+          break;
+        case 1:
+          ClaimableBalanceEntryExtensionV1.encode(stream, encodedClaimableBalanceEntryExt.v1);
+          break;
+      }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
+    public static ClaimableBalanceEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static ClaimableBalanceEntryExt decode(XdrDataInputStream stream) throws IOException {
+      ClaimableBalanceEntryExt decodedClaimableBalanceEntryExt = new ClaimableBalanceEntryExt();
+      Integer discriminant = stream.readInt();
+      decodedClaimableBalanceEntryExt.setDiscriminant(discriminant);
+      switch (decodedClaimableBalanceEntryExt.getDiscriminant()) {
+        case 0:
+          break;
+        case 1:
+          decodedClaimableBalanceEntryExt.v1 = ClaimableBalanceEntryExtensionV1.decode(stream);
+          break;
+      }
+      return decodedClaimableBalanceEntryExt;
+    }
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(this.v1, this.v);
+    }
+    @Override
+    public boolean equals(Object object) {
+      if (!(object instanceof ClaimableBalanceEntryExt)) {
+        return false;
+      }
+
+      ClaimableBalanceEntryExt other = (ClaimableBalanceEntryExt) object;
+      return Objects.equal(this.v1, other.v1) && Objects.equal(this.v, other.v);
     }
 
   }

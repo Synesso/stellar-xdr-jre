@@ -27,28 +27,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class BucketMetadata implements XdrElement {
-  private Uint32 ledgerVersion;
-  private BucketMetadataExt ext;
-
   public BucketMetadata() {
   }
-
-  public static void encode(XdrDataOutputStream stream, BucketMetadata encodedBucketMetadata) throws IOException {
-    Uint32.encode(stream, encodedBucketMetadata.ledgerVersion);
-    BucketMetadataExt.encode(stream, encodedBucketMetadata.ext);
-  }
-
-  public static BucketMetadata decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static BucketMetadata decode(XdrDataInputStream stream) throws IOException {
-    BucketMetadata decodedBucketMetadata = new BucketMetadata();
-    decodedBucketMetadata.ledgerVersion = Uint32.decode(stream);
-    decodedBucketMetadata.ext = BucketMetadataExt.decode(stream);
-    return decodedBucketMetadata;
-  }
-
+  private Uint32 ledgerVersion;
   public Uint32 getLedgerVersion() {
     return this.ledgerVersion;
   }
@@ -57,12 +38,19 @@ public class BucketMetadata implements XdrElement {
     this.ledgerVersion = value;
   }
 
+  private BucketMetadataExt ext;
+
   public BucketMetadataExt getExt() {
     return this.ext;
   }
 
   public void setExt(BucketMetadataExt value) {
     this.ext = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, BucketMetadata encodedBucketMetadata) throws IOException {
+    Uint32.encode(stream, encodedBucketMetadata.ledgerVersion);
+    BucketMetadataExt.encode(stream, encodedBucketMetadata.ext);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -74,6 +62,17 @@ public class BucketMetadata implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static BucketMetadata decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static BucketMetadata decode(XdrDataInputStream stream) throws IOException {
+    BucketMetadata decodedBucketMetadata = new BucketMetadata();
+    decodedBucketMetadata.ledgerVersion = Uint32.decode(stream);
+    decodedBucketMetadata.ext = BucketMetadataExt.decode(stream);
+    return decodedBucketMetadata;
   }
 
   @Override
@@ -114,9 +113,32 @@ public class BucketMetadata implements XdrElement {
   }
 
   public static class BucketMetadataExt {
+    public BucketMetadataExt() {
+    }
+
     Integer v;
 
-    public BucketMetadataExt() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public BucketMetadataExt build() {
+        BucketMetadataExt val = new BucketMetadataExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(
@@ -130,6 +152,17 @@ public class BucketMetadata implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static BucketMetadataExt decode(ByteString bs) throws IOException {
@@ -146,31 +179,10 @@ public class BucketMetadata implements XdrElement {
       }
       return decodedBucketMetadataExt;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof BucketMetadataExt)) {
@@ -179,21 +191,6 @@ public class BucketMetadata implements XdrElement {
 
       BucketMetadataExt other = (BucketMetadataExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public BucketMetadataExt build() {
-        BucketMetadataExt val = new BucketMetadataExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

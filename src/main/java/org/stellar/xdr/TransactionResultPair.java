@@ -19,31 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionResultPair implements XdrElement {
-  private Hash transactionHash;
-  private TransactionResult result;
-
   public TransactionResultPair() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      TransactionResultPair encodedTransactionResultPair
-  ) throws IOException {
-    Hash.encode(stream, encodedTransactionResultPair.transactionHash);
-    TransactionResult.encode(stream, encodedTransactionResultPair.result);
-  }
-
-  public static TransactionResultPair decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static TransactionResultPair decode(XdrDataInputStream stream) throws IOException {
-    TransactionResultPair decodedTransactionResultPair = new TransactionResultPair();
-    decodedTransactionResultPair.transactionHash = Hash.decode(stream);
-    decodedTransactionResultPair.result = TransactionResult.decode(stream);
-    return decodedTransactionResultPair;
-  }
-
+  private Hash transactionHash;
   public Hash getTransactionHash() {
     return this.transactionHash;
   }
@@ -52,12 +30,22 @@ public class TransactionResultPair implements XdrElement {
     this.transactionHash = value;
   }
 
+  private TransactionResult result;
+
   public TransactionResult getResult() {
     return this.result;
   }
 
   public void setResult(TransactionResult value) {
     this.result = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionResultPair encodedTransactionResultPair
+  ) throws IOException {
+    Hash.encode(stream, encodedTransactionResultPair.transactionHash);
+    TransactionResult.encode(stream, encodedTransactionResultPair.result);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -69,6 +57,17 @@ public class TransactionResultPair implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static TransactionResultPair decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static TransactionResultPair decode(XdrDataInputStream stream) throws IOException {
+    TransactionResultPair decodedTransactionResultPair = new TransactionResultPair();
+    decodedTransactionResultPair.transactionHash = Hash.decode(stream);
+    decodedTransactionResultPair.result = TransactionResult.decode(stream);
+    return decodedTransactionResultPair;
   }
 
   @Override

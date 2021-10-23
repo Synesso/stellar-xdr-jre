@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TimeBounds implements XdrElement {
-  private TimePoint minTime;
-  private TimePoint maxTime;
-
   public TimeBounds() {
   }
-
-  public static void encode(XdrDataOutputStream stream, TimeBounds encodedTimeBounds) throws IOException {
-    TimePoint.encode(stream, encodedTimeBounds.minTime);
-    TimePoint.encode(stream, encodedTimeBounds.maxTime);
-  }
-
-  public static TimeBounds decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static TimeBounds decode(XdrDataInputStream stream) throws IOException {
-    TimeBounds decodedTimeBounds = new TimeBounds();
-    decodedTimeBounds.minTime = TimePoint.decode(stream);
-    decodedTimeBounds.maxTime = TimePoint.decode(stream);
-    return decodedTimeBounds;
-  }
-
+  private TimePoint minTime;
   public TimePoint getMinTime() {
     return this.minTime;
   }
@@ -49,12 +30,19 @@ public class TimeBounds implements XdrElement {
     this.minTime = value;
   }
 
+  private TimePoint maxTime;
+
   public TimePoint getMaxTime() {
     return this.maxTime;
   }
 
   public void setMaxTime(TimePoint value) {
     this.maxTime = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, TimeBounds encodedTimeBounds) throws IOException {
+    TimePoint.encode(stream, encodedTimeBounds.minTime);
+    TimePoint.encode(stream, encodedTimeBounds.maxTime);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class TimeBounds implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static TimeBounds decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static TimeBounds decode(XdrDataInputStream stream) throws IOException {
+    TimeBounds decodedTimeBounds = new TimeBounds();
+    decodedTimeBounds.minTime = TimePoint.decode(stream);
+    decodedTimeBounds.maxTime = TimePoint.decode(stream);
+    return decodedTimeBounds;
   }
 
   @Override

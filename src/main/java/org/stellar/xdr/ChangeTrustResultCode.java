@@ -21,7 +21,10 @@ import okio.ByteString;
 //                                       // cannot create with a limit of 0
 //      CHANGE_TRUST_LOW_RESERVE =
 //          -4, // not enough funds to create a new trust line,
-//      CHANGE_TRUST_SELF_NOT_ALLOWED = -5 // trusting self is not allowed
+//      CHANGE_TRUST_SELF_NOT_ALLOWED = -5, // trusting self is not allowed
+//      CHANGE_TRUST_TRUST_LINE_MISSING = -6, // Asset trustline is missing for pool
+//      CHANGE_TRUST_CANNOT_DELETE = -7, // Asset trustline is still referenced in a pool
+//      CHANGE_TRUST_NOT_AUTH_MAINTAIN_LIABILITIES = -8 // Asset trustline is deauthorized
 //  };
 
 //  ===========================================================================
@@ -32,11 +35,18 @@ public enum ChangeTrustResultCode implements XdrElement {
   CHANGE_TRUST_INVALID_LIMIT(-3),
   CHANGE_TRUST_LOW_RESERVE(-4),
   CHANGE_TRUST_SELF_NOT_ALLOWED(-5),
+  CHANGE_TRUST_TRUST_LINE_MISSING(-6),
+  CHANGE_TRUST_CANNOT_DELETE(-7),
+  CHANGE_TRUST_NOT_AUTH_MAINTAIN_LIABILITIES(-8),
   ;
   private int mValue;
 
   ChangeTrustResultCode(int value) {
     mValue = value;
+  }
+
+  public int getValue() {
+    return mValue;
   }
 
   public static ChangeTrustResultCode decode(ByteString bs) throws IOException {
@@ -58,6 +68,12 @@ public enum ChangeTrustResultCode implements XdrElement {
         return CHANGE_TRUST_LOW_RESERVE;
       case -5:
         return CHANGE_TRUST_SELF_NOT_ALLOWED;
+      case -6:
+        return CHANGE_TRUST_TRUST_LINE_MISSING;
+      case -7:
+        return CHANGE_TRUST_CANNOT_DELETE;
+      case -8:
+        return CHANGE_TRUST_NOT_AUTH_MAINTAIN_LIABILITIES;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -65,10 +81,6 @@ public enum ChangeTrustResultCode implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, ChangeTrustResultCode value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClawbackResult implements XdrElement {
+  public ClawbackResult() {
+  }
+
   ClawbackResultCode code;
 
-  public ClawbackResult() {
+  public ClawbackResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(ClawbackResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private ClawbackResultCode discriminant;
+
+    public Builder discriminant(ClawbackResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public ClawbackResult build() {
+      ClawbackResult val = new ClawbackResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(XdrDataOutputStream stream, ClawbackResult encodedClawbackResult) throws IOException {
@@ -36,6 +59,17 @@ public class ClawbackResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ClawbackResult decode(ByteString bs) throws IOException {
@@ -54,31 +88,10 @@ public class ClawbackResult implements XdrElement {
     }
     return decodedClawbackResult;
   }
-
-  public ClawbackResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(ClawbackResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof ClawbackResult)) {
@@ -87,20 +100,5 @@ public class ClawbackResult implements XdrElement {
 
     ClawbackResult other = (ClawbackResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private ClawbackResultCode discriminant;
-
-    public Builder discriminant(ClawbackResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public ClawbackResult build() {
-      ClawbackResult val = new ClawbackResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

@@ -24,26 +24,16 @@ public class TimePoint implements XdrElement {
     this.TimePoint = TimePoint;
   }
 
-  public static void encode(XdrDataOutputStream stream, TimePoint encodedTimePoint) throws IOException {
-    Uint64.encode(stream, encodedTimePoint.TimePoint);
-  }
-
-  public static TimePoint decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static TimePoint decode(XdrDataInputStream stream) throws IOException {
-    TimePoint decodedTimePoint = new TimePoint();
-    decodedTimePoint.TimePoint = Uint64.decode(stream);
-    return decodedTimePoint;
-  }
-
   public Uint64 getTimePoint() {
     return this.TimePoint;
   }
 
   public void setTimePoint(Uint64 value) {
     this.TimePoint = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, TimePoint encodedTimePoint) throws IOException {
+    Uint64.encode(stream, encodedTimePoint.TimePoint);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -55,6 +45,16 @@ public class TimePoint implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static TimePoint decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static TimePoint decode(XdrDataInputStream stream) throws IOException {
+    TimePoint decodedTimePoint = new TimePoint();
+    decodedTimePoint.TimePoint = Uint64.decode(stream);
+    return decodedTimePoint;
   }
 
   @Override

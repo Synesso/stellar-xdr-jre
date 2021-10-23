@@ -20,17 +20,50 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClawbackOp implements XdrElement {
+  public ClawbackOp() {
+  }
   private Asset asset;
+  public Asset getAsset() {
+    return this.asset;
+  }
+  public void setAsset(Asset value) {
+    this.asset = value;
+  }
+
   private MuxedAccount from;
+  public MuxedAccount getFrom() {
+    return this.from;
+  }
+
+  public void setFrom(MuxedAccount value) {
+    this.from = value;
+  }
+
   private Int64 amount;
 
-  public ClawbackOp() {
+  public Int64 getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount(Int64 value) {
+    this.amount = value;
   }
 
   public static void encode(XdrDataOutputStream stream, ClawbackOp encodedClawbackOp) throws IOException {
     Asset.encode(stream, encodedClawbackOp.asset);
     MuxedAccount.encode(stream, encodedClawbackOp.from);
     Int64.encode(stream, encodedClawbackOp.amount);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ClawbackOp decode(ByteString bs) throws IOException {
@@ -43,41 +76,6 @@ public class ClawbackOp implements XdrElement {
     decodedClawbackOp.from = MuxedAccount.decode(stream);
     decodedClawbackOp.amount = Int64.decode(stream);
     return decodedClawbackOp;
-  }
-
-  public Asset getAsset() {
-    return this.asset;
-  }
-
-  public void setAsset(Asset value) {
-    this.asset = value;
-  }
-
-  public MuxedAccount getFrom() {
-    return this.from;
-  }
-
-  public void setFrom(MuxedAccount value) {
-    this.from = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

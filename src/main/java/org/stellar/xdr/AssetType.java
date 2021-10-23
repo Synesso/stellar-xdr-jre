@@ -14,7 +14,8 @@ import okio.ByteString;
 //  {
 //      ASSET_TYPE_NATIVE = 0,
 //      ASSET_TYPE_CREDIT_ALPHANUM4 = 1,
-//      ASSET_TYPE_CREDIT_ALPHANUM12 = 2
+//      ASSET_TYPE_CREDIT_ALPHANUM12 = 2,
+//      ASSET_TYPE_POOL_SHARE = 3
 //  };
 
 //  ===========================================================================
@@ -22,11 +23,16 @@ public enum AssetType implements XdrElement {
   ASSET_TYPE_NATIVE(0),
   ASSET_TYPE_CREDIT_ALPHANUM4(1),
   ASSET_TYPE_CREDIT_ALPHANUM12(2),
+  ASSET_TYPE_POOL_SHARE(3),
   ;
   private int mValue;
 
   AssetType(int value) {
     mValue = value;
+  }
+
+  public int getValue() {
+    return mValue;
   }
 
   public static AssetType decode(ByteString bs) throws IOException {
@@ -42,6 +48,8 @@ public enum AssetType implements XdrElement {
         return ASSET_TYPE_CREDIT_ALPHANUM4;
       case 2:
         return ASSET_TYPE_CREDIT_ALPHANUM12;
+      case 3:
+        return ASSET_TYPE_POOL_SHARE;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -49,10 +57,6 @@ public enum AssetType implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, AssetType value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

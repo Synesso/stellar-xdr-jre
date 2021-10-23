@@ -23,11 +23,37 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionMetaV2 implements XdrElement {
+  public TransactionMetaV2() {
+  }
+
   private LedgerEntryChanges txChangesBefore;
+
+  public LedgerEntryChanges getTxChangesBefore() {
+    return this.txChangesBefore;
+  }
+
+  public void setTxChangesBefore(LedgerEntryChanges value) {
+    this.txChangesBefore = value;
+  }
+
   private OperationMeta[] operations;
+
+  public OperationMeta[] getOperations() {
+    return this.operations;
+  }
+
+  public void setOperations(OperationMeta[] value) {
+    this.operations = value;
+  }
+
   private LedgerEntryChanges txChangesAfter;
 
-  public TransactionMetaV2() {
+  public LedgerEntryChanges getTxChangesAfter() {
+    return this.txChangesAfter;
+  }
+
+  public void setTxChangesAfter(LedgerEntryChanges value) {
+    this.txChangesAfter = value;
   }
 
   public static void encode(XdrDataOutputStream stream, TransactionMetaV2 encodedTransactionMetaV2) throws IOException {
@@ -38,6 +64,17 @@ public class TransactionMetaV2 implements XdrElement {
       OperationMeta.encode(stream, encodedTransactionMetaV2.operations[i]);
     }
     LedgerEntryChanges.encode(stream, encodedTransactionMetaV2.txChangesAfter);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionMetaV2 decode(ByteString bs) throws IOException {
@@ -55,47 +92,10 @@ public class TransactionMetaV2 implements XdrElement {
     decodedTransactionMetaV2.txChangesAfter = LedgerEntryChanges.decode(stream);
     return decodedTransactionMetaV2;
   }
-
-  public LedgerEntryChanges getTxChangesBefore() {
-    return this.txChangesBefore;
-  }
-
-  public void setTxChangesBefore(LedgerEntryChanges value) {
-    this.txChangesBefore = value;
-  }
-
-  public OperationMeta[] getOperations() {
-    return this.operations;
-  }
-
-  public void setOperations(OperationMeta[] value) {
-    this.operations = value;
-  }
-
-  public LedgerEntryChanges getTxChangesAfter() {
-    return this.txChangesAfter;
-  }
-
-  public void setTxChangesAfter(LedgerEntryChanges value) {
-    this.txChangesAfter = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.txChangesBefore, Arrays.hashCode(this.operations), this.txChangesAfter);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof TransactionMetaV2)) {

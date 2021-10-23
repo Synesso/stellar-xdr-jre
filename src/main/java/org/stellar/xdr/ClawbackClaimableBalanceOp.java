@@ -18,27 +18,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClawbackClaimableBalanceOp implements XdrElement {
-  private ClaimableBalanceID balanceID;
-
   public ClawbackClaimableBalanceOp() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      ClawbackClaimableBalanceOp encodedClawbackClaimableBalanceOp
-  ) throws IOException {
-    ClaimableBalanceID.encode(stream, encodedClawbackClaimableBalanceOp.balanceID);
-  }
-
-  public static ClawbackClaimableBalanceOp decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static ClawbackClaimableBalanceOp decode(XdrDataInputStream stream) throws IOException {
-    ClawbackClaimableBalanceOp decodedClawbackClaimableBalanceOp = new ClawbackClaimableBalanceOp();
-    decodedClawbackClaimableBalanceOp.balanceID = ClaimableBalanceID.decode(stream);
-    return decodedClawbackClaimableBalanceOp;
-  }
+  private ClaimableBalanceID balanceID;
 
   public ClaimableBalanceID getBalanceID() {
     return this.balanceID;
@@ -46,6 +29,13 @@ public class ClawbackClaimableBalanceOp implements XdrElement {
 
   public void setBalanceID(ClaimableBalanceID value) {
     this.balanceID = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      ClawbackClaimableBalanceOp encodedClawbackClaimableBalanceOp
+  ) throws IOException {
+    ClaimableBalanceID.encode(stream, encodedClawbackClaimableBalanceOp.balanceID);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -57,6 +47,16 @@ public class ClawbackClaimableBalanceOp implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static ClawbackClaimableBalanceOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static ClawbackClaimableBalanceOp decode(XdrDataInputStream stream) throws IOException {
+    ClawbackClaimableBalanceOp decodedClawbackClaimableBalanceOp = new ClawbackClaimableBalanceOp();
+    decodedClawbackClaimableBalanceOp.balanceID = ClaimableBalanceID.decode(stream);
+    return decodedClawbackClaimableBalanceOp;
   }
 
   @Override

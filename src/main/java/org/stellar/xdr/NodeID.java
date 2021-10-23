@@ -24,26 +24,16 @@ public class NodeID implements XdrElement {
     this.NodeID = NodeID;
   }
 
-  public static void encode(XdrDataOutputStream stream, NodeID encodedNodeID) throws IOException {
-    PublicKey.encode(stream, encodedNodeID.NodeID);
-  }
-
-  public static NodeID decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static NodeID decode(XdrDataInputStream stream) throws IOException {
-    NodeID decodedNodeID = new NodeID();
-    decodedNodeID.NodeID = PublicKey.decode(stream);
-    return decodedNodeID;
-  }
-
   public PublicKey getNodeID() {
     return this.NodeID;
   }
 
   public void setNodeID(PublicKey value) {
     this.NodeID = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, NodeID encodedNodeID) throws IOException {
+    PublicKey.encode(stream, encodedNodeID.NodeID);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -55,6 +45,16 @@ public class NodeID implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static NodeID decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static NodeID decode(XdrDataInputStream stream) throws IOException {
+    NodeID decodedNodeID = new NodeID();
+    decodedNodeID.NodeID = PublicKey.decode(stream);
+    return decodedNodeID;
   }
 
   @Override

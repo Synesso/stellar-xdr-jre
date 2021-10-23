@@ -22,10 +22,49 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class InflationResult implements XdrElement {
+  public InflationResult() {
+  }
+
   InflationResultCode code;
+
+  public InflationResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(InflationResultCode value) {
+    this.code = value;
+  }
+
   private InflationPayout[] payouts;
 
-  public InflationResult() {
+  public InflationPayout[] getPayouts() {
+    return this.payouts;
+  }
+
+  public void setPayouts(InflationPayout[] value) {
+    this.payouts = value;
+  }
+
+  public static final class Builder {
+    private InflationResultCode discriminant;
+    private InflationPayout[] payouts;
+
+    public Builder discriminant(InflationResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public Builder payouts(InflationPayout[] payouts) {
+      this.payouts = payouts;
+      return this;
+    }
+
+    public InflationResult build() {
+      InflationResult val = new InflationResult();
+      val.setDiscriminant(discriminant);
+      val.setPayouts(payouts);
+      return val;
+    }
   }
 
   public static void encode(XdrDataOutputStream stream, InflationResult encodedInflationResult) throws IOException {
@@ -43,6 +82,17 @@ public class InflationResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static InflationResult decode(ByteString bs) throws IOException {
@@ -66,39 +116,10 @@ public class InflationResult implements XdrElement {
     }
     return decodedInflationResult;
   }
-
-  public InflationResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(InflationResultCode value) {
-    this.code = value;
-  }
-
-  public InflationPayout[] getPayouts() {
-    return this.payouts;
-  }
-
-  public void setPayouts(InflationPayout[] value) {
-    this.payouts = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(Arrays.hashCode(this.payouts), this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof InflationResult)) {
@@ -107,27 +128,5 @@ public class InflationResult implements XdrElement {
 
     InflationResult other = (InflationResult) object;
     return Arrays.equals(this.payouts, other.payouts) && Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private InflationResultCode discriminant;
-    private InflationPayout[] payouts;
-
-    public Builder discriminant(InflationResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public Builder payouts(InflationPayout[] payouts) {
-      this.payouts = payouts;
-      return this;
-    }
-
-    public InflationResult build() {
-      InflationResult val = new InflationResult();
-      val.setDiscriminant(discriminant);
-      val.setPayouts(payouts);
-      return val;
-    }
   }
 }

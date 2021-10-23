@@ -24,6 +24,14 @@ public class LedgerEntryChanges implements XdrElement {
     this.LedgerEntryChanges = LedgerEntryChanges;
   }
 
+  public LedgerEntryChange[] getLedgerEntryChanges() {
+    return this.LedgerEntryChanges;
+  }
+
+  public void setLedgerEntryChanges(LedgerEntryChange[] value) {
+    this.LedgerEntryChanges = value;
+  }
+
   public static void encode(
       XdrDataOutputStream stream,
       LedgerEntryChanges encodedLedgerEntryChanges
@@ -33,6 +41,17 @@ public class LedgerEntryChanges implements XdrElement {
     for (int i = 0; i < LedgerEntryChangessize; i++) {
       LedgerEntryChange.encode(stream, encodedLedgerEntryChanges.LedgerEntryChanges[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static LedgerEntryChanges decode(ByteString bs) throws IOException {
@@ -47,25 +66,6 @@ public class LedgerEntryChanges implements XdrElement {
       decodedLedgerEntryChanges.LedgerEntryChanges[i] = LedgerEntryChange.decode(stream);
     }
     return decodedLedgerEntryChanges;
-  }
-
-  public LedgerEntryChange[] getLedgerEntryChanges() {
-    return this.LedgerEntryChanges;
-  }
-
-  public void setLedgerEntryChanges(LedgerEntryChange[] value) {
-    this.LedgerEntryChanges = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

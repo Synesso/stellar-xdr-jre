@@ -28,12 +28,41 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class DataEntry implements XdrElement {
+  public DataEntry() {
+  }
   private AccountID accountID;
+  public AccountID getAccountID() {
+    return this.accountID;
+  }
+  public void setAccountID(AccountID value) {
+    this.accountID = value;
+  }
+
   private String64 dataName;
+  public String64 getDataName() {
+    return this.dataName;
+  }
+  public void setDataName(String64 value) {
+    this.dataName = value;
+  }
+
   private DataValue dataValue;
+  public DataValue getDataValue() {
+    return this.dataValue;
+  }
+
+  public void setDataValue(DataValue value) {
+    this.dataValue = value;
+  }
+
   private DataEntryExt ext;
 
-  public DataEntry() {
+  public DataEntryExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(DataEntryExt value) {
+    this.ext = value;
   }
 
   public static void encode(XdrDataOutputStream stream, DataEntry encodedDataEntry) throws IOException {
@@ -41,6 +70,17 @@ public class DataEntry implements XdrElement {
     String64.encode(stream, encodedDataEntry.dataName);
     DataValue.encode(stream, encodedDataEntry.dataValue);
     DataEntryExt.encode(stream, encodedDataEntry.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static DataEntry decode(ByteString bs) throws IOException {
@@ -54,49 +94,6 @@ public class DataEntry implements XdrElement {
     decodedDataEntry.dataValue = DataValue.decode(stream);
     decodedDataEntry.ext = DataEntryExt.decode(stream);
     return decodedDataEntry;
-  }
-
-  public AccountID getAccountID() {
-    return this.accountID;
-  }
-
-  public void setAccountID(AccountID value) {
-    this.accountID = value;
-  }
-
-  public String64 getDataName() {
-    return this.dataName;
-  }
-
-  public void setDataName(String64 value) {
-    this.dataName = value;
-  }
-
-  public DataValue getDataValue() {
-    return this.dataValue;
-  }
-
-  public void setDataValue(DataValue value) {
-    this.dataValue = value;
-  }
-
-  public DataEntryExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(DataEntryExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -152,9 +149,32 @@ public class DataEntry implements XdrElement {
   }
 
   public static class DataEntryExt {
+    public DataEntryExt() {
+    }
+
     Integer v;
 
-    public DataEntryExt() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public DataEntryExt build() {
+        DataEntryExt val = new DataEntryExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(XdrDataOutputStream stream, DataEntryExt encodedDataEntryExt) throws IOException {
@@ -165,6 +185,17 @@ public class DataEntry implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static DataEntryExt decode(ByteString bs) throws IOException {
@@ -181,31 +212,10 @@ public class DataEntry implements XdrElement {
       }
       return decodedDataEntryExt;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof DataEntryExt)) {
@@ -214,21 +224,6 @@ public class DataEntry implements XdrElement {
 
       DataEntryExt other = (DataEntryExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public DataEntryExt build() {
-        DataEntryExt val = new DataEntryExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

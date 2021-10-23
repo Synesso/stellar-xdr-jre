@@ -22,13 +22,49 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SurveyRequestMessage implements XdrElement {
+  public SurveyRequestMessage() {
+  }
   private NodeID surveyorPeerID;
+  public NodeID getSurveyorPeerID() {
+    return this.surveyorPeerID;
+  }
+  public void setSurveyorPeerID(NodeID value) {
+    this.surveyorPeerID = value;
+  }
+
   private NodeID surveyedPeerID;
+  public NodeID getSurveyedPeerID() {
+    return this.surveyedPeerID;
+  }
+  public void setSurveyedPeerID(NodeID value) {
+    this.surveyedPeerID = value;
+  }
+
   private Uint32 ledgerNum;
+  public Uint32 getLedgerNum() {
+    return this.ledgerNum;
+  }
+  public void setLedgerNum(Uint32 value) {
+    this.ledgerNum = value;
+  }
+
   private Curve25519Public encryptionKey;
+  public Curve25519Public getEncryptionKey() {
+    return this.encryptionKey;
+  }
+
+  public void setEncryptionKey(Curve25519Public value) {
+    this.encryptionKey = value;
+  }
+
   private SurveyMessageCommandType commandType;
 
-  public SurveyRequestMessage() {
+  public SurveyMessageCommandType getCommandType() {
+    return this.commandType;
+  }
+
+  public void setCommandType(SurveyMessageCommandType value) {
+    this.commandType = value;
   }
 
   public static void encode(
@@ -40,6 +76,17 @@ public class SurveyRequestMessage implements XdrElement {
     Uint32.encode(stream, encodedSurveyRequestMessage.ledgerNum);
     Curve25519Public.encode(stream, encodedSurveyRequestMessage.encryptionKey);
     SurveyMessageCommandType.encode(stream, encodedSurveyRequestMessage.commandType);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SurveyRequestMessage decode(ByteString bs) throws IOException {
@@ -54,57 +101,6 @@ public class SurveyRequestMessage implements XdrElement {
     decodedSurveyRequestMessage.encryptionKey = Curve25519Public.decode(stream);
     decodedSurveyRequestMessage.commandType = SurveyMessageCommandType.decode(stream);
     return decodedSurveyRequestMessage;
-  }
-
-  public NodeID getSurveyorPeerID() {
-    return this.surveyorPeerID;
-  }
-
-  public void setSurveyorPeerID(NodeID value) {
-    this.surveyorPeerID = value;
-  }
-
-  public NodeID getSurveyedPeerID() {
-    return this.surveyedPeerID;
-  }
-
-  public void setSurveyedPeerID(NodeID value) {
-    this.surveyedPeerID = value;
-  }
-
-  public Uint32 getLedgerNum() {
-    return this.ledgerNum;
-  }
-
-  public void setLedgerNum(Uint32 value) {
-    this.ledgerNum = value;
-  }
-
-  public Curve25519Public getEncryptionKey() {
-    return this.encryptionKey;
-  }
-
-  public void setEncryptionKey(Curve25519Public value) {
-    this.encryptionKey = value;
-  }
-
-  public SurveyMessageCommandType getCommandType() {
-    return this.commandType;
-  }
-
-  public void setCommandType(SurveyMessageCommandType value) {
-    this.commandType = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

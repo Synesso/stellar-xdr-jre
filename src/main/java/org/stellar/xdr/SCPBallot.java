@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SCPBallot implements XdrElement {
-  private Uint32 counter;
-  private Value value;
-
   public SCPBallot() {
   }
-
-  public static void encode(XdrDataOutputStream stream, SCPBallot encodedSCPBallot) throws IOException {
-    Uint32.encode(stream, encodedSCPBallot.counter);
-    Value.encode(stream, encodedSCPBallot.value);
-  }
-
-  public static SCPBallot decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static SCPBallot decode(XdrDataInputStream stream) throws IOException {
-    SCPBallot decodedSCPBallot = new SCPBallot();
-    decodedSCPBallot.counter = Uint32.decode(stream);
-    decodedSCPBallot.value = Value.decode(stream);
-    return decodedSCPBallot;
-  }
-
+  private Uint32 counter;
   public Uint32 getCounter() {
     return this.counter;
   }
@@ -49,12 +30,19 @@ public class SCPBallot implements XdrElement {
     this.counter = value;
   }
 
+  private Value value;
+
   public Value getValue() {
     return this.value;
   }
 
   public void setValue(Value value) {
     this.value = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, SCPBallot encodedSCPBallot) throws IOException {
+    Uint32.encode(stream, encodedSCPBallot.counter);
+    Value.encode(stream, encodedSCPBallot.value);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class SCPBallot implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static SCPBallot decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static SCPBallot decode(XdrDataInputStream stream) throws IOException {
+    SCPBallot decodedSCPBallot = new SCPBallot();
+    decodedSCPBallot.counter = Uint32.decode(stream);
+    decodedSCPBallot.value = Value.decode(stream);
+    return decodedSCPBallot;
   }
 
   @Override

@@ -20,24 +20,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Auth implements XdrElement {
-  private Integer unused;
-
   public Auth() {
   }
 
-  public static void encode(XdrDataOutputStream stream, Auth encodedAuth) throws IOException {
-    stream.writeInt(encodedAuth.unused);
-  }
-
-  public static Auth decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Auth decode(XdrDataInputStream stream) throws IOException {
-    Auth decodedAuth = new Auth();
-    decodedAuth.unused = stream.readInt();
-    return decodedAuth;
-  }
+  private Integer unused;
 
   public Integer getUnused() {
     return this.unused;
@@ -45,6 +31,10 @@ public class Auth implements XdrElement {
 
   public void setUnused(Integer value) {
     this.unused = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, Auth encodedAuth) throws IOException {
+    stream.writeInt(encodedAuth.unused);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -56,6 +46,16 @@ public class Auth implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Auth decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Auth decode(XdrDataInputStream stream) throws IOException {
+    Auth decodedAuth = new Auth();
+    decodedAuth.unused = stream.readInt();
+    return decodedAuth;
   }
 
   @Override

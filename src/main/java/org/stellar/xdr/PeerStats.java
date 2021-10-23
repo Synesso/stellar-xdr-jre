@@ -34,23 +34,129 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class PeerStats implements XdrElement {
+  public PeerStats() {
+  }
   private NodeID id;
+  public NodeID getId() {
+    return this.id;
+  }
+  public void setId(NodeID value) {
+    this.id = value;
+  }
+
   private XdrString versionStr;
+  public XdrString getVersionStr() {
+    return this.versionStr;
+  }
+  public void setVersionStr(XdrString value) {
+    this.versionStr = value;
+  }
+
   private Uint64 messagesRead;
+  public Uint64 getMessagesRead() {
+    return this.messagesRead;
+  }
+  public void setMessagesRead(Uint64 value) {
+    this.messagesRead = value;
+  }
+
   private Uint64 messagesWritten;
+  public Uint64 getMessagesWritten() {
+    return this.messagesWritten;
+  }
+  public void setMessagesWritten(Uint64 value) {
+    this.messagesWritten = value;
+  }
+
   private Uint64 bytesRead;
+  public Uint64 getBytesRead() {
+    return this.bytesRead;
+  }
+  public void setBytesRead(Uint64 value) {
+    this.bytesRead = value;
+  }
+
   private Uint64 bytesWritten;
+  public Uint64 getBytesWritten() {
+    return this.bytesWritten;
+  }
+  public void setBytesWritten(Uint64 value) {
+    this.bytesWritten = value;
+  }
+
   private Uint64 secondsConnected;
+  public Uint64 getSecondsConnected() {
+    return this.secondsConnected;
+  }
+  public void setSecondsConnected(Uint64 value) {
+    this.secondsConnected = value;
+  }
+
   private Uint64 uniqueFloodBytesRecv;
+  public Uint64 getUniqueFloodBytesRecv() {
+    return this.uniqueFloodBytesRecv;
+  }
+  public void setUniqueFloodBytesRecv(Uint64 value) {
+    this.uniqueFloodBytesRecv = value;
+  }
+
   private Uint64 duplicateFloodBytesRecv;
+  public Uint64 getDuplicateFloodBytesRecv() {
+    return this.duplicateFloodBytesRecv;
+  }
+  public void setDuplicateFloodBytesRecv(Uint64 value) {
+    this.duplicateFloodBytesRecv = value;
+  }
+
   private Uint64 uniqueFetchBytesRecv;
+  public Uint64 getUniqueFetchBytesRecv() {
+    return this.uniqueFetchBytesRecv;
+  }
+  public void setUniqueFetchBytesRecv(Uint64 value) {
+    this.uniqueFetchBytesRecv = value;
+  }
+
   private Uint64 duplicateFetchBytesRecv;
+  public Uint64 getDuplicateFetchBytesRecv() {
+    return this.duplicateFetchBytesRecv;
+  }
+  public void setDuplicateFetchBytesRecv(Uint64 value) {
+    this.duplicateFetchBytesRecv = value;
+  }
+
   private Uint64 uniqueFloodMessageRecv;
+  public Uint64 getUniqueFloodMessageRecv() {
+    return this.uniqueFloodMessageRecv;
+  }
+  public void setUniqueFloodMessageRecv(Uint64 value) {
+    this.uniqueFloodMessageRecv = value;
+  }
+
   private Uint64 duplicateFloodMessageRecv;
+  public Uint64 getDuplicateFloodMessageRecv() {
+    return this.duplicateFloodMessageRecv;
+  }
+  public void setDuplicateFloodMessageRecv(Uint64 value) {
+    this.duplicateFloodMessageRecv = value;
+  }
+
   private Uint64 uniqueFetchMessageRecv;
+  public Uint64 getUniqueFetchMessageRecv() {
+    return this.uniqueFetchMessageRecv;
+  }
+
+  public void setUniqueFetchMessageRecv(Uint64 value) {
+    this.uniqueFetchMessageRecv = value;
+  }
+
   private Uint64 duplicateFetchMessageRecv;
 
-  public PeerStats() {
+  public Uint64 getDuplicateFetchMessageRecv() {
+    return this.duplicateFetchMessageRecv;
+  }
+
+  public void setDuplicateFetchMessageRecv(Uint64 value) {
+    this.duplicateFetchMessageRecv = value;
   }
 
   public static void encode(XdrDataOutputStream stream, PeerStats encodedPeerStats) throws IOException {
@@ -69,6 +175,17 @@ public class PeerStats implements XdrElement {
     Uint64.encode(stream, encodedPeerStats.duplicateFloodMessageRecv);
     Uint64.encode(stream, encodedPeerStats.uniqueFetchMessageRecv);
     Uint64.encode(stream, encodedPeerStats.duplicateFetchMessageRecv);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static PeerStats decode(ByteString bs) throws IOException {
@@ -93,137 +210,6 @@ public class PeerStats implements XdrElement {
     decodedPeerStats.uniqueFetchMessageRecv = Uint64.decode(stream);
     decodedPeerStats.duplicateFetchMessageRecv = Uint64.decode(stream);
     return decodedPeerStats;
-  }
-
-  public NodeID getId() {
-    return this.id;
-  }
-
-  public void setId(NodeID value) {
-    this.id = value;
-  }
-
-  public XdrString getVersionStr() {
-    return this.versionStr;
-  }
-
-  public void setVersionStr(XdrString value) {
-    this.versionStr = value;
-  }
-
-  public Uint64 getMessagesRead() {
-    return this.messagesRead;
-  }
-
-  public void setMessagesRead(Uint64 value) {
-    this.messagesRead = value;
-  }
-
-  public Uint64 getMessagesWritten() {
-    return this.messagesWritten;
-  }
-
-  public void setMessagesWritten(Uint64 value) {
-    this.messagesWritten = value;
-  }
-
-  public Uint64 getBytesRead() {
-    return this.bytesRead;
-  }
-
-  public void setBytesRead(Uint64 value) {
-    this.bytesRead = value;
-  }
-
-  public Uint64 getBytesWritten() {
-    return this.bytesWritten;
-  }
-
-  public void setBytesWritten(Uint64 value) {
-    this.bytesWritten = value;
-  }
-
-  public Uint64 getSecondsConnected() {
-    return this.secondsConnected;
-  }
-
-  public void setSecondsConnected(Uint64 value) {
-    this.secondsConnected = value;
-  }
-
-  public Uint64 getUniqueFloodBytesRecv() {
-    return this.uniqueFloodBytesRecv;
-  }
-
-  public void setUniqueFloodBytesRecv(Uint64 value) {
-    this.uniqueFloodBytesRecv = value;
-  }
-
-  public Uint64 getDuplicateFloodBytesRecv() {
-    return this.duplicateFloodBytesRecv;
-  }
-
-  public void setDuplicateFloodBytesRecv(Uint64 value) {
-    this.duplicateFloodBytesRecv = value;
-  }
-
-  public Uint64 getUniqueFetchBytesRecv() {
-    return this.uniqueFetchBytesRecv;
-  }
-
-  public void setUniqueFetchBytesRecv(Uint64 value) {
-    this.uniqueFetchBytesRecv = value;
-  }
-
-  public Uint64 getDuplicateFetchBytesRecv() {
-    return this.duplicateFetchBytesRecv;
-  }
-
-  public void setDuplicateFetchBytesRecv(Uint64 value) {
-    this.duplicateFetchBytesRecv = value;
-  }
-
-  public Uint64 getUniqueFloodMessageRecv() {
-    return this.uniqueFloodMessageRecv;
-  }
-
-  public void setUniqueFloodMessageRecv(Uint64 value) {
-    this.uniqueFloodMessageRecv = value;
-  }
-
-  public Uint64 getDuplicateFloodMessageRecv() {
-    return this.duplicateFloodMessageRecv;
-  }
-
-  public void setDuplicateFloodMessageRecv(Uint64 value) {
-    this.duplicateFloodMessageRecv = value;
-  }
-
-  public Uint64 getUniqueFetchMessageRecv() {
-    return this.uniqueFetchMessageRecv;
-  }
-
-  public void setUniqueFetchMessageRecv(Uint64 value) {
-    this.uniqueFetchMessageRecv = value;
-  }
-
-  public Uint64 getDuplicateFetchMessageRecv() {
-    return this.duplicateFetchMessageRecv;
-  }
-
-  public void setDuplicateFetchMessageRecv(Uint64 value) {
-    this.duplicateFetchMessageRecv = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

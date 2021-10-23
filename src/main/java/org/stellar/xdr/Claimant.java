@@ -23,38 +23,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Claimant implements XdrElement {
-  ClaimantType type;
-  private ClaimantV0 v0;
-
   public Claimant() {
   }
 
-  public static void encode(XdrDataOutputStream stream, Claimant encodedClaimant) throws IOException {
-    //Xdrgen::AST::Identifier
-    //ClaimantType
-    stream.writeInt(encodedClaimant.getDiscriminant().getValue());
-    switch (encodedClaimant.getDiscriminant()) {
-      case CLAIMANT_TYPE_V0:
-        ClaimantV0.encode(stream, encodedClaimant.v0);
-        break;
-    }
-  }
-
-  public static Claimant decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Claimant decode(XdrDataInputStream stream) throws IOException {
-    Claimant decodedClaimant = new Claimant();
-    ClaimantType discriminant = ClaimantType.decode(stream);
-    decodedClaimant.setDiscriminant(discriminant);
-    switch (decodedClaimant.getDiscriminant()) {
-      case CLAIMANT_TYPE_V0:
-        decodedClaimant.v0 = ClaimantV0.decode(stream);
-        break;
-    }
-    return decodedClaimant;
-  }
+  ClaimantType type;
 
   public ClaimantType getDiscriminant() {
     return this.type;
@@ -64,38 +36,14 @@ public class Claimant implements XdrElement {
     this.type = value;
   }
 
+  private ClaimantV0 v0;
+
   public ClaimantV0 getV0() {
     return this.v0;
   }
 
   public void setV0(ClaimantV0 value) {
     this.v0 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.v0, this.type);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof Claimant)) {
-      return false;
-    }
-
-    Claimant other = (Claimant) object;
-    return Objects.equal(this.v0, other.v0) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -120,29 +68,61 @@ public class Claimant implements XdrElement {
     }
   }
 
-  public static class ClaimantV0 {
-    private AccountID destination;
-    private ClaimPredicate predicate;
+  public static void encode(XdrDataOutputStream stream, Claimant encodedClaimant) throws IOException {
+    //Xdrgen::AST::Identifier
+    //ClaimantType
+    stream.writeInt(encodedClaimant.getDiscriminant().getValue());
+    switch (encodedClaimant.getDiscriminant()) {
+      case CLAIMANT_TYPE_V0:
+        ClaimantV0.encode(stream, encodedClaimant.v0);
+        break;
+    }
+  }
 
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Claimant decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Claimant decode(XdrDataInputStream stream) throws IOException {
+    Claimant decodedClaimant = new Claimant();
+    ClaimantType discriminant = ClaimantType.decode(stream);
+    decodedClaimant.setDiscriminant(discriminant);
+    switch (decodedClaimant.getDiscriminant()) {
+      case CLAIMANT_TYPE_V0:
+        decodedClaimant.v0 = ClaimantV0.decode(stream);
+        break;
+    }
+    return decodedClaimant;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.v0, this.type);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof Claimant)) {
+      return false;
+    }
+
+    Claimant other = (Claimant) object;
+    return Objects.equal(this.v0, other.v0) && Objects.equal(this.type, other.type);
+  }
+
+  public static class ClaimantV0 {
     public ClaimantV0() {
     }
-
-    public static void encode(XdrDataOutputStream stream, ClaimantV0 encodedClaimantV0) throws IOException {
-      AccountID.encode(stream, encodedClaimantV0.destination);
-      ClaimPredicate.encode(stream, encodedClaimantV0.predicate);
-    }
-
-    public static ClaimantV0 decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static ClaimantV0 decode(XdrDataInputStream stream) throws IOException {
-      ClaimantV0 decodedClaimantV0 = new ClaimantV0();
-      decodedClaimantV0.destination = AccountID.decode(stream);
-      decodedClaimantV0.predicate = ClaimPredicate.decode(stream);
-      return decodedClaimantV0;
-    }
-
+    private AccountID destination;
     public AccountID getDestination() {
       return this.destination;
     }
@@ -151,12 +131,19 @@ public class Claimant implements XdrElement {
       this.destination = value;
     }
 
+    private ClaimPredicate predicate;
+
     public ClaimPredicate getPredicate() {
       return this.predicate;
     }
 
     public void setPredicate(ClaimPredicate value) {
       this.predicate = value;
+    }
+
+    public static void encode(XdrDataOutputStream stream, ClaimantV0 encodedClaimantV0) throws IOException {
+      AccountID.encode(stream, encodedClaimantV0.destination);
+      ClaimPredicate.encode(stream, encodedClaimantV0.predicate);
     }
 
     public void encode(XdrDataOutputStream stream) throws IOException {
@@ -168,6 +155,17 @@ public class Claimant implements XdrElement {
       XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
       encode(xdrOutputStream);
       return new ByteString(byteStream.toByteArray());
+    }
+
+    public static ClaimantV0 decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static ClaimantV0 decode(XdrDataInputStream stream) throws IOException {
+      ClaimantV0 decodedClaimantV0 = new ClaimantV0();
+      decodedClaimantV0.destination = AccountID.decode(stream);
+      decodedClaimantV0.predicate = ClaimPredicate.decode(stream);
+      return decodedClaimantV0;
     }
 
     @Override

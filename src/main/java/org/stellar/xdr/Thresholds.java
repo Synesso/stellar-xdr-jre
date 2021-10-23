@@ -24,9 +24,28 @@ public class Thresholds implements XdrElement {
     this.Thresholds = Thresholds;
   }
 
+  public byte[] getThresholds() {
+    return this.Thresholds;
+  }
+
+  public void setThresholds(byte[] value) {
+    this.Thresholds = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, Thresholds encodedThresholds) throws IOException {
     int Thresholdssize = encodedThresholds.Thresholds.length;
     stream.write(encodedThresholds.getThresholds(), 0, Thresholdssize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Thresholds decode(ByteString bs) throws IOException {
@@ -39,25 +58,6 @@ public class Thresholds implements XdrElement {
     decodedThresholds.Thresholds = new byte[Thresholdssize];
     stream.read(decodedThresholds.Thresholds, 0, Thresholdssize);
     return decodedThresholds;
-  }
-
-  public byte[] getThresholds() {
-    return this.Thresholds;
-  }
-
-  public void setThresholds(byte[] value) {
-    this.Thresholds = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

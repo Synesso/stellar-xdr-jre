@@ -41,15 +41,77 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Transaction implements XdrElement {
+  public Transaction() {
+  }
+
   private MuxedAccount sourceAccount;
+
+  public MuxedAccount getSourceAccount() {
+    return this.sourceAccount;
+  }
+
+  public void setSourceAccount(MuxedAccount value) {
+    this.sourceAccount = value;
+  }
+
   private Uint32 fee;
+
+  public Uint32 getFee() {
+    return this.fee;
+  }
+
+  public void setFee(Uint32 value) {
+    this.fee = value;
+  }
+
   private SequenceNumber seqNum;
+
+  public SequenceNumber getSeqNum() {
+    return this.seqNum;
+  }
+
+  public void setSeqNum(SequenceNumber value) {
+    this.seqNum = value;
+  }
+
   private TimeBounds timeBounds;
+
+  public TimeBounds getTimeBounds() {
+    return this.timeBounds;
+  }
+
+  public void setTimeBounds(TimeBounds value) {
+    this.timeBounds = value;
+  }
+
   private Memo memo;
+
+  public Memo getMemo() {
+    return this.memo;
+  }
+
+  public void setMemo(Memo value) {
+    this.memo = value;
+  }
+
   private Operation[] operations;
+
+  public Operation[] getOperations() {
+    return this.operations;
+  }
+
+  public void setOperations(Operation[] value) {
+    this.operations = value;
+  }
+
   private TransactionExt ext;
 
-  public Transaction() {
+  public TransactionExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(TransactionExt value) {
+    this.ext = value;
   }
 
   public static void encode(XdrDataOutputStream stream, Transaction encodedTransaction) throws IOException {
@@ -69,6 +131,17 @@ public class Transaction implements XdrElement {
       Operation.encode(stream, encodedTransaction.operations[i]);
     }
     TransactionExt.encode(stream, encodedTransaction.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Transaction decode(ByteString bs) throws IOException {
@@ -93,80 +166,11 @@ public class Transaction implements XdrElement {
     decodedTransaction.ext = TransactionExt.decode(stream);
     return decodedTransaction;
   }
-
-  public MuxedAccount getSourceAccount() {
-    return this.sourceAccount;
-  }
-
-  public void setSourceAccount(MuxedAccount value) {
-    this.sourceAccount = value;
-  }
-
-  public Uint32 getFee() {
-    return this.fee;
-  }
-
-  public void setFee(Uint32 value) {
-    this.fee = value;
-  }
-
-  public SequenceNumber getSeqNum() {
-    return this.seqNum;
-  }
-
-  public void setSeqNum(SequenceNumber value) {
-    this.seqNum = value;
-  }
-
-  public TimeBounds getTimeBounds() {
-    return this.timeBounds;
-  }
-
-  public void setTimeBounds(TimeBounds value) {
-    this.timeBounds = value;
-  }
-
-  public Memo getMemo() {
-    return this.memo;
-  }
-
-  public void setMemo(Memo value) {
-    this.memo = value;
-  }
-
-  public Operation[] getOperations() {
-    return this.operations;
-  }
-
-  public void setOperations(Operation[] value) {
-    this.operations = value;
-  }
-
-  public TransactionExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(TransactionExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.sourceAccount, this.fee, this.seqNum, this.timeBounds, this.memo,
         Arrays.hashCode(this.operations), this.ext);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof Transaction)) {
@@ -238,9 +242,32 @@ public class Transaction implements XdrElement {
   }
 
   public static class TransactionExt {
+    public TransactionExt() {
+    }
+
     Integer v;
 
-    public TransactionExt() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public TransactionExt build() {
+        TransactionExt val = new TransactionExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(XdrDataOutputStream stream, TransactionExt encodedTransactionExt) throws IOException {
@@ -251,6 +278,17 @@ public class Transaction implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static TransactionExt decode(ByteString bs) throws IOException {
@@ -267,31 +305,10 @@ public class Transaction implements XdrElement {
       }
       return decodedTransactionExt;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof TransactionExt)) {
@@ -300,21 +317,6 @@ public class Transaction implements XdrElement {
 
       TransactionExt other = (TransactionExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public TransactionExt build() {
-        TransactionExt val = new TransactionExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

@@ -21,11 +21,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class CreateClaimableBalanceOp implements XdrElement {
+  public CreateClaimableBalanceOp() {
+  }
   private Asset asset;
+  public Asset getAsset() {
+    return this.asset;
+  }
+  public void setAsset(Asset value) {
+    this.asset = value;
+  }
+
   private Int64 amount;
+  public Int64 getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount(Int64 value) {
+    this.amount = value;
+  }
+
   private Claimant[] claimants;
 
-  public CreateClaimableBalanceOp() {
+  public Claimant[] getClaimants() {
+    return this.claimants;
+  }
+
+  public void setClaimants(Claimant[] value) {
+    this.claimants = value;
   }
 
   public static void encode(
@@ -39,6 +61,17 @@ public class CreateClaimableBalanceOp implements XdrElement {
     for (int i = 0; i < claimantssize; i++) {
       Claimant.encode(stream, encodedCreateClaimableBalanceOp.claimants[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static CreateClaimableBalanceOp decode(ByteString bs) throws IOException {
@@ -55,41 +88,6 @@ public class CreateClaimableBalanceOp implements XdrElement {
       decodedCreateClaimableBalanceOp.claimants[i] = Claimant.decode(stream);
     }
     return decodedCreateClaimableBalanceOp;
-  }
-
-  public Asset getAsset() {
-    return this.asset;
-  }
-
-  public void setAsset(Asset value) {
-    this.asset = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public Claimant[] getClaimants() {
-    return this.claimants;
-  }
-
-  public void setClaimants(Claimant[] value) {
-    this.claimants = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

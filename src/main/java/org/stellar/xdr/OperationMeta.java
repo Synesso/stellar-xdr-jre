@@ -18,24 +18,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class OperationMeta implements XdrElement {
-  private LedgerEntryChanges changes;
-
   public OperationMeta() {
   }
 
-  public static void encode(XdrDataOutputStream stream, OperationMeta encodedOperationMeta) throws IOException {
-    LedgerEntryChanges.encode(stream, encodedOperationMeta.changes);
-  }
-
-  public static OperationMeta decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static OperationMeta decode(XdrDataInputStream stream) throws IOException {
-    OperationMeta decodedOperationMeta = new OperationMeta();
-    decodedOperationMeta.changes = LedgerEntryChanges.decode(stream);
-    return decodedOperationMeta;
-  }
+  private LedgerEntryChanges changes;
 
   public LedgerEntryChanges getChanges() {
     return this.changes;
@@ -43,6 +29,10 @@ public class OperationMeta implements XdrElement {
 
   public void setChanges(LedgerEntryChanges value) {
     this.changes = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, OperationMeta encodedOperationMeta) throws IOException {
+    LedgerEntryChanges.encode(stream, encodedOperationMeta.changes);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -54,6 +44,16 @@ public class OperationMeta implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static OperationMeta decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static OperationMeta decode(XdrDataInputStream stream) throws IOException {
+    OperationMeta decodedOperationMeta = new OperationMeta();
+    decodedOperationMeta.changes = LedgerEntryChanges.decode(stream);
+    return decodedOperationMeta;
   }
 
   @Override

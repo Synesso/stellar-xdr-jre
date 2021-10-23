@@ -22,9 +22,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClawbackClaimableBalanceResult implements XdrElement {
+  public ClawbackClaimableBalanceResult() {
+  }
+
   ClawbackClaimableBalanceResultCode code;
 
-  public ClawbackClaimableBalanceResult() {
+  public ClawbackClaimableBalanceResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(ClawbackClaimableBalanceResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private ClawbackClaimableBalanceResultCode discriminant;
+
+    public Builder discriminant(ClawbackClaimableBalanceResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public ClawbackClaimableBalanceResult build() {
+      ClawbackClaimableBalanceResult val = new ClawbackClaimableBalanceResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(
@@ -40,6 +63,17 @@ public class ClawbackClaimableBalanceResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ClawbackClaimableBalanceResult decode(ByteString bs) throws IOException {
@@ -58,31 +92,10 @@ public class ClawbackClaimableBalanceResult implements XdrElement {
     }
     return decodedClawbackClaimableBalanceResult;
   }
-
-  public ClawbackClaimableBalanceResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(ClawbackClaimableBalanceResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof ClawbackClaimableBalanceResult)) {
@@ -91,20 +104,5 @@ public class ClawbackClaimableBalanceResult implements XdrElement {
 
     ClawbackClaimableBalanceResult other = (ClawbackClaimableBalanceResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private ClawbackClaimableBalanceResultCode discriminant;
-
-    public Builder discriminant(ClawbackClaimableBalanceResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public ClawbackClaimableBalanceResult build() {
-      ClawbackClaimableBalanceResult val = new ClawbackClaimableBalanceResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

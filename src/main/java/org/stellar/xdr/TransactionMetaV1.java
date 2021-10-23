@@ -20,10 +20,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionMetaV1 implements XdrElement {
+  public TransactionMetaV1() {
+  }
+
   private LedgerEntryChanges txChanges;
+
+  public LedgerEntryChanges getTxChanges() {
+    return this.txChanges;
+  }
+
+  public void setTxChanges(LedgerEntryChanges value) {
+    this.txChanges = value;
+  }
+
   private OperationMeta[] operations;
 
-  public TransactionMetaV1() {
+  public OperationMeta[] getOperations() {
+    return this.operations;
+  }
+
+  public void setOperations(OperationMeta[] value) {
+    this.operations = value;
   }
 
   public static void encode(XdrDataOutputStream stream, TransactionMetaV1 encodedTransactionMetaV1) throws IOException {
@@ -33,6 +50,17 @@ public class TransactionMetaV1 implements XdrElement {
     for (int i = 0; i < operationssize; i++) {
       OperationMeta.encode(stream, encodedTransactionMetaV1.operations[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionMetaV1 decode(ByteString bs) throws IOException {
@@ -49,39 +77,10 @@ public class TransactionMetaV1 implements XdrElement {
     }
     return decodedTransactionMetaV1;
   }
-
-  public LedgerEntryChanges getTxChanges() {
-    return this.txChanges;
-  }
-
-  public void setTxChanges(LedgerEntryChanges value) {
-    this.txChanges = value;
-  }
-
-  public OperationMeta[] getOperations() {
-    return this.operations;
-  }
-
-  public void setOperations(OperationMeta[] value) {
-    this.operations = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.txChanges, Arrays.hashCode(this.operations));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof TransactionMetaV1)) {

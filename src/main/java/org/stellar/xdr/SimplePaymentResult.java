@@ -20,11 +20,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SimplePaymentResult implements XdrElement {
+  public SimplePaymentResult() {
+  }
   private AccountID destination;
+  public AccountID getDestination() {
+    return this.destination;
+  }
+  public void setDestination(AccountID value) {
+    this.destination = value;
+  }
+
   private Asset asset;
+  public Asset getAsset() {
+    return this.asset;
+  }
+
+  public void setAsset(Asset value) {
+    this.asset = value;
+  }
+
   private Int64 amount;
 
-  public SimplePaymentResult() {
+  public Int64 getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount(Int64 value) {
+    this.amount = value;
   }
 
   public static void encode(
@@ -34,6 +56,17 @@ public class SimplePaymentResult implements XdrElement {
     AccountID.encode(stream, encodedSimplePaymentResult.destination);
     Asset.encode(stream, encodedSimplePaymentResult.asset);
     Int64.encode(stream, encodedSimplePaymentResult.amount);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SimplePaymentResult decode(ByteString bs) throws IOException {
@@ -46,41 +79,6 @@ public class SimplePaymentResult implements XdrElement {
     decodedSimplePaymentResult.asset = Asset.decode(stream);
     decodedSimplePaymentResult.amount = Int64.decode(stream);
     return decodedSimplePaymentResult;
-  }
-
-  public AccountID getDestination() {
-    return this.destination;
-  }
-
-  public void setDestination(AccountID value) {
-    this.destination = value;
-  }
-
-  public Asset getAsset() {
-    return this.asset;
-  }
-
-  public void setAsset(Asset value) {
-    this.asset = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

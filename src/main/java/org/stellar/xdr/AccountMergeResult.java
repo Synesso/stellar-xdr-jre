@@ -21,45 +21,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AccountMergeResult implements XdrElement {
-  AccountMergeResultCode code;
-  private Int64 sourceAccountBalance;
-
   public AccountMergeResult() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      AccountMergeResult encodedAccountMergeResult
-  ) throws IOException {
-    //Xdrgen::AST::Identifier
-    //AccountMergeResultCode
-    stream.writeInt(encodedAccountMergeResult.getDiscriminant().getValue());
-    switch (encodedAccountMergeResult.getDiscriminant()) {
-      case ACCOUNT_MERGE_SUCCESS:
-        Int64.encode(stream, encodedAccountMergeResult.sourceAccountBalance);
-        break;
-      default:
-        break;
-    }
-  }
-
-  public static AccountMergeResult decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static AccountMergeResult decode(XdrDataInputStream stream) throws IOException {
-    AccountMergeResult decodedAccountMergeResult = new AccountMergeResult();
-    AccountMergeResultCode discriminant = AccountMergeResultCode.decode(stream);
-    decodedAccountMergeResult.setDiscriminant(discriminant);
-    switch (decodedAccountMergeResult.getDiscriminant()) {
-      case ACCOUNT_MERGE_SUCCESS:
-        decodedAccountMergeResult.sourceAccountBalance = Int64.decode(stream);
-        break;
-      default:
-        break;
-    }
-    return decodedAccountMergeResult;
-  }
+  AccountMergeResultCode code;
 
   public AccountMergeResultCode getDiscriminant() {
     return this.code;
@@ -69,38 +34,14 @@ public class AccountMergeResult implements XdrElement {
     this.code = value;
   }
 
+  private Int64 sourceAccountBalance;
+
   public Int64 getSourceAccountBalance() {
     return this.sourceAccountBalance;
   }
 
   public void setSourceAccountBalance(Int64 value) {
     this.sourceAccountBalance = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.sourceAccountBalance, this.code);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof AccountMergeResult)) {
-      return false;
-    }
-
-    AccountMergeResult other = (AccountMergeResult) object;
-    return Objects.equal(this.sourceAccountBalance, other.sourceAccountBalance) && Objects.equal(this.code, other.code);
   }
 
   public static final class Builder {
@@ -123,5 +64,63 @@ public class AccountMergeResult implements XdrElement {
       val.setSourceAccountBalance(sourceAccountBalance);
       return val;
     }
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      AccountMergeResult encodedAccountMergeResult
+  ) throws IOException {
+    //Xdrgen::AST::Identifier
+    //AccountMergeResultCode
+    stream.writeInt(encodedAccountMergeResult.getDiscriminant().getValue());
+    switch (encodedAccountMergeResult.getDiscriminant()) {
+      case ACCOUNT_MERGE_SUCCESS:
+        Int64.encode(stream, encodedAccountMergeResult.sourceAccountBalance);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static AccountMergeResult decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static AccountMergeResult decode(XdrDataInputStream stream) throws IOException {
+    AccountMergeResult decodedAccountMergeResult = new AccountMergeResult();
+    AccountMergeResultCode discriminant = AccountMergeResultCode.decode(stream);
+    decodedAccountMergeResult.setDiscriminant(discriminant);
+    switch (decodedAccountMergeResult.getDiscriminant()) {
+      case ACCOUNT_MERGE_SUCCESS:
+        decodedAccountMergeResult.sourceAccountBalance = Int64.decode(stream);
+        break;
+      default:
+        break;
+    }
+    return decodedAccountMergeResult;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.sourceAccountBalance, this.code);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof AccountMergeResult)) {
+      return false;
+    }
+
+    AccountMergeResult other = (AccountMergeResult) object;
+    return Objects.equal(this.sourceAccountBalance, other.sourceAccountBalance) && Objects.equal(this.code, other.code);
   }
 }

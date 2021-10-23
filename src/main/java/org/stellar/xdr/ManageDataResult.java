@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ManageDataResult implements XdrElement {
+  public ManageDataResult() {
+  }
+
   ManageDataResultCode code;
 
-  public ManageDataResult() {
+  public ManageDataResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(ManageDataResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private ManageDataResultCode discriminant;
+
+    public Builder discriminant(ManageDataResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public ManageDataResult build() {
+      ManageDataResult val = new ManageDataResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(XdrDataOutputStream stream, ManageDataResult encodedManageDataResult) throws IOException {
@@ -36,6 +59,17 @@ public class ManageDataResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ManageDataResult decode(ByteString bs) throws IOException {
@@ -54,31 +88,10 @@ public class ManageDataResult implements XdrElement {
     }
     return decodedManageDataResult;
   }
-
-  public ManageDataResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(ManageDataResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof ManageDataResult)) {
@@ -87,20 +100,5 @@ public class ManageDataResult implements XdrElement {
 
     ManageDataResult other = (ManageDataResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private ManageDataResultCode discriminant;
-
-    public Builder discriminant(ManageDataResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public ManageDataResult build() {
-      ManageDataResult val = new ManageDataResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

@@ -24,26 +24,16 @@ public class Uint32 implements XdrElement {
     this.uint32 = uint32;
   }
 
-  public static void encode(XdrDataOutputStream stream, Uint32 encodedUint32) throws IOException {
-    stream.writeInt(encodedUint32.uint32);
-  }
-
-  public static Uint32 decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Uint32 decode(XdrDataInputStream stream) throws IOException {
-    Uint32 decodedUint32 = new Uint32();
-    decodedUint32.uint32 = stream.readInt();
-    return decodedUint32;
-  }
-
   public Integer getUint32() {
     return this.uint32;
   }
 
   public void setUint32(Integer value) {
     this.uint32 = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, Uint32 encodedUint32) throws IOException {
+    stream.writeInt(encodedUint32.uint32);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -55,6 +45,16 @@ public class Uint32 implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Uint32 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Uint32 decode(XdrDataInputStream stream) throws IOException {
+    Uint32 decodedUint32 = new Uint32();
+    decodedUint32.uint32 = stream.readInt();
+    return decodedUint32;
   }
 
   @Override

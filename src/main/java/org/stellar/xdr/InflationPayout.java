@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class InflationPayout implements XdrElement {
-  private AccountID destination;
-  private Int64 amount;
-
   public InflationPayout() {
   }
-
-  public static void encode(XdrDataOutputStream stream, InflationPayout encodedInflationPayout) throws IOException {
-    AccountID.encode(stream, encodedInflationPayout.destination);
-    Int64.encode(stream, encodedInflationPayout.amount);
-  }
-
-  public static InflationPayout decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static InflationPayout decode(XdrDataInputStream stream) throws IOException {
-    InflationPayout decodedInflationPayout = new InflationPayout();
-    decodedInflationPayout.destination = AccountID.decode(stream);
-    decodedInflationPayout.amount = Int64.decode(stream);
-    return decodedInflationPayout;
-  }
-
+  private AccountID destination;
   public AccountID getDestination() {
     return this.destination;
   }
@@ -49,12 +30,19 @@ public class InflationPayout implements XdrElement {
     this.destination = value;
   }
 
+  private Int64 amount;
+
   public Int64 getAmount() {
     return this.amount;
   }
 
   public void setAmount(Int64 value) {
     this.amount = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, InflationPayout encodedInflationPayout) throws IOException {
+    AccountID.encode(stream, encodedInflationPayout.destination);
+    Int64.encode(stream, encodedInflationPayout.amount);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class InflationPayout implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static InflationPayout decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static InflationPayout decode(XdrDataInputStream stream) throws IOException {
+    InflationPayout decodedInflationPayout = new InflationPayout();
+    decodedInflationPayout.destination = AccountID.decode(stream);
+    decodedInflationPayout.amount = Int64.decode(stream);
+    return decodedInflationPayout;
   }
 
   @Override

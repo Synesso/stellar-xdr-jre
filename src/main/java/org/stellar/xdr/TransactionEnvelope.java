@@ -23,55 +23,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionEnvelope implements XdrElement {
-  EnvelopeType type;
-  private TransactionV0Envelope v0;
-  private TransactionV1Envelope v1;
-  private FeeBumpTransactionEnvelope feeBump;
-
   public TransactionEnvelope() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      TransactionEnvelope encodedTransactionEnvelope
-  ) throws IOException {
-    //Xdrgen::AST::Identifier
-    //EnvelopeType
-    stream.writeInt(encodedTransactionEnvelope.getDiscriminant().getValue());
-    switch (encodedTransactionEnvelope.getDiscriminant()) {
-      case ENVELOPE_TYPE_TX_V0:
-        TransactionV0Envelope.encode(stream, encodedTransactionEnvelope.v0);
-        break;
-      case ENVELOPE_TYPE_TX:
-        TransactionV1Envelope.encode(stream, encodedTransactionEnvelope.v1);
-        break;
-      case ENVELOPE_TYPE_TX_FEE_BUMP:
-        FeeBumpTransactionEnvelope.encode(stream, encodedTransactionEnvelope.feeBump);
-        break;
-    }
-  }
-
-  public static TransactionEnvelope decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static TransactionEnvelope decode(XdrDataInputStream stream) throws IOException {
-    TransactionEnvelope decodedTransactionEnvelope = new TransactionEnvelope();
-    EnvelopeType discriminant = EnvelopeType.decode(stream);
-    decodedTransactionEnvelope.setDiscriminant(discriminant);
-    switch (decodedTransactionEnvelope.getDiscriminant()) {
-      case ENVELOPE_TYPE_TX_V0:
-        decodedTransactionEnvelope.v0 = TransactionV0Envelope.decode(stream);
-        break;
-      case ENVELOPE_TYPE_TX:
-        decodedTransactionEnvelope.v1 = TransactionV1Envelope.decode(stream);
-        break;
-      case ENVELOPE_TYPE_TX_FEE_BUMP:
-        decodedTransactionEnvelope.feeBump = FeeBumpTransactionEnvelope.decode(stream);
-        break;
-    }
-    return decodedTransactionEnvelope;
-  }
+  EnvelopeType type;
 
   public EnvelopeType getDiscriminant() {
     return this.type;
@@ -81,6 +36,8 @@ public class TransactionEnvelope implements XdrElement {
     this.type = value;
   }
 
+  private TransactionV0Envelope v0;
+
   public TransactionV0Envelope getV0() {
     return this.v0;
   }
@@ -88,6 +45,8 @@ public class TransactionEnvelope implements XdrElement {
   public void setV0(TransactionV0Envelope value) {
     this.v0 = value;
   }
+
+  private TransactionV1Envelope v1;
 
   public TransactionV1Envelope getV1() {
     return this.v1;
@@ -97,39 +56,14 @@ public class TransactionEnvelope implements XdrElement {
     this.v1 = value;
   }
 
+  private FeeBumpTransactionEnvelope feeBump;
+
   public FeeBumpTransactionEnvelope getFeeBump() {
     return this.feeBump;
   }
 
   public void setFeeBump(FeeBumpTransactionEnvelope value) {
     this.feeBump = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.v0, this.v1, this.feeBump, this.type);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof TransactionEnvelope)) {
-      return false;
-    }
-
-    TransactionEnvelope other = (TransactionEnvelope) object;
-    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v1, other.v1) && Objects
-        .equal(this.feeBump, other.feeBump) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -166,5 +100,72 @@ public class TransactionEnvelope implements XdrElement {
       val.setFeeBump(feeBump);
       return val;
     }
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionEnvelope encodedTransactionEnvelope
+  ) throws IOException {
+    //Xdrgen::AST::Identifier
+    //EnvelopeType
+    stream.writeInt(encodedTransactionEnvelope.getDiscriminant().getValue());
+    switch (encodedTransactionEnvelope.getDiscriminant()) {
+      case ENVELOPE_TYPE_TX_V0:
+        TransactionV0Envelope.encode(stream, encodedTransactionEnvelope.v0);
+        break;
+      case ENVELOPE_TYPE_TX:
+        TransactionV1Envelope.encode(stream, encodedTransactionEnvelope.v1);
+        break;
+      case ENVELOPE_TYPE_TX_FEE_BUMP:
+        FeeBumpTransactionEnvelope.encode(stream, encodedTransactionEnvelope.feeBump);
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static TransactionEnvelope decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static TransactionEnvelope decode(XdrDataInputStream stream) throws IOException {
+    TransactionEnvelope decodedTransactionEnvelope = new TransactionEnvelope();
+    EnvelopeType discriminant = EnvelopeType.decode(stream);
+    decodedTransactionEnvelope.setDiscriminant(discriminant);
+    switch (decodedTransactionEnvelope.getDiscriminant()) {
+      case ENVELOPE_TYPE_TX_V0:
+        decodedTransactionEnvelope.v0 = TransactionV0Envelope.decode(stream);
+        break;
+      case ENVELOPE_TYPE_TX:
+        decodedTransactionEnvelope.v1 = TransactionV1Envelope.decode(stream);
+        break;
+      case ENVELOPE_TYPE_TX_FEE_BUMP:
+        decodedTransactionEnvelope.feeBump = FeeBumpTransactionEnvelope.decode(stream);
+        break;
+    }
+    return decodedTransactionEnvelope;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.v0, this.v1, this.feeBump, this.type);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof TransactionEnvelope)) {
+      return false;
+    }
+
+    TransactionEnvelope other = (TransactionEnvelope) object;
+    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v1, other.v1) && Objects
+        .equal(this.feeBump, other.feeBump) && Objects.equal(this.type, other.type);
   }
 }

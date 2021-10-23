@@ -22,9 +22,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class BeginSponsoringFutureReservesResult implements XdrElement {
+  public BeginSponsoringFutureReservesResult() {
+  }
+
   BeginSponsoringFutureReservesResultCode code;
 
-  public BeginSponsoringFutureReservesResult() {
+  public BeginSponsoringFutureReservesResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(BeginSponsoringFutureReservesResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private BeginSponsoringFutureReservesResultCode discriminant;
+
+    public Builder discriminant(BeginSponsoringFutureReservesResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public BeginSponsoringFutureReservesResult build() {
+      BeginSponsoringFutureReservesResult val = new BeginSponsoringFutureReservesResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(
@@ -40,6 +63,17 @@ public class BeginSponsoringFutureReservesResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static BeginSponsoringFutureReservesResult decode(ByteString bs) throws IOException {
@@ -59,31 +93,10 @@ public class BeginSponsoringFutureReservesResult implements XdrElement {
     }
     return decodedBeginSponsoringFutureReservesResult;
   }
-
-  public BeginSponsoringFutureReservesResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(BeginSponsoringFutureReservesResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof BeginSponsoringFutureReservesResult)) {
@@ -92,20 +105,5 @@ public class BeginSponsoringFutureReservesResult implements XdrElement {
 
     BeginSponsoringFutureReservesResult other = (BeginSponsoringFutureReservesResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private BeginSponsoringFutureReservesResultCode discriminant;
-
-    public Builder discriminant(BeginSponsoringFutureReservesResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public BeginSponsoringFutureReservesResult build() {
-      BeginSponsoringFutureReservesResult val = new BeginSponsoringFutureReservesResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

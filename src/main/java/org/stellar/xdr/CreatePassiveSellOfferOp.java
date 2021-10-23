@@ -21,12 +21,41 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class CreatePassiveSellOfferOp implements XdrElement {
+  public CreatePassiveSellOfferOp() {
+  }
   private Asset selling;
+  public Asset getSelling() {
+    return this.selling;
+  }
+  public void setSelling(Asset value) {
+    this.selling = value;
+  }
+
   private Asset buying;
+  public Asset getBuying() {
+    return this.buying;
+  }
+  public void setBuying(Asset value) {
+    this.buying = value;
+  }
+
   private Int64 amount;
+  public Int64 getAmount() {
+    return this.amount;
+  }
+
+  public void setAmount(Int64 value) {
+    this.amount = value;
+  }
+
   private Price price;
 
-  public CreatePassiveSellOfferOp() {
+  public Price getPrice() {
+    return this.price;
+  }
+
+  public void setPrice(Price value) {
+    this.price = value;
   }
 
   public static void encode(
@@ -37,6 +66,17 @@ public class CreatePassiveSellOfferOp implements XdrElement {
     Asset.encode(stream, encodedCreatePassiveSellOfferOp.buying);
     Int64.encode(stream, encodedCreatePassiveSellOfferOp.amount);
     Price.encode(stream, encodedCreatePassiveSellOfferOp.price);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static CreatePassiveSellOfferOp decode(ByteString bs) throws IOException {
@@ -50,49 +90,6 @@ public class CreatePassiveSellOfferOp implements XdrElement {
     decodedCreatePassiveSellOfferOp.amount = Int64.decode(stream);
     decodedCreatePassiveSellOfferOp.price = Price.decode(stream);
     return decodedCreatePassiveSellOfferOp;
-  }
-
-  public Asset getSelling() {
-    return this.selling;
-  }
-
-  public void setSelling(Asset value) {
-    this.selling = value;
-  }
-
-  public Asset getBuying() {
-    return this.buying;
-  }
-
-  public void setBuying(Asset value) {
-    this.buying = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public Price getPrice() {
-    return this.price;
-  }
-
-  public void setPrice(Price value) {
-    this.price = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

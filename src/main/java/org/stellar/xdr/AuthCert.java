@@ -20,17 +20,50 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AuthCert implements XdrElement {
+  public AuthCert() {
+  }
   private Curve25519Public pubkey;
+  public Curve25519Public getPubkey() {
+    return this.pubkey;
+  }
+  public void setPubkey(Curve25519Public value) {
+    this.pubkey = value;
+  }
+
   private Uint64 expiration;
+  public Uint64 getExpiration() {
+    return this.expiration;
+  }
+
+  public void setExpiration(Uint64 value) {
+    this.expiration = value;
+  }
+
   private Signature sig;
 
-  public AuthCert() {
+  public Signature getSig() {
+    return this.sig;
+  }
+
+  public void setSig(Signature value) {
+    this.sig = value;
   }
 
   public static void encode(XdrDataOutputStream stream, AuthCert encodedAuthCert) throws IOException {
     Curve25519Public.encode(stream, encodedAuthCert.pubkey);
     Uint64.encode(stream, encodedAuthCert.expiration);
     Signature.encode(stream, encodedAuthCert.sig);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static AuthCert decode(ByteString bs) throws IOException {
@@ -43,41 +76,6 @@ public class AuthCert implements XdrElement {
     decodedAuthCert.expiration = Uint64.decode(stream);
     decodedAuthCert.sig = Signature.decode(stream);
     return decodedAuthCert;
-  }
-
-  public Curve25519Public getPubkey() {
-    return this.pubkey;
-  }
-
-  public void setPubkey(Curve25519Public value) {
-    this.pubkey = value;
-  }
-
-  public Uint64 getExpiration() {
-    return this.expiration;
-  }
-
-  public void setExpiration(Uint64 value) {
-    this.expiration = value;
-  }
-
-  public Signature getSig() {
-    return this.sig;
-  }
-
-  public void setSig(Signature value) {
-    this.sig = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

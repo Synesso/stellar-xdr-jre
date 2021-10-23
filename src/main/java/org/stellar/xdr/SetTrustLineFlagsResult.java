@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SetTrustLineFlagsResult implements XdrElement {
+  public SetTrustLineFlagsResult() {
+  }
+
   SetTrustLineFlagsResultCode code;
 
-  public SetTrustLineFlagsResult() {
+  public SetTrustLineFlagsResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(SetTrustLineFlagsResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private SetTrustLineFlagsResultCode discriminant;
+
+    public Builder discriminant(SetTrustLineFlagsResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public SetTrustLineFlagsResult build() {
+      SetTrustLineFlagsResult val = new SetTrustLineFlagsResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(
@@ -39,6 +62,17 @@ public class SetTrustLineFlagsResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SetTrustLineFlagsResult decode(ByteString bs) throws IOException {
@@ -57,31 +91,10 @@ public class SetTrustLineFlagsResult implements XdrElement {
     }
     return decodedSetTrustLineFlagsResult;
   }
-
-  public SetTrustLineFlagsResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(SetTrustLineFlagsResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof SetTrustLineFlagsResult)) {
@@ -90,20 +103,5 @@ public class SetTrustLineFlagsResult implements XdrElement {
 
     SetTrustLineFlagsResult other = (SetTrustLineFlagsResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private SetTrustLineFlagsResultCode discriminant;
-
-    public Builder discriminant(SetTrustLineFlagsResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public SetTrustLineFlagsResult build() {
-      SetTrustLineFlagsResult val = new SetTrustLineFlagsResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

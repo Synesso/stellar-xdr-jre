@@ -24,26 +24,16 @@ public class String32 implements XdrElement {
     this.string32 = string32;
   }
 
-  public static void encode(XdrDataOutputStream stream, String32 encodedString32) throws IOException {
-    encodedString32.string32.encode(stream);
-  }
-
-  public static String32 decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static String32 decode(XdrDataInputStream stream) throws IOException {
-    String32 decodedString32 = new String32();
-    decodedString32.string32 = XdrString.decode(stream, 32);
-    return decodedString32;
-  }
-
   public XdrString getString32() {
     return this.string32;
   }
 
   public void setString32(XdrString value) {
     this.string32 = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, String32 encodedString32) throws IOException {
+    encodedString32.string32.encode(stream);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -55,6 +45,16 @@ public class String32 implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static String32 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static String32 decode(XdrDataInputStream stream) throws IOException {
+    String32 decodedString32 = new String32();
+    decodedString32.string32 = XdrString.decode(stream, 32);
+    return decodedString32;
   }
 
   @Override

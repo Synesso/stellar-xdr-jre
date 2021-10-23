@@ -19,7 +19,8 @@ import okio.ByteString;
 //      REVOKE_SPONSORSHIP_DOES_NOT_EXIST = -1,
 //      REVOKE_SPONSORSHIP_NOT_SPONSOR = -2,
 //      REVOKE_SPONSORSHIP_LOW_RESERVE = -3,
-//      REVOKE_SPONSORSHIP_ONLY_TRANSFERABLE = -4
+//      REVOKE_SPONSORSHIP_ONLY_TRANSFERABLE = -4,
+//      REVOKE_SPONSORSHIP_MALFORMED = -5
 //  };
 
 //  ===========================================================================
@@ -29,11 +30,16 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
   REVOKE_SPONSORSHIP_NOT_SPONSOR(-2),
   REVOKE_SPONSORSHIP_LOW_RESERVE(-3),
   REVOKE_SPONSORSHIP_ONLY_TRANSFERABLE(-4),
+  REVOKE_SPONSORSHIP_MALFORMED(-5),
   ;
   private int mValue;
 
   RevokeSponsorshipResultCode(int value) {
     mValue = value;
+  }
+
+  public int getValue() {
+    return mValue;
   }
 
   public static RevokeSponsorshipResultCode decode(ByteString bs) throws IOException {
@@ -53,6 +59,8 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
         return REVOKE_SPONSORSHIP_LOW_RESERVE;
       case -4:
         return REVOKE_SPONSORSHIP_ONLY_TRANSFERABLE;
+      case -5:
+        return REVOKE_SPONSORSHIP_MALFORMED;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -60,10 +68,6 @@ public enum RevokeSponsorshipResultCode implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, RevokeSponsorshipResultCode value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

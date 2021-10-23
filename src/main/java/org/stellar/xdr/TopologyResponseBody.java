@@ -22,12 +22,41 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TopologyResponseBody implements XdrElement {
+  public TopologyResponseBody() {
+  }
   private PeerStatList inboundPeers;
+  public PeerStatList getInboundPeers() {
+    return this.inboundPeers;
+  }
+  public void setInboundPeers(PeerStatList value) {
+    this.inboundPeers = value;
+  }
+
   private PeerStatList outboundPeers;
+  public PeerStatList getOutboundPeers() {
+    return this.outboundPeers;
+  }
+  public void setOutboundPeers(PeerStatList value) {
+    this.outboundPeers = value;
+  }
+
   private Uint32 totalInboundPeerCount;
+  public Uint32 getTotalInboundPeerCount() {
+    return this.totalInboundPeerCount;
+  }
+
+  public void setTotalInboundPeerCount(Uint32 value) {
+    this.totalInboundPeerCount = value;
+  }
+
   private Uint32 totalOutboundPeerCount;
 
-  public TopologyResponseBody() {
+  public Uint32 getTotalOutboundPeerCount() {
+    return this.totalOutboundPeerCount;
+  }
+
+  public void setTotalOutboundPeerCount(Uint32 value) {
+    this.totalOutboundPeerCount = value;
   }
 
   public static void encode(
@@ -38,6 +67,17 @@ public class TopologyResponseBody implements XdrElement {
     PeerStatList.encode(stream, encodedTopologyResponseBody.outboundPeers);
     Uint32.encode(stream, encodedTopologyResponseBody.totalInboundPeerCount);
     Uint32.encode(stream, encodedTopologyResponseBody.totalOutboundPeerCount);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TopologyResponseBody decode(ByteString bs) throws IOException {
@@ -51,49 +91,6 @@ public class TopologyResponseBody implements XdrElement {
     decodedTopologyResponseBody.totalInboundPeerCount = Uint32.decode(stream);
     decodedTopologyResponseBody.totalOutboundPeerCount = Uint32.decode(stream);
     return decodedTopologyResponseBody;
-  }
-
-  public PeerStatList getInboundPeers() {
-    return this.inboundPeers;
-  }
-
-  public void setInboundPeers(PeerStatList value) {
-    this.inboundPeers = value;
-  }
-
-  public PeerStatList getOutboundPeers() {
-    return this.outboundPeers;
-  }
-
-  public void setOutboundPeers(PeerStatList value) {
-    this.outboundPeers = value;
-  }
-
-  public Uint32 getTotalInboundPeerCount() {
-    return this.totalInboundPeerCount;
-  }
-
-  public void setTotalInboundPeerCount(Uint32 value) {
-    this.totalInboundPeerCount = value;
-  }
-
-  public Uint32 getTotalOutboundPeerCount() {
-    return this.totalOutboundPeerCount;
-  }
-
-  public void setTotalOutboundPeerCount(Uint32 value) {
-    this.totalOutboundPeerCount = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

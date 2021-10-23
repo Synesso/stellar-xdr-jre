@@ -18,27 +18,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class BeginSponsoringFutureReservesOp implements XdrElement {
-  private AccountID sponsoredID;
-
   public BeginSponsoringFutureReservesOp() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      BeginSponsoringFutureReservesOp encodedBeginSponsoringFutureReservesOp
-  ) throws IOException {
-    AccountID.encode(stream, encodedBeginSponsoringFutureReservesOp.sponsoredID);
-  }
-
-  public static BeginSponsoringFutureReservesOp decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static BeginSponsoringFutureReservesOp decode(XdrDataInputStream stream) throws IOException {
-    BeginSponsoringFutureReservesOp decodedBeginSponsoringFutureReservesOp = new BeginSponsoringFutureReservesOp();
-    decodedBeginSponsoringFutureReservesOp.sponsoredID = AccountID.decode(stream);
-    return decodedBeginSponsoringFutureReservesOp;
-  }
+  private AccountID sponsoredID;
 
   public AccountID getSponsoredID() {
     return this.sponsoredID;
@@ -46,6 +29,13 @@ public class BeginSponsoringFutureReservesOp implements XdrElement {
 
   public void setSponsoredID(AccountID value) {
     this.sponsoredID = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      BeginSponsoringFutureReservesOp encodedBeginSponsoringFutureReservesOp
+  ) throws IOException {
+    AccountID.encode(stream, encodedBeginSponsoringFutureReservesOp.sponsoredID);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -57,6 +47,16 @@ public class BeginSponsoringFutureReservesOp implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static BeginSponsoringFutureReservesOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static BeginSponsoringFutureReservesOp decode(XdrDataInputStream stream) throws IOException {
+    BeginSponsoringFutureReservesOp decodedBeginSponsoringFutureReservesOp = new BeginSponsoringFutureReservesOp();
+    decodedBeginSponsoringFutureReservesOp.sponsoredID = AccountID.decode(stream);
+    return decodedBeginSponsoringFutureReservesOp;
   }
 
   @Override

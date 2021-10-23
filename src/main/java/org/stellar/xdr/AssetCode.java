@@ -24,45 +24,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AssetCode implements XdrElement {
-  AssetType type;
-  private AssetCode4 assetCode4;
-  private AssetCode12 assetCode12;
-
   public AssetCode() {
   }
 
-  public static void encode(XdrDataOutputStream stream, AssetCode encodedAssetCode) throws IOException {
-    //Xdrgen::AST::Identifier
-    //AssetType
-    stream.writeInt(encodedAssetCode.getDiscriminant().getValue());
-    switch (encodedAssetCode.getDiscriminant()) {
-      case ASSET_TYPE_CREDIT_ALPHANUM4:
-        AssetCode4.encode(stream, encodedAssetCode.assetCode4);
-        break;
-      case ASSET_TYPE_CREDIT_ALPHANUM12:
-        AssetCode12.encode(stream, encodedAssetCode.assetCode12);
-        break;
-    }
-  }
-
-  public static AssetCode decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static AssetCode decode(XdrDataInputStream stream) throws IOException {
-    AssetCode decodedAssetCode = new AssetCode();
-    AssetType discriminant = AssetType.decode(stream);
-    decodedAssetCode.setDiscriminant(discriminant);
-    switch (decodedAssetCode.getDiscriminant()) {
-      case ASSET_TYPE_CREDIT_ALPHANUM4:
-        decodedAssetCode.assetCode4 = AssetCode4.decode(stream);
-        break;
-      case ASSET_TYPE_CREDIT_ALPHANUM12:
-        decodedAssetCode.assetCode12 = AssetCode12.decode(stream);
-        break;
-    }
-    return decodedAssetCode;
-  }
+  AssetType type;
 
   public AssetType getDiscriminant() {
     return this.type;
@@ -72,6 +37,8 @@ public class AssetCode implements XdrElement {
     this.type = value;
   }
 
+  private AssetCode4 assetCode4;
+
   public AssetCode4 getAssetCode4() {
     return this.assetCode4;
   }
@@ -80,39 +47,14 @@ public class AssetCode implements XdrElement {
     this.assetCode4 = value;
   }
 
+  private AssetCode12 assetCode12;
+
   public AssetCode12 getAssetCode12() {
     return this.assetCode12;
   }
 
   public void setAssetCode12(AssetCode12 value) {
     this.assetCode12 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.assetCode4, this.assetCode12, this.type);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof AssetCode)) {
-      return false;
-    }
-
-    AssetCode other = (AssetCode) object;
-    return Objects.equal(this.assetCode4, other.assetCode4) && Objects
-        .equal(this.assetCode12, other.assetCode12) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -142,5 +84,63 @@ public class AssetCode implements XdrElement {
       val.setAssetCode12(assetCode12);
       return val;
     }
+  }
+
+  public static void encode(XdrDataOutputStream stream, AssetCode encodedAssetCode) throws IOException {
+    //Xdrgen::AST::Identifier
+    //AssetType
+    stream.writeInt(encodedAssetCode.getDiscriminant().getValue());
+    switch (encodedAssetCode.getDiscriminant()) {
+      case ASSET_TYPE_CREDIT_ALPHANUM4:
+        AssetCode4.encode(stream, encodedAssetCode.assetCode4);
+        break;
+      case ASSET_TYPE_CREDIT_ALPHANUM12:
+        AssetCode12.encode(stream, encodedAssetCode.assetCode12);
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static AssetCode decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static AssetCode decode(XdrDataInputStream stream) throws IOException {
+    AssetCode decodedAssetCode = new AssetCode();
+    AssetType discriminant = AssetType.decode(stream);
+    decodedAssetCode.setDiscriminant(discriminant);
+    switch (decodedAssetCode.getDiscriminant()) {
+      case ASSET_TYPE_CREDIT_ALPHANUM4:
+        decodedAssetCode.assetCode4 = AssetCode4.decode(stream);
+        break;
+      case ASSET_TYPE_CREDIT_ALPHANUM12:
+        decodedAssetCode.assetCode12 = AssetCode12.decode(stream);
+        break;
+    }
+    return decodedAssetCode;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.assetCode4, this.assetCode12, this.type);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof AssetCode)) {
+      return false;
+    }
+
+    AssetCode other = (AssetCode) object;
+    return Objects.equal(this.assetCode4, other.assetCode4) && Objects
+        .equal(this.assetCode12, other.assetCode12) && Objects.equal(this.type, other.type);
   }
 }

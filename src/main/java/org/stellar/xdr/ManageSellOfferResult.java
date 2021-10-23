@@ -21,45 +21,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ManageSellOfferResult implements XdrElement {
-  ManageSellOfferResultCode code;
-  private ManageOfferSuccessResult success;
-
   public ManageSellOfferResult() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      ManageSellOfferResult encodedManageSellOfferResult
-  ) throws IOException {
-    //Xdrgen::AST::Identifier
-    //ManageSellOfferResultCode
-    stream.writeInt(encodedManageSellOfferResult.getDiscriminant().getValue());
-    switch (encodedManageSellOfferResult.getDiscriminant()) {
-      case MANAGE_SELL_OFFER_SUCCESS:
-        ManageOfferSuccessResult.encode(stream, encodedManageSellOfferResult.success);
-        break;
-      default:
-        break;
-    }
-  }
-
-  public static ManageSellOfferResult decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static ManageSellOfferResult decode(XdrDataInputStream stream) throws IOException {
-    ManageSellOfferResult decodedManageSellOfferResult = new ManageSellOfferResult();
-    ManageSellOfferResultCode discriminant = ManageSellOfferResultCode.decode(stream);
-    decodedManageSellOfferResult.setDiscriminant(discriminant);
-    switch (decodedManageSellOfferResult.getDiscriminant()) {
-      case MANAGE_SELL_OFFER_SUCCESS:
-        decodedManageSellOfferResult.success = ManageOfferSuccessResult.decode(stream);
-        break;
-      default:
-        break;
-    }
-    return decodedManageSellOfferResult;
-  }
+  ManageSellOfferResultCode code;
 
   public ManageSellOfferResultCode getDiscriminant() {
     return this.code;
@@ -69,38 +34,14 @@ public class ManageSellOfferResult implements XdrElement {
     this.code = value;
   }
 
+  private ManageOfferSuccessResult success;
+
   public ManageOfferSuccessResult getSuccess() {
     return this.success;
   }
 
   public void setSuccess(ManageOfferSuccessResult value) {
     this.success = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.success, this.code);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof ManageSellOfferResult)) {
-      return false;
-    }
-
-    ManageSellOfferResult other = (ManageSellOfferResult) object;
-    return Objects.equal(this.success, other.success) && Objects.equal(this.code, other.code);
   }
 
   public static final class Builder {
@@ -123,5 +64,63 @@ public class ManageSellOfferResult implements XdrElement {
       val.setSuccess(success);
       return val;
     }
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      ManageSellOfferResult encodedManageSellOfferResult
+  ) throws IOException {
+    //Xdrgen::AST::Identifier
+    //ManageSellOfferResultCode
+    stream.writeInt(encodedManageSellOfferResult.getDiscriminant().getValue());
+    switch (encodedManageSellOfferResult.getDiscriminant()) {
+      case MANAGE_SELL_OFFER_SUCCESS:
+        ManageOfferSuccessResult.encode(stream, encodedManageSellOfferResult.success);
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static ManageSellOfferResult decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static ManageSellOfferResult decode(XdrDataInputStream stream) throws IOException {
+    ManageSellOfferResult decodedManageSellOfferResult = new ManageSellOfferResult();
+    ManageSellOfferResultCode discriminant = ManageSellOfferResultCode.decode(stream);
+    decodedManageSellOfferResult.setDiscriminant(discriminant);
+    switch (decodedManageSellOfferResult.getDiscriminant()) {
+      case MANAGE_SELL_OFFER_SUCCESS:
+        decodedManageSellOfferResult.success = ManageOfferSuccessResult.decode(stream);
+        break;
+      default:
+        break;
+    }
+    return decodedManageSellOfferResult;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.success, this.code);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof ManageSellOfferResult)) {
+      return false;
+    }
+
+    ManageSellOfferResult other = (ManageSellOfferResult) object;
+    return Objects.equal(this.success, other.success) && Objects.equal(this.code, other.code);
   }
 }

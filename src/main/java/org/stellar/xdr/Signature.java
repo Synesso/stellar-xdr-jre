@@ -24,10 +24,29 @@ public class Signature implements XdrElement {
     this.Signature = Signature;
   }
 
+  public byte[] getSignature() {
+    return this.Signature;
+  }
+
+  public void setSignature(byte[] value) {
+    this.Signature = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, Signature encodedSignature) throws IOException {
     int Signaturesize = encodedSignature.Signature.length;
     stream.writeInt(Signaturesize);
     stream.write(encodedSignature.getSignature(), 0, Signaturesize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Signature decode(ByteString bs) throws IOException {
@@ -40,25 +59,6 @@ public class Signature implements XdrElement {
     decodedSignature.Signature = new byte[Signaturesize];
     stream.read(decodedSignature.Signature, 0, Signaturesize);
     return decodedSignature;
-  }
-
-  public byte[] getSignature() {
-    return this.Signature;
-  }
-
-  public void setSignature(byte[] value) {
-    this.Signature = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

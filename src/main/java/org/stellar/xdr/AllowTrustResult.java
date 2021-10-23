@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AllowTrustResult implements XdrElement {
+  public AllowTrustResult() {
+  }
+
   AllowTrustResultCode code;
 
-  public AllowTrustResult() {
+  public AllowTrustResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(AllowTrustResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private AllowTrustResultCode discriminant;
+
+    public Builder discriminant(AllowTrustResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public AllowTrustResult build() {
+      AllowTrustResult val = new AllowTrustResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(XdrDataOutputStream stream, AllowTrustResult encodedAllowTrustResult) throws IOException {
@@ -36,6 +59,17 @@ public class AllowTrustResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static AllowTrustResult decode(ByteString bs) throws IOException {
@@ -54,31 +88,10 @@ public class AllowTrustResult implements XdrElement {
     }
     return decodedAllowTrustResult;
   }
-
-  public AllowTrustResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(AllowTrustResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof AllowTrustResult)) {
@@ -87,20 +100,5 @@ public class AllowTrustResult implements XdrElement {
 
     AllowTrustResult other = (AllowTrustResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private AllowTrustResultCode discriminant;
-
-    public Builder discriminant(AllowTrustResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public AllowTrustResult build() {
-      AllowTrustResult val = new AllowTrustResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

@@ -20,7 +20,9 @@ import okio.ByteString;
 //                                      // source account does not require trust
 //      ALLOW_TRUST_TRUST_NOT_REQUIRED = -3,
 //      ALLOW_TRUST_CANT_REVOKE = -4,     // source account can't revoke trust,
-//      ALLOW_TRUST_SELF_NOT_ALLOWED = -5 // trusting self is not allowed
+//      ALLOW_TRUST_SELF_NOT_ALLOWED = -5, // trusting self is not allowed
+//      ALLOW_TRUST_LOW_RESERVE = -6 // claimable balances can't be created
+//                                   // on revoke due to low reserves
 //  };
 
 //  ===========================================================================
@@ -31,11 +33,16 @@ public enum AllowTrustResultCode implements XdrElement {
   ALLOW_TRUST_TRUST_NOT_REQUIRED(-3),
   ALLOW_TRUST_CANT_REVOKE(-4),
   ALLOW_TRUST_SELF_NOT_ALLOWED(-5),
+  ALLOW_TRUST_LOW_RESERVE(-6),
   ;
   private int mValue;
 
   AllowTrustResultCode(int value) {
     mValue = value;
+  }
+
+  public int getValue() {
+    return mValue;
   }
 
   public static AllowTrustResultCode decode(ByteString bs) throws IOException {
@@ -57,6 +64,8 @@ public enum AllowTrustResultCode implements XdrElement {
         return ALLOW_TRUST_CANT_REVOKE;
       case -5:
         return ALLOW_TRUST_SELF_NOT_ALLOWED;
+      case -6:
+        return ALLOW_TRUST_LOW_RESERVE;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -64,10 +73,6 @@ public enum AllowTrustResultCode implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, AllowTrustResultCode value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

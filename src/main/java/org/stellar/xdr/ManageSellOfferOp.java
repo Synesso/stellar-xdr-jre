@@ -24,13 +24,49 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ManageSellOfferOp implements XdrElement {
+  public ManageSellOfferOp() {
+  }
   private Asset selling;
+  public Asset getSelling() {
+    return this.selling;
+  }
+  public void setSelling(Asset value) {
+    this.selling = value;
+  }
+
   private Asset buying;
+  public Asset getBuying() {
+    return this.buying;
+  }
+  public void setBuying(Asset value) {
+    this.buying = value;
+  }
+
   private Int64 amount;
+  public Int64 getAmount() {
+    return this.amount;
+  }
+  public void setAmount(Int64 value) {
+    this.amount = value;
+  }
+
   private Price price;
+  public Price getPrice() {
+    return this.price;
+  }
+
+  public void setPrice(Price value) {
+    this.price = value;
+  }
+
   private Int64 offerID;
 
-  public ManageSellOfferOp() {
+  public Int64 getOfferID() {
+    return this.offerID;
+  }
+
+  public void setOfferID(Int64 value) {
+    this.offerID = value;
   }
 
   public static void encode(XdrDataOutputStream stream, ManageSellOfferOp encodedManageSellOfferOp) throws IOException {
@@ -39,6 +75,17 @@ public class ManageSellOfferOp implements XdrElement {
     Int64.encode(stream, encodedManageSellOfferOp.amount);
     Price.encode(stream, encodedManageSellOfferOp.price);
     Int64.encode(stream, encodedManageSellOfferOp.offerID);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ManageSellOfferOp decode(ByteString bs) throws IOException {
@@ -53,57 +100,6 @@ public class ManageSellOfferOp implements XdrElement {
     decodedManageSellOfferOp.price = Price.decode(stream);
     decodedManageSellOfferOp.offerID = Int64.decode(stream);
     return decodedManageSellOfferOp;
-  }
-
-  public Asset getSelling() {
-    return this.selling;
-  }
-
-  public void setSelling(Asset value) {
-    this.selling = value;
-  }
-
-  public Asset getBuying() {
-    return this.buying;
-  }
-
-  public void setBuying(Asset value) {
-    this.buying = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public Price getPrice() {
-    return this.price;
-  }
-
-  public void setPrice(Price value) {
-    this.price = value;
-  }
-
-  public Int64 getOfferID() {
-    return this.offerID;
-  }
-
-  public void setOfferID(Int64 value) {
-    this.offerID = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

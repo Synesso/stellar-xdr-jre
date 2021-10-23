@@ -19,31 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class InnerTransactionResultPair implements XdrElement {
-  private Hash transactionHash;
-  private InnerTransactionResult result;
-
   public InnerTransactionResultPair() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      InnerTransactionResultPair encodedInnerTransactionResultPair
-  ) throws IOException {
-    Hash.encode(stream, encodedInnerTransactionResultPair.transactionHash);
-    InnerTransactionResult.encode(stream, encodedInnerTransactionResultPair.result);
-  }
-
-  public static InnerTransactionResultPair decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static InnerTransactionResultPair decode(XdrDataInputStream stream) throws IOException {
-    InnerTransactionResultPair decodedInnerTransactionResultPair = new InnerTransactionResultPair();
-    decodedInnerTransactionResultPair.transactionHash = Hash.decode(stream);
-    decodedInnerTransactionResultPair.result = InnerTransactionResult.decode(stream);
-    return decodedInnerTransactionResultPair;
-  }
-
+  private Hash transactionHash;
   public Hash getTransactionHash() {
     return this.transactionHash;
   }
@@ -52,12 +30,22 @@ public class InnerTransactionResultPair implements XdrElement {
     this.transactionHash = value;
   }
 
+  private InnerTransactionResult result;
+
   public InnerTransactionResult getResult() {
     return this.result;
   }
 
   public void setResult(InnerTransactionResult value) {
     this.result = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      InnerTransactionResultPair encodedInnerTransactionResultPair
+  ) throws IOException {
+    Hash.encode(stream, encodedInnerTransactionResultPair.transactionHash);
+    InnerTransactionResult.encode(stream, encodedInnerTransactionResultPair.result);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -69,6 +57,17 @@ public class InnerTransactionResultPair implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static InnerTransactionResultPair decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static InnerTransactionResultPair decode(XdrDataInputStream stream) throws IOException {
+    InnerTransactionResultPair decodedInnerTransactionResultPair = new InnerTransactionResultPair();
+    decodedInnerTransactionResultPair.transactionHash = Hash.decode(stream);
+    decodedInnerTransactionResultPair.result = InnerTransactionResult.decode(stream);
+    return decodedInnerTransactionResultPair;
   }
 
   @Override

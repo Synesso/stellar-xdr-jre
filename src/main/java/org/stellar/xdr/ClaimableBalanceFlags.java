@@ -27,6 +27,10 @@ public enum ClaimableBalanceFlags implements XdrElement {
     mValue = value;
   }
 
+  public int getValue() {
+    return mValue;
+  }
+
   public static ClaimableBalanceFlags decode(ByteString bs) throws IOException {
     return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
@@ -43,10 +47,6 @@ public enum ClaimableBalanceFlags implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, ClaimableBalanceFlags value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

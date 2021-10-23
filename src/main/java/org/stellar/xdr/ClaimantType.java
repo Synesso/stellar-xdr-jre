@@ -25,6 +25,10 @@ public enum ClaimantType implements XdrElement {
     mValue = value;
   }
 
+  public int getValue() {
+    return mValue;
+  }
+
   public static ClaimantType decode(ByteString bs) throws IOException {
     return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
@@ -41,10 +45,6 @@ public enum ClaimantType implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, ClaimantType value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

@@ -24,6 +24,14 @@ public class SponsorshipDescriptor implements XdrElement {
     this.SponsorshipDescriptor = SponsorshipDescriptor;
   }
 
+  public AccountID getSponsorshipDescriptor() {
+    return this.SponsorshipDescriptor;
+  }
+
+  public void setSponsorshipDescriptor(AccountID value) {
+    this.SponsorshipDescriptor = value;
+  }
+
   public static void encode(
       XdrDataOutputStream stream,
       SponsorshipDescriptor encodedSponsorshipDescriptor
@@ -34,6 +42,17 @@ public class SponsorshipDescriptor implements XdrElement {
     } else {
       stream.writeInt(0);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SponsorshipDescriptor decode(ByteString bs) throws IOException {
@@ -47,25 +66,6 @@ public class SponsorshipDescriptor implements XdrElement {
       decodedSponsorshipDescriptor.SponsorshipDescriptor = AccountID.decode(stream);
     }
     return decodedSponsorshipDescriptor;
-  }
-
-  public AccountID getSponsorshipDescriptor() {
-    return this.SponsorshipDescriptor;
-  }
-
-  public void setSponsorshipDescriptor(AccountID value) {
-    this.SponsorshipDescriptor = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

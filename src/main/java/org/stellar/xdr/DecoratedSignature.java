@@ -19,31 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class DecoratedSignature implements XdrElement {
-  private SignatureHint hint;
-  private Signature signature;
-
   public DecoratedSignature() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      DecoratedSignature encodedDecoratedSignature
-  ) throws IOException {
-    SignatureHint.encode(stream, encodedDecoratedSignature.hint);
-    Signature.encode(stream, encodedDecoratedSignature.signature);
-  }
-
-  public static DecoratedSignature decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static DecoratedSignature decode(XdrDataInputStream stream) throws IOException {
-    DecoratedSignature decodedDecoratedSignature = new DecoratedSignature();
-    decodedDecoratedSignature.hint = SignatureHint.decode(stream);
-    decodedDecoratedSignature.signature = Signature.decode(stream);
-    return decodedDecoratedSignature;
-  }
-
+  private SignatureHint hint;
   public SignatureHint getHint() {
     return this.hint;
   }
@@ -52,12 +30,22 @@ public class DecoratedSignature implements XdrElement {
     this.hint = value;
   }
 
+  private Signature signature;
+
   public Signature getSignature() {
     return this.signature;
   }
 
   public void setSignature(Signature value) {
     this.signature = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      DecoratedSignature encodedDecoratedSignature
+  ) throws IOException {
+    SignatureHint.encode(stream, encodedDecoratedSignature.hint);
+    Signature.encode(stream, encodedDecoratedSignature.signature);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -69,6 +57,17 @@ public class DecoratedSignature implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static DecoratedSignature decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static DecoratedSignature decode(XdrDataInputStream stream) throws IOException {
+    DecoratedSignature decodedDecoratedSignature = new DecoratedSignature();
+    decodedDecoratedSignature.hint = SignatureHint.decode(stream);
+    decodedDecoratedSignature.signature = Signature.decode(stream);
+    return decodedDecoratedSignature;
   }
 
   @Override

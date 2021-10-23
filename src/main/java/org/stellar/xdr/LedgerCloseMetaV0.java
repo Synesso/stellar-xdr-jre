@@ -32,13 +32,57 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class LedgerCloseMetaV0 implements XdrElement {
+  public LedgerCloseMetaV0() {
+  }
+
   private LedgerHeaderHistoryEntry ledgerHeader;
+
+  public LedgerHeaderHistoryEntry getLedgerHeader() {
+    return this.ledgerHeader;
+  }
+
+  public void setLedgerHeader(LedgerHeaderHistoryEntry value) {
+    this.ledgerHeader = value;
+  }
+
   private TransactionSet txSet;
+
+  public TransactionSet getTxSet() {
+    return this.txSet;
+  }
+
+  public void setTxSet(TransactionSet value) {
+    this.txSet = value;
+  }
+
   private TransactionResultMeta[] txProcessing;
+
+  public TransactionResultMeta[] getTxProcessing() {
+    return this.txProcessing;
+  }
+
+  public void setTxProcessing(TransactionResultMeta[] value) {
+    this.txProcessing = value;
+  }
+
   private UpgradeEntryMeta[] upgradesProcessing;
+
+  public UpgradeEntryMeta[] getUpgradesProcessing() {
+    return this.upgradesProcessing;
+  }
+
+  public void setUpgradesProcessing(UpgradeEntryMeta[] value) {
+    this.upgradesProcessing = value;
+  }
+
   private SCPHistoryEntry[] scpInfo;
 
-  public LedgerCloseMetaV0() {
+  public SCPHistoryEntry[] getScpInfo() {
+    return this.scpInfo;
+  }
+
+  public void setScpInfo(SCPHistoryEntry[] value) {
+    this.scpInfo = value;
   }
 
   public static void encode(XdrDataOutputStream stream, LedgerCloseMetaV0 encodedLedgerCloseMetaV0) throws IOException {
@@ -59,6 +103,17 @@ public class LedgerCloseMetaV0 implements XdrElement {
     for (int i = 0; i < scpInfosize; i++) {
       SCPHistoryEntry.encode(stream, encodedLedgerCloseMetaV0.scpInfo[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static LedgerCloseMetaV0 decode(ByteString bs) throws IOException {
@@ -86,64 +141,11 @@ public class LedgerCloseMetaV0 implements XdrElement {
     }
     return decodedLedgerCloseMetaV0;
   }
-
-  public LedgerHeaderHistoryEntry getLedgerHeader() {
-    return this.ledgerHeader;
-  }
-
-  public void setLedgerHeader(LedgerHeaderHistoryEntry value) {
-    this.ledgerHeader = value;
-  }
-
-  public TransactionSet getTxSet() {
-    return this.txSet;
-  }
-
-  public void setTxSet(TransactionSet value) {
-    this.txSet = value;
-  }
-
-  public TransactionResultMeta[] getTxProcessing() {
-    return this.txProcessing;
-  }
-
-  public void setTxProcessing(TransactionResultMeta[] value) {
-    this.txProcessing = value;
-  }
-
-  public UpgradeEntryMeta[] getUpgradesProcessing() {
-    return this.upgradesProcessing;
-  }
-
-  public void setUpgradesProcessing(UpgradeEntryMeta[] value) {
-    this.upgradesProcessing = value;
-  }
-
-  public SCPHistoryEntry[] getScpInfo() {
-    return this.scpInfo;
-  }
-
-  public void setScpInfo(SCPHistoryEntry[] value) {
-    this.scpInfo = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.ledgerHeader, this.txSet, Arrays.hashCode(this.txProcessing),
         Arrays.hashCode(this.upgradesProcessing), Arrays.hashCode(this.scpInfo));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof LedgerCloseMetaV0)) {

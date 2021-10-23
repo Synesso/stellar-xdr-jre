@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class UpgradeEntryMeta implements XdrElement {
-  private LedgerUpgrade upgrade;
-  private LedgerEntryChanges changes;
-
   public UpgradeEntryMeta() {
   }
-
-  public static void encode(XdrDataOutputStream stream, UpgradeEntryMeta encodedUpgradeEntryMeta) throws IOException {
-    LedgerUpgrade.encode(stream, encodedUpgradeEntryMeta.upgrade);
-    LedgerEntryChanges.encode(stream, encodedUpgradeEntryMeta.changes);
-  }
-
-  public static UpgradeEntryMeta decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static UpgradeEntryMeta decode(XdrDataInputStream stream) throws IOException {
-    UpgradeEntryMeta decodedUpgradeEntryMeta = new UpgradeEntryMeta();
-    decodedUpgradeEntryMeta.upgrade = LedgerUpgrade.decode(stream);
-    decodedUpgradeEntryMeta.changes = LedgerEntryChanges.decode(stream);
-    return decodedUpgradeEntryMeta;
-  }
-
+  private LedgerUpgrade upgrade;
   public LedgerUpgrade getUpgrade() {
     return this.upgrade;
   }
@@ -49,12 +30,19 @@ public class UpgradeEntryMeta implements XdrElement {
     this.upgrade = value;
   }
 
+  private LedgerEntryChanges changes;
+
   public LedgerEntryChanges getChanges() {
     return this.changes;
   }
 
   public void setChanges(LedgerEntryChanges value) {
     this.changes = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, UpgradeEntryMeta encodedUpgradeEntryMeta) throws IOException {
+    LedgerUpgrade.encode(stream, encodedUpgradeEntryMeta.upgrade);
+    LedgerEntryChanges.encode(stream, encodedUpgradeEntryMeta.changes);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class UpgradeEntryMeta implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static UpgradeEntryMeta decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static UpgradeEntryMeta decode(XdrDataInputStream stream) throws IOException {
+    UpgradeEntryMeta decodedUpgradeEntryMeta = new UpgradeEntryMeta();
+    decodedUpgradeEntryMeta.upgrade = LedgerUpgrade.decode(stream);
+    decodedUpgradeEntryMeta.changes = LedgerEntryChanges.decode(stream);
+    return decodedUpgradeEntryMeta;
   }
 
   @Override

@@ -19,31 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class LedgerCloseValueSignature implements XdrElement {
-  private NodeID nodeID;
-  private Signature signature;
-
   public LedgerCloseValueSignature() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      LedgerCloseValueSignature encodedLedgerCloseValueSignature
-  ) throws IOException {
-    NodeID.encode(stream, encodedLedgerCloseValueSignature.nodeID);
-    Signature.encode(stream, encodedLedgerCloseValueSignature.signature);
-  }
-
-  public static LedgerCloseValueSignature decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static LedgerCloseValueSignature decode(XdrDataInputStream stream) throws IOException {
-    LedgerCloseValueSignature decodedLedgerCloseValueSignature = new LedgerCloseValueSignature();
-    decodedLedgerCloseValueSignature.nodeID = NodeID.decode(stream);
-    decodedLedgerCloseValueSignature.signature = Signature.decode(stream);
-    return decodedLedgerCloseValueSignature;
-  }
-
+  private NodeID nodeID;
   public NodeID getNodeID() {
     return this.nodeID;
   }
@@ -52,12 +30,22 @@ public class LedgerCloseValueSignature implements XdrElement {
     this.nodeID = value;
   }
 
+  private Signature signature;
+
   public Signature getSignature() {
     return this.signature;
   }
 
   public void setSignature(Signature value) {
     this.signature = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      LedgerCloseValueSignature encodedLedgerCloseValueSignature
+  ) throws IOException {
+    NodeID.encode(stream, encodedLedgerCloseValueSignature.nodeID);
+    Signature.encode(stream, encodedLedgerCloseValueSignature.signature);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -69,6 +57,17 @@ public class LedgerCloseValueSignature implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static LedgerCloseValueSignature decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static LedgerCloseValueSignature decode(XdrDataInputStream stream) throws IOException {
+    LedgerCloseValueSignature decodedLedgerCloseValueSignature = new LedgerCloseValueSignature();
+    decodedLedgerCloseValueSignature.nodeID = NodeID.decode(stream);
+    decodedLedgerCloseValueSignature.signature = Signature.decode(stream);
+    return decodedLedgerCloseValueSignature;
   }
 
   @Override

@@ -51,11 +51,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class InnerTransactionResult implements XdrElement {
+  public InnerTransactionResult() {
+  }
   private Int64 feeCharged;
+  public Int64 getFeeCharged() {
+    return this.feeCharged;
+  }
+  public void setFeeCharged(Int64 value) {
+    this.feeCharged = value;
+  }
+
   private InnerTransactionResultResult result;
+  public InnerTransactionResultResult getResult() {
+    return this.result;
+  }
+
+  public void setResult(InnerTransactionResultResult value) {
+    this.result = value;
+  }
+
   private InnerTransactionResultExt ext;
 
-  public InnerTransactionResult() {
+  public InnerTransactionResultExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(InnerTransactionResultExt value) {
+    this.ext = value;
   }
 
   public static void encode(
@@ -65,6 +87,17 @@ public class InnerTransactionResult implements XdrElement {
     Int64.encode(stream, encodedInnerTransactionResult.feeCharged);
     InnerTransactionResultResult.encode(stream, encodedInnerTransactionResult.result);
     InnerTransactionResultExt.encode(stream, encodedInnerTransactionResult.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static InnerTransactionResult decode(ByteString bs) throws IOException {
@@ -77,41 +110,6 @@ public class InnerTransactionResult implements XdrElement {
     decodedInnerTransactionResult.result = InnerTransactionResultResult.decode(stream);
     decodedInnerTransactionResult.ext = InnerTransactionResultExt.decode(stream);
     return decodedInnerTransactionResult;
-  }
-
-  public Int64 getFeeCharged() {
-    return this.feeCharged;
-  }
-
-  public void setFeeCharged(Int64 value) {
-    this.feeCharged = value;
-  }
-
-  public InnerTransactionResultResult getResult() {
-    return this.result;
-  }
-
-  public void setResult(InnerTransactionResultResult value) {
-    this.result = value;
-  }
-
-  public InnerTransactionResultExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(InnerTransactionResultExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -160,10 +158,49 @@ public class InnerTransactionResult implements XdrElement {
   }
 
   public static class InnerTransactionResultResult {
+    public InnerTransactionResultResult() {
+    }
+
     TransactionResultCode code;
+
+    public TransactionResultCode getDiscriminant() {
+      return this.code;
+    }
+
+    public void setDiscriminant(TransactionResultCode value) {
+      this.code = value;
+    }
+
     private OperationResult[] results;
 
-    public InnerTransactionResultResult() {
+    public OperationResult[] getResults() {
+      return this.results;
+    }
+
+    public void setResults(OperationResult[] value) {
+      this.results = value;
+    }
+
+    public static final class Builder {
+      private TransactionResultCode discriminant;
+      private OperationResult[] results;
+
+      public Builder discriminant(TransactionResultCode discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public Builder results(OperationResult[] results) {
+        this.results = results;
+        return this;
+      }
+
+      public InnerTransactionResultResult build() {
+        InnerTransactionResultResult val = new InnerTransactionResultResult();
+        val.setDiscriminant(discriminant);
+        val.setResults(results);
+        return val;
+      }
     }
 
     public static void encode(
@@ -196,6 +233,17 @@ public class InnerTransactionResult implements XdrElement {
         case txBAD_SPONSORSHIP:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static InnerTransactionResultResult decode(ByteString bs) throws IOException {
@@ -232,33 +280,6 @@ public class InnerTransactionResult implements XdrElement {
       return decodedInnerTransactionResultResult;
     }
 
-    public TransactionResultCode getDiscriminant() {
-      return this.code;
-    }
-
-    public void setDiscriminant(TransactionResultCode value) {
-      this.code = value;
-    }
-
-    public OperationResult[] getResults() {
-      return this.results;
-    }
-
-    public void setResults(OperationResult[] value) {
-      this.results = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(Arrays.hashCode(this.results), this.code);
@@ -274,34 +295,35 @@ public class InnerTransactionResult implements XdrElement {
       return Arrays.equals(this.results, other.results) && Objects.equal(this.code, other.code);
     }
 
-    public static final class Builder {
-      private TransactionResultCode discriminant;
-      private OperationResult[] results;
+  }
 
-      public Builder discriminant(TransactionResultCode discriminant) {
+  public static class InnerTransactionResultExt {
+    public InnerTransactionResultExt() {
+    }
+
+    Integer v;
+
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
         this.discriminant = discriminant;
         return this;
       }
 
-      public Builder results(OperationResult[] results) {
-        this.results = results;
-        return this;
-      }
-
-      public InnerTransactionResultResult build() {
-        InnerTransactionResultResult val = new InnerTransactionResultResult();
+      public InnerTransactionResultExt build() {
+        InnerTransactionResultExt val = new InnerTransactionResultExt();
         val.setDiscriminant(discriminant);
-        val.setResults(results);
         return val;
       }
-    }
-
-  }
-
-  public static class InnerTransactionResultExt {
-    Integer v;
-
-    public InnerTransactionResultExt() {
     }
 
     public static void encode(
@@ -315,6 +337,17 @@ public class InnerTransactionResult implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static InnerTransactionResultExt decode(ByteString bs) throws IOException {
@@ -332,25 +365,6 @@ public class InnerTransactionResult implements XdrElement {
       return decodedInnerTransactionResultExt;
     }
 
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
@@ -364,21 +378,6 @@ public class InnerTransactionResult implements XdrElement {
 
       InnerTransactionResultExt other = (InnerTransactionResultExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public InnerTransactionResultExt build() {
-        InnerTransactionResultExt val = new InnerTransactionResultExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

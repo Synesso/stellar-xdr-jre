@@ -18,27 +18,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClaimClaimableBalanceOp implements XdrElement {
-  private ClaimableBalanceID balanceID;
-
   public ClaimClaimableBalanceOp() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      ClaimClaimableBalanceOp encodedClaimClaimableBalanceOp
-  ) throws IOException {
-    ClaimableBalanceID.encode(stream, encodedClaimClaimableBalanceOp.balanceID);
-  }
-
-  public static ClaimClaimableBalanceOp decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static ClaimClaimableBalanceOp decode(XdrDataInputStream stream) throws IOException {
-    ClaimClaimableBalanceOp decodedClaimClaimableBalanceOp = new ClaimClaimableBalanceOp();
-    decodedClaimClaimableBalanceOp.balanceID = ClaimableBalanceID.decode(stream);
-    return decodedClaimClaimableBalanceOp;
-  }
+  private ClaimableBalanceID balanceID;
 
   public ClaimableBalanceID getBalanceID() {
     return this.balanceID;
@@ -46,6 +29,13 @@ public class ClaimClaimableBalanceOp implements XdrElement {
 
   public void setBalanceID(ClaimableBalanceID value) {
     this.balanceID = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      ClaimClaimableBalanceOp encodedClaimClaimableBalanceOp
+  ) throws IOException {
+    ClaimableBalanceID.encode(stream, encodedClaimClaimableBalanceOp.balanceID);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -57,6 +47,16 @@ public class ClaimClaimableBalanceOp implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static ClaimClaimableBalanceOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static ClaimClaimableBalanceOp decode(XdrDataInputStream stream) throws IOException {
+    ClaimClaimableBalanceOp decodedClaimClaimableBalanceOp = new ClaimClaimableBalanceOp();
+    decodedClaimClaimableBalanceOp.balanceID = ClaimableBalanceID.decode(stream);
+    return decodedClaimClaimableBalanceOp;
   }
 
   @Override

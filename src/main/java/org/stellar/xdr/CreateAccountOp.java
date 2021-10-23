@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class CreateAccountOp implements XdrElement {
-  private AccountID destination;
-  private Int64 startingBalance;
-
   public CreateAccountOp() {
   }
-
-  public static void encode(XdrDataOutputStream stream, CreateAccountOp encodedCreateAccountOp) throws IOException {
-    AccountID.encode(stream, encodedCreateAccountOp.destination);
-    Int64.encode(stream, encodedCreateAccountOp.startingBalance);
-  }
-
-  public static CreateAccountOp decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static CreateAccountOp decode(XdrDataInputStream stream) throws IOException {
-    CreateAccountOp decodedCreateAccountOp = new CreateAccountOp();
-    decodedCreateAccountOp.destination = AccountID.decode(stream);
-    decodedCreateAccountOp.startingBalance = Int64.decode(stream);
-    return decodedCreateAccountOp;
-  }
-
+  private AccountID destination;
   public AccountID getDestination() {
     return this.destination;
   }
@@ -49,12 +30,19 @@ public class CreateAccountOp implements XdrElement {
     this.destination = value;
   }
 
+  private Int64 startingBalance;
+
   public Int64 getStartingBalance() {
     return this.startingBalance;
   }
 
   public void setStartingBalance(Int64 value) {
     this.startingBalance = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, CreateAccountOp encodedCreateAccountOp) throws IOException {
+    AccountID.encode(stream, encodedCreateAccountOp.destination);
+    Int64.encode(stream, encodedCreateAccountOp.startingBalance);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class CreateAccountOp implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static CreateAccountOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static CreateAccountOp decode(XdrDataInputStream stream) throws IOException {
+    CreateAccountOp decodedCreateAccountOp = new CreateAccountOp();
+    decodedCreateAccountOp.destination = AccountID.decode(stream);
+    decodedCreateAccountOp.startingBalance = Int64.decode(stream);
+    return decodedCreateAccountOp;
   }
 
   @Override

@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Error implements XdrElement {
-  private ErrorCode code;
-  private XdrString msg;
-
   public Error() {
   }
-
-  public static void encode(XdrDataOutputStream stream, Error encodedError) throws IOException {
-    ErrorCode.encode(stream, encodedError.code);
-    encodedError.msg.encode(stream);
-  }
-
-  public static Error decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Error decode(XdrDataInputStream stream) throws IOException {
-    Error decodedError = new Error();
-    decodedError.code = ErrorCode.decode(stream);
-    decodedError.msg = XdrString.decode(stream, 100);
-    return decodedError;
-  }
-
+  private ErrorCode code;
   public ErrorCode getCode() {
     return this.code;
   }
@@ -49,12 +30,19 @@ public class Error implements XdrElement {
     this.code = value;
   }
 
+  private XdrString msg;
+
   public XdrString getMsg() {
     return this.msg;
   }
 
   public void setMsg(XdrString value) {
     this.msg = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, Error encodedError) throws IOException {
+    ErrorCode.encode(stream, encodedError.code);
+    encodedError.msg.encode(stream);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class Error implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Error decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Error decode(XdrDataInputStream stream) throws IOException {
+    Error decodedError = new Error();
+    decodedError.code = ErrorCode.decode(stream);
+    decodedError.msg = XdrString.decode(stream, 100);
+    return decodedError;
   }
 
   @Override

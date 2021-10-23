@@ -28,14 +28,57 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClaimOfferAtom implements XdrElement {
+  public ClaimOfferAtom() {
+  }
   private AccountID sellerID;
+  public AccountID getSellerID() {
+    return this.sellerID;
+  }
+  public void setSellerID(AccountID value) {
+    this.sellerID = value;
+  }
+
   private Int64 offerID;
+  public Int64 getOfferID() {
+    return this.offerID;
+  }
+  public void setOfferID(Int64 value) {
+    this.offerID = value;
+  }
+
   private Asset assetSold;
+  public Asset getAssetSold() {
+    return this.assetSold;
+  }
+  public void setAssetSold(Asset value) {
+    this.assetSold = value;
+  }
+
   private Int64 amountSold;
+  public Int64 getAmountSold() {
+    return this.amountSold;
+  }
+  public void setAmountSold(Int64 value) {
+    this.amountSold = value;
+  }
+
   private Asset assetBought;
+  public Asset getAssetBought() {
+    return this.assetBought;
+  }
+
+  public void setAssetBought(Asset value) {
+    this.assetBought = value;
+  }
+
   private Int64 amountBought;
 
-  public ClaimOfferAtom() {
+  public Int64 getAmountBought() {
+    return this.amountBought;
+  }
+
+  public void setAmountBought(Int64 value) {
+    this.amountBought = value;
   }
 
   public static void encode(XdrDataOutputStream stream, ClaimOfferAtom encodedClaimOfferAtom) throws IOException {
@@ -45,6 +88,17 @@ public class ClaimOfferAtom implements XdrElement {
     Int64.encode(stream, encodedClaimOfferAtom.amountSold);
     Asset.encode(stream, encodedClaimOfferAtom.assetBought);
     Int64.encode(stream, encodedClaimOfferAtom.amountBought);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ClaimOfferAtom decode(ByteString bs) throws IOException {
@@ -60,65 +114,6 @@ public class ClaimOfferAtom implements XdrElement {
     decodedClaimOfferAtom.assetBought = Asset.decode(stream);
     decodedClaimOfferAtom.amountBought = Int64.decode(stream);
     return decodedClaimOfferAtom;
-  }
-
-  public AccountID getSellerID() {
-    return this.sellerID;
-  }
-
-  public void setSellerID(AccountID value) {
-    this.sellerID = value;
-  }
-
-  public Int64 getOfferID() {
-    return this.offerID;
-  }
-
-  public void setOfferID(Int64 value) {
-    this.offerID = value;
-  }
-
-  public Asset getAssetSold() {
-    return this.assetSold;
-  }
-
-  public void setAssetSold(Asset value) {
-    this.assetSold = value;
-  }
-
-  public Int64 getAmountSold() {
-    return this.amountSold;
-  }
-
-  public void setAmountSold(Int64 value) {
-    this.amountSold = value;
-  }
-
-  public Asset getAssetBought() {
-    return this.assetBought;
-  }
-
-  public void setAssetBought(Asset value) {
-    this.assetBought = value;
-  }
-
-  public Int64 getAmountBought() {
-    return this.amountBought;
-  }
-
-  public void setAmountBought(Int64 value) {
-    this.amountBought = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

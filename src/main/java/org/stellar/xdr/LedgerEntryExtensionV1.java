@@ -25,31 +25,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class LedgerEntryExtensionV1 implements XdrElement {
-  private SponsorshipDescriptor sponsoringID;
-  private LedgerEntryExtensionV1Ext ext;
-
   public LedgerEntryExtensionV1() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      LedgerEntryExtensionV1 encodedLedgerEntryExtensionV1
-  ) throws IOException {
-    SponsorshipDescriptor.encode(stream, encodedLedgerEntryExtensionV1.sponsoringID);
-    LedgerEntryExtensionV1Ext.encode(stream, encodedLedgerEntryExtensionV1.ext);
-  }
-
-  public static LedgerEntryExtensionV1 decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static LedgerEntryExtensionV1 decode(XdrDataInputStream stream) throws IOException {
-    LedgerEntryExtensionV1 decodedLedgerEntryExtensionV1 = new LedgerEntryExtensionV1();
-    decodedLedgerEntryExtensionV1.sponsoringID = SponsorshipDescriptor.decode(stream);
-    decodedLedgerEntryExtensionV1.ext = LedgerEntryExtensionV1Ext.decode(stream);
-    return decodedLedgerEntryExtensionV1;
-  }
-
+  private SponsorshipDescriptor sponsoringID;
   public SponsorshipDescriptor getSponsoringID() {
     return this.sponsoringID;
   }
@@ -58,12 +36,22 @@ public class LedgerEntryExtensionV1 implements XdrElement {
     this.sponsoringID = value;
   }
 
+  private LedgerEntryExtensionV1Ext ext;
+
   public LedgerEntryExtensionV1Ext getExt() {
     return this.ext;
   }
 
   public void setExt(LedgerEntryExtensionV1Ext value) {
     this.ext = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      LedgerEntryExtensionV1 encodedLedgerEntryExtensionV1
+  ) throws IOException {
+    SponsorshipDescriptor.encode(stream, encodedLedgerEntryExtensionV1.sponsoringID);
+    LedgerEntryExtensionV1Ext.encode(stream, encodedLedgerEntryExtensionV1.ext);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -75,6 +63,17 @@ public class LedgerEntryExtensionV1 implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static LedgerEntryExtensionV1 decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static LedgerEntryExtensionV1 decode(XdrDataInputStream stream) throws IOException {
+    LedgerEntryExtensionV1 decodedLedgerEntryExtensionV1 = new LedgerEntryExtensionV1();
+    decodedLedgerEntryExtensionV1.sponsoringID = SponsorshipDescriptor.decode(stream);
+    decodedLedgerEntryExtensionV1.ext = LedgerEntryExtensionV1Ext.decode(stream);
+    return decodedLedgerEntryExtensionV1;
   }
 
   @Override
@@ -115,9 +114,32 @@ public class LedgerEntryExtensionV1 implements XdrElement {
   }
 
   public static class LedgerEntryExtensionV1Ext {
+    public LedgerEntryExtensionV1Ext() {
+    }
+
     Integer v;
 
-    public LedgerEntryExtensionV1Ext() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public LedgerEntryExtensionV1Ext build() {
+        LedgerEntryExtensionV1Ext val = new LedgerEntryExtensionV1Ext();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(
@@ -131,6 +153,17 @@ public class LedgerEntryExtensionV1 implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static LedgerEntryExtensionV1Ext decode(ByteString bs) throws IOException {
@@ -147,31 +180,10 @@ public class LedgerEntryExtensionV1 implements XdrElement {
       }
       return decodedLedgerEntryExtensionV1Ext;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof LedgerEntryExtensionV1Ext)) {
@@ -180,21 +192,6 @@ public class LedgerEntryExtensionV1 implements XdrElement {
 
       LedgerEntryExtensionV1Ext other = (LedgerEntryExtensionV1Ext) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public LedgerEntryExtensionV1Ext build() {
-        LedgerEntryExtensionV1Ext val = new LedgerEntryExtensionV1Ext();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

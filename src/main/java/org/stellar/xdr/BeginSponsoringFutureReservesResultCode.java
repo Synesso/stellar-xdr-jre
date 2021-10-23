@@ -34,6 +34,10 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
     mValue = value;
   }
 
+  public int getValue() {
+    return mValue;
+  }
+
   public static BeginSponsoringFutureReservesResultCode decode(ByteString bs) throws IOException {
     return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
@@ -59,10 +63,6 @@ public enum BeginSponsoringFutureReservesResultCode implements XdrElement {
       BeginSponsoringFutureReservesResultCode value
   ) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

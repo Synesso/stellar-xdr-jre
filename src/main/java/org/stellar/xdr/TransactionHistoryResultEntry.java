@@ -27,11 +27,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionHistoryResultEntry implements XdrElement {
+  public TransactionHistoryResultEntry() {
+  }
   private Uint32 ledgerSeq;
+  public Uint32 getLedgerSeq() {
+    return this.ledgerSeq;
+  }
+  public void setLedgerSeq(Uint32 value) {
+    this.ledgerSeq = value;
+  }
+
   private TransactionResultSet txResultSet;
+  public TransactionResultSet getTxResultSet() {
+    return this.txResultSet;
+  }
+
+  public void setTxResultSet(TransactionResultSet value) {
+    this.txResultSet = value;
+  }
+
   private TransactionHistoryResultEntryExt ext;
 
-  public TransactionHistoryResultEntry() {
+  public TransactionHistoryResultEntryExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(TransactionHistoryResultEntryExt value) {
+    this.ext = value;
   }
 
   public static void encode(
@@ -41,6 +63,17 @@ public class TransactionHistoryResultEntry implements XdrElement {
     Uint32.encode(stream, encodedTransactionHistoryResultEntry.ledgerSeq);
     TransactionResultSet.encode(stream, encodedTransactionHistoryResultEntry.txResultSet);
     TransactionHistoryResultEntryExt.encode(stream, encodedTransactionHistoryResultEntry.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionHistoryResultEntry decode(ByteString bs) throws IOException {
@@ -53,41 +86,6 @@ public class TransactionHistoryResultEntry implements XdrElement {
     decodedTransactionHistoryResultEntry.txResultSet = TransactionResultSet.decode(stream);
     decodedTransactionHistoryResultEntry.ext = TransactionHistoryResultEntryExt.decode(stream);
     return decodedTransactionHistoryResultEntry;
-  }
-
-  public Uint32 getLedgerSeq() {
-    return this.ledgerSeq;
-  }
-
-  public void setLedgerSeq(Uint32 value) {
-    this.ledgerSeq = value;
-  }
-
-  public TransactionResultSet getTxResultSet() {
-    return this.txResultSet;
-  }
-
-  public void setTxResultSet(TransactionResultSet value) {
-    this.txResultSet = value;
-  }
-
-  public TransactionHistoryResultEntryExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(TransactionHistoryResultEntryExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -136,9 +134,32 @@ public class TransactionHistoryResultEntry implements XdrElement {
   }
 
   public static class TransactionHistoryResultEntryExt {
+    public TransactionHistoryResultEntryExt() {
+    }
+
     Integer v;
 
-    public TransactionHistoryResultEntryExt() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public TransactionHistoryResultEntryExt build() {
+        TransactionHistoryResultEntryExt val = new TransactionHistoryResultEntryExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(
@@ -152,6 +173,17 @@ public class TransactionHistoryResultEntry implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static TransactionHistoryResultEntryExt decode(ByteString bs) throws IOException {
@@ -168,31 +200,10 @@ public class TransactionHistoryResultEntry implements XdrElement {
       }
       return decodedTransactionHistoryResultEntryExt;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof TransactionHistoryResultEntryExt)) {
@@ -201,21 +212,6 @@ public class TransactionHistoryResultEntry implements XdrElement {
 
       TransactionHistoryResultEntryExt other = (TransactionHistoryResultEntryExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public TransactionHistoryResultEntryExt build() {
-        TransactionHistoryResultEntryExt val = new TransactionHistoryResultEntryExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

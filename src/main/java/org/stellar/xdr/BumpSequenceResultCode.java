@@ -29,6 +29,10 @@ public enum BumpSequenceResultCode implements XdrElement {
     mValue = value;
   }
 
+  public int getValue() {
+    return mValue;
+  }
+
   public static BumpSequenceResultCode decode(ByteString bs) throws IOException {
     return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
@@ -47,10 +51,6 @@ public enum BumpSequenceResultCode implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, BumpSequenceResultCode value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

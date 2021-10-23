@@ -24,9 +24,28 @@ public class AssetCode4 implements XdrElement {
     this.AssetCode4 = AssetCode4;
   }
 
+  public byte[] getAssetCode4() {
+    return this.AssetCode4;
+  }
+
+  public void setAssetCode4(byte[] value) {
+    this.AssetCode4 = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, AssetCode4 encodedAssetCode4) throws IOException {
     int AssetCode4size = encodedAssetCode4.AssetCode4.length;
     stream.write(encodedAssetCode4.getAssetCode4(), 0, AssetCode4size);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static AssetCode4 decode(ByteString bs) throws IOException {
@@ -39,25 +58,6 @@ public class AssetCode4 implements XdrElement {
     decodedAssetCode4.AssetCode4 = new byte[AssetCode4size];
     stream.read(decodedAssetCode4.AssetCode4, 0, AssetCode4size);
     return decodedAssetCode4;
-  }
-
-  public byte[] getAssetCode4() {
-    return this.AssetCode4;
-  }
-
-  public void setAssetCode4(byte[] value) {
-    this.AssetCode4 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

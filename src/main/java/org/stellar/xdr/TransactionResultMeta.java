@@ -20,11 +20,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionResultMeta implements XdrElement {
+  public TransactionResultMeta() {
+  }
   private TransactionResultPair result;
+  public TransactionResultPair getResult() {
+    return this.result;
+  }
+  public void setResult(TransactionResultPair value) {
+    this.result = value;
+  }
+
   private LedgerEntryChanges feeProcessing;
+  public LedgerEntryChanges getFeeProcessing() {
+    return this.feeProcessing;
+  }
+
+  public void setFeeProcessing(LedgerEntryChanges value) {
+    this.feeProcessing = value;
+  }
+
   private TransactionMeta txApplyProcessing;
 
-  public TransactionResultMeta() {
+  public TransactionMeta getTxApplyProcessing() {
+    return this.txApplyProcessing;
+  }
+
+  public void setTxApplyProcessing(TransactionMeta value) {
+    this.txApplyProcessing = value;
   }
 
   public static void encode(
@@ -34,6 +56,17 @@ public class TransactionResultMeta implements XdrElement {
     TransactionResultPair.encode(stream, encodedTransactionResultMeta.result);
     LedgerEntryChanges.encode(stream, encodedTransactionResultMeta.feeProcessing);
     TransactionMeta.encode(stream, encodedTransactionResultMeta.txApplyProcessing);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionResultMeta decode(ByteString bs) throws IOException {
@@ -46,41 +79,6 @@ public class TransactionResultMeta implements XdrElement {
     decodedTransactionResultMeta.feeProcessing = LedgerEntryChanges.decode(stream);
     decodedTransactionResultMeta.txApplyProcessing = TransactionMeta.decode(stream);
     return decodedTransactionResultMeta;
-  }
-
-  public TransactionResultPair getResult() {
-    return this.result;
-  }
-
-  public void setResult(TransactionResultPair value) {
-    this.result = value;
-  }
-
-  public LedgerEntryChanges getFeeProcessing() {
-    return this.feeProcessing;
-  }
-
-  public void setFeeProcessing(LedgerEntryChanges value) {
-    this.feeProcessing = value;
-  }
-
-  public TransactionMeta getTxApplyProcessing() {
-    return this.txApplyProcessing;
-  }
-
-  public void setTxApplyProcessing(TransactionMeta value) {
-    this.txApplyProcessing = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

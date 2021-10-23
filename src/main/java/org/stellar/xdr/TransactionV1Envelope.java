@@ -22,10 +22,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionV1Envelope implements XdrElement {
+  public TransactionV1Envelope() {
+  }
+
   private Transaction tx;
+
+  public Transaction getTx() {
+    return this.tx;
+  }
+
+  public void setTx(Transaction value) {
+    this.tx = value;
+  }
+
   private DecoratedSignature[] signatures;
 
-  public TransactionV1Envelope() {
+  public DecoratedSignature[] getSignatures() {
+    return this.signatures;
+  }
+
+  public void setSignatures(DecoratedSignature[] value) {
+    this.signatures = value;
   }
 
   public static void encode(
@@ -38,6 +55,17 @@ public class TransactionV1Envelope implements XdrElement {
     for (int i = 0; i < signaturessize; i++) {
       DecoratedSignature.encode(stream, encodedTransactionV1Envelope.signatures[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionV1Envelope decode(ByteString bs) throws IOException {
@@ -54,39 +82,10 @@ public class TransactionV1Envelope implements XdrElement {
     }
     return decodedTransactionV1Envelope;
   }
-
-  public Transaction getTx() {
-    return this.tx;
-  }
-
-  public void setTx(Transaction value) {
-    this.tx = value;
-  }
-
-  public DecoratedSignature[] getSignatures() {
-    return this.signatures;
-  }
-
-  public void setSignatures(DecoratedSignature[] value) {
-    this.signatures = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.tx, Arrays.hashCode(this.signatures));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof TransactionV1Envelope)) {

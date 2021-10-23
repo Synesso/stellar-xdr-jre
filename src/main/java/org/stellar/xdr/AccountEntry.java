@@ -43,18 +43,89 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AccountEntry implements XdrElement {
+  public AccountEntry() {
+  }
   private AccountID accountID;
+  public AccountID getAccountID() {
+    return this.accountID;
+  }
+  public void setAccountID(AccountID value) {
+    this.accountID = value;
+  }
+
   private Int64 balance;
+  public Int64 getBalance() {
+    return this.balance;
+  }
+  public void setBalance(Int64 value) {
+    this.balance = value;
+  }
+
   private SequenceNumber seqNum;
+  public SequenceNumber getSeqNum() {
+    return this.seqNum;
+  }
+  public void setSeqNum(SequenceNumber value) {
+    this.seqNum = value;
+  }
+
   private Uint32 numSubEntries;
+  public Uint32 getNumSubEntries() {
+    return this.numSubEntries;
+  }
+  public void setNumSubEntries(Uint32 value) {
+    this.numSubEntries = value;
+  }
+
   private AccountID inflationDest;
+  public AccountID getInflationDest() {
+    return this.inflationDest;
+  }
+  public void setInflationDest(AccountID value) {
+    this.inflationDest = value;
+  }
+
   private Uint32 flags;
+  public Uint32 getFlags() {
+    return this.flags;
+  }
+  public void setFlags(Uint32 value) {
+    this.flags = value;
+  }
+
   private String32 homeDomain;
+  public String32 getHomeDomain() {
+    return this.homeDomain;
+  }
+  public void setHomeDomain(String32 value) {
+    this.homeDomain = value;
+  }
+
   private Thresholds thresholds;
+  public Thresholds getThresholds() {
+    return this.thresholds;
+  }
+  public void setThresholds(Thresholds value) {
+    this.thresholds = value;
+  }
+
   private Signer[] signers;
+  public Signer[] getSigners() {
+    return this.signers;
+  }
+
+  public void setSigners(Signer[] value) {
+    this.signers = value;
+  }
+
   private AccountEntryExt ext;
 
-  public AccountEntry() {
+  public AccountEntryExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(AccountEntryExt value) {
+    this.ext = value;
   }
 
   public static void encode(XdrDataOutputStream stream, AccountEntry encodedAccountEntry) throws IOException {
@@ -77,6 +148,17 @@ public class AccountEntry implements XdrElement {
       Signer.encode(stream, encodedAccountEntry.signers[i]);
     }
     AccountEntryExt.encode(stream, encodedAccountEntry.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static AccountEntry decode(ByteString bs) throws IOException {
@@ -103,97 +185,6 @@ public class AccountEntry implements XdrElement {
     }
     decodedAccountEntry.ext = AccountEntryExt.decode(stream);
     return decodedAccountEntry;
-  }
-
-  public AccountID getAccountID() {
-    return this.accountID;
-  }
-
-  public void setAccountID(AccountID value) {
-    this.accountID = value;
-  }
-
-  public Int64 getBalance() {
-    return this.balance;
-  }
-
-  public void setBalance(Int64 value) {
-    this.balance = value;
-  }
-
-  public SequenceNumber getSeqNum() {
-    return this.seqNum;
-  }
-
-  public void setSeqNum(SequenceNumber value) {
-    this.seqNum = value;
-  }
-
-  public Uint32 getNumSubEntries() {
-    return this.numSubEntries;
-  }
-
-  public void setNumSubEntries(Uint32 value) {
-    this.numSubEntries = value;
-  }
-
-  public AccountID getInflationDest() {
-    return this.inflationDest;
-  }
-
-  public void setInflationDest(AccountID value) {
-    this.inflationDest = value;
-  }
-
-  public Uint32 getFlags() {
-    return this.flags;
-  }
-
-  public void setFlags(Uint32 value) {
-    this.flags = value;
-  }
-
-  public String32 getHomeDomain() {
-    return this.homeDomain;
-  }
-
-  public void setHomeDomain(String32 value) {
-    this.homeDomain = value;
-  }
-
-  public Thresholds getThresholds() {
-    return this.thresholds;
-  }
-
-  public void setThresholds(Thresholds value) {
-    this.thresholds = value;
-  }
-
-  public Signer[] getSigners() {
-    return this.signers;
-  }
-
-  public void setSigners(Signer[] value) {
-    this.signers = value;
-  }
-
-  public AccountEntryExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(AccountEntryExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -296,42 +287,10 @@ public class AccountEntry implements XdrElement {
   }
 
   public static class AccountEntryExt {
-    Integer v;
-    private AccountEntryExtensionV1 v1;
-
     public AccountEntryExt() {
     }
 
-    public static void encode(XdrDataOutputStream stream, AccountEntryExt encodedAccountEntryExt) throws IOException {
-      //Xdrgen::AST::Typespecs::Int
-      //Integer
-      stream.writeInt(encodedAccountEntryExt.getDiscriminant().intValue());
-      switch (encodedAccountEntryExt.getDiscriminant()) {
-        case 0:
-          break;
-        case 1:
-          AccountEntryExtensionV1.encode(stream, encodedAccountEntryExt.v1);
-          break;
-      }
-    }
-
-    public static AccountEntryExt decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static AccountEntryExt decode(XdrDataInputStream stream) throws IOException {
-      AccountEntryExt decodedAccountEntryExt = new AccountEntryExt();
-      Integer discriminant = stream.readInt();
-      decodedAccountEntryExt.setDiscriminant(discriminant);
-      switch (decodedAccountEntryExt.getDiscriminant()) {
-        case 0:
-          break;
-        case 1:
-          decodedAccountEntryExt.v1 = AccountEntryExtensionV1.decode(stream);
-          break;
-      }
-      return decodedAccountEntryExt;
-    }
+    Integer v;
 
     public Integer getDiscriminant() {
       return this.v;
@@ -341,38 +300,14 @@ public class AccountEntry implements XdrElement {
       this.v = value;
     }
 
+    private AccountEntryExtensionV1 v1;
+
     public AccountEntryExtensionV1 getV1() {
       return this.v1;
     }
 
     public void setV1(AccountEntryExtensionV1 value) {
       this.v1 = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(this.v1, this.v);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-      if (!(object instanceof AccountEntryExt)) {
-        return false;
-      }
-
-      AccountEntryExt other = (AccountEntryExt) object;
-      return Objects.equal(this.v1, other.v1) && Objects.equal(this.v, other.v);
     }
 
     public static final class Builder {
@@ -395,6 +330,61 @@ public class AccountEntry implements XdrElement {
         val.setV1(v1);
         return val;
       }
+    }
+
+    public static void encode(XdrDataOutputStream stream, AccountEntryExt encodedAccountEntryExt) throws IOException {
+      //Xdrgen::AST::Typespecs::Int
+      //Integer
+      stream.writeInt(encodedAccountEntryExt.getDiscriminant().intValue());
+      switch (encodedAccountEntryExt.getDiscriminant()) {
+        case 0:
+          break;
+        case 1:
+          AccountEntryExtensionV1.encode(stream, encodedAccountEntryExt.v1);
+          break;
+      }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
+    public static AccountEntryExt decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static AccountEntryExt decode(XdrDataInputStream stream) throws IOException {
+      AccountEntryExt decodedAccountEntryExt = new AccountEntryExt();
+      Integer discriminant = stream.readInt();
+      decodedAccountEntryExt.setDiscriminant(discriminant);
+      switch (decodedAccountEntryExt.getDiscriminant()) {
+        case 0:
+          break;
+        case 1:
+          decodedAccountEntryExt.v1 = AccountEntryExtensionV1.decode(stream);
+          break;
+      }
+      return decodedAccountEntryExt;
+    }
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(this.v1, this.v);
+    }
+    @Override
+    public boolean equals(Object object) {
+      if (!(object instanceof AccountEntryExt)) {
+        return false;
+      }
+
+      AccountEntryExt other = (AccountEntryExt) object;
+      return Objects.equal(this.v1, other.v1) && Objects.equal(this.v, other.v);
     }
 
   }

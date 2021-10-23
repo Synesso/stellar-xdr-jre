@@ -21,11 +21,37 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SCPNomination implements XdrElement {
+  public SCPNomination() {
+  }
+
   private Hash quorumSetHash;
+
+  public Hash getQuorumSetHash() {
+    return this.quorumSetHash;
+  }
+
+  public void setQuorumSetHash(Hash value) {
+    this.quorumSetHash = value;
+  }
+
   private Value[] votes;
+
+  public Value[] getVotes() {
+    return this.votes;
+  }
+
+  public void setVotes(Value[] value) {
+    this.votes = value;
+  }
+
   private Value[] accepted;
 
-  public SCPNomination() {
+  public Value[] getAccepted() {
+    return this.accepted;
+  }
+
+  public void setAccepted(Value[] value) {
+    this.accepted = value;
   }
 
   public static void encode(XdrDataOutputStream stream, SCPNomination encodedSCPNomination) throws IOException {
@@ -40,6 +66,17 @@ public class SCPNomination implements XdrElement {
     for (int i = 0; i < acceptedsize; i++) {
       Value.encode(stream, encodedSCPNomination.accepted[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SCPNomination decode(ByteString bs) throws IOException {
@@ -61,47 +98,10 @@ public class SCPNomination implements XdrElement {
     }
     return decodedSCPNomination;
   }
-
-  public Hash getQuorumSetHash() {
-    return this.quorumSetHash;
-  }
-
-  public void setQuorumSetHash(Hash value) {
-    this.quorumSetHash = value;
-  }
-
-  public Value[] getVotes() {
-    return this.votes;
-  }
-
-  public void setVotes(Value[] value) {
-    this.votes = value;
-  }
-
-  public Value[] getAccepted() {
-    return this.accepted;
-  }
-
-  public void setAccepted(Value[] value) {
-    this.accepted = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.quorumSetHash, Arrays.hashCode(this.votes), Arrays.hashCode(this.accepted));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof SCPNomination)) {

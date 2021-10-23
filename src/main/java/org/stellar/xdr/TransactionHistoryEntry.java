@@ -27,11 +27,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionHistoryEntry implements XdrElement {
+  public TransactionHistoryEntry() {
+  }
   private Uint32 ledgerSeq;
+  public Uint32 getLedgerSeq() {
+    return this.ledgerSeq;
+  }
+  public void setLedgerSeq(Uint32 value) {
+    this.ledgerSeq = value;
+  }
+
   private TransactionSet txSet;
+  public TransactionSet getTxSet() {
+    return this.txSet;
+  }
+
+  public void setTxSet(TransactionSet value) {
+    this.txSet = value;
+  }
+
   private TransactionHistoryEntryExt ext;
 
-  public TransactionHistoryEntry() {
+  public TransactionHistoryEntryExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(TransactionHistoryEntryExt value) {
+    this.ext = value;
   }
 
   public static void encode(
@@ -41,6 +63,17 @@ public class TransactionHistoryEntry implements XdrElement {
     Uint32.encode(stream, encodedTransactionHistoryEntry.ledgerSeq);
     TransactionSet.encode(stream, encodedTransactionHistoryEntry.txSet);
     TransactionHistoryEntryExt.encode(stream, encodedTransactionHistoryEntry.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionHistoryEntry decode(ByteString bs) throws IOException {
@@ -53,41 +86,6 @@ public class TransactionHistoryEntry implements XdrElement {
     decodedTransactionHistoryEntry.txSet = TransactionSet.decode(stream);
     decodedTransactionHistoryEntry.ext = TransactionHistoryEntryExt.decode(stream);
     return decodedTransactionHistoryEntry;
-  }
-
-  public Uint32 getLedgerSeq() {
-    return this.ledgerSeq;
-  }
-
-  public void setLedgerSeq(Uint32 value) {
-    this.ledgerSeq = value;
-  }
-
-  public TransactionSet getTxSet() {
-    return this.txSet;
-  }
-
-  public void setTxSet(TransactionSet value) {
-    this.txSet = value;
-  }
-
-  public TransactionHistoryEntryExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(TransactionHistoryEntryExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -136,9 +134,32 @@ public class TransactionHistoryEntry implements XdrElement {
   }
 
   public static class TransactionHistoryEntryExt {
+    public TransactionHistoryEntryExt() {
+    }
+
     Integer v;
 
-    public TransactionHistoryEntryExt() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public TransactionHistoryEntryExt build() {
+        TransactionHistoryEntryExt val = new TransactionHistoryEntryExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(
@@ -152,6 +173,17 @@ public class TransactionHistoryEntry implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static TransactionHistoryEntryExt decode(ByteString bs) throws IOException {
@@ -168,31 +200,10 @@ public class TransactionHistoryEntry implements XdrElement {
       }
       return decodedTransactionHistoryEntryExt;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof TransactionHistoryEntryExt)) {
@@ -201,21 +212,6 @@ public class TransactionHistoryEntry implements XdrElement {
 
       TransactionHistoryEntryExt other = (TransactionHistoryEntryExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public TransactionHistoryEntryExt build() {
-        TransactionHistoryEntryExt val = new TransactionHistoryEntryExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

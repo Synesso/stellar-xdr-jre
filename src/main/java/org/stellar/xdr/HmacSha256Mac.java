@@ -18,14 +18,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class HmacSha256Mac implements XdrElement {
+  public HmacSha256Mac() {
+  }
+
   private byte[] mac;
 
-  public HmacSha256Mac() {
+  public byte[] getMac() {
+    return this.mac;
+  }
+
+  public void setMac(byte[] value) {
+    this.mac = value;
   }
 
   public static void encode(XdrDataOutputStream stream, HmacSha256Mac encodedHmacSha256Mac) throws IOException {
     int macsize = encodedHmacSha256Mac.mac.length;
     stream.write(encodedHmacSha256Mac.getMac(), 0, macsize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static HmacSha256Mac decode(ByteString bs) throws IOException {
@@ -38,25 +57,6 @@ public class HmacSha256Mac implements XdrElement {
     decodedHmacSha256Mac.mac = new byte[macsize];
     stream.read(decodedHmacSha256Mac.mac, 0, macsize);
     return decodedHmacSha256Mac;
-  }
-
-  public byte[] getMac() {
-    return this.mac;
-  }
-
-  public void setMac(byte[] value) {
-    this.mac = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

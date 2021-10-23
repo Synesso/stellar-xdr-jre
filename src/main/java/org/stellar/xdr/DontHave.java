@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class DontHave implements XdrElement {
-  private MessageType type;
-  private Uint256 reqHash;
-
   public DontHave() {
   }
-
-  public static void encode(XdrDataOutputStream stream, DontHave encodedDontHave) throws IOException {
-    MessageType.encode(stream, encodedDontHave.type);
-    Uint256.encode(stream, encodedDontHave.reqHash);
-  }
-
-  public static DontHave decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static DontHave decode(XdrDataInputStream stream) throws IOException {
-    DontHave decodedDontHave = new DontHave();
-    decodedDontHave.type = MessageType.decode(stream);
-    decodedDontHave.reqHash = Uint256.decode(stream);
-    return decodedDontHave;
-  }
-
+  private MessageType type;
   public MessageType getType() {
     return this.type;
   }
@@ -49,12 +30,19 @@ public class DontHave implements XdrElement {
     this.type = value;
   }
 
+  private Uint256 reqHash;
+
   public Uint256 getReqHash() {
     return this.reqHash;
   }
 
   public void setReqHash(Uint256 value) {
     this.reqHash = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, DontHave encodedDontHave) throws IOException {
+    MessageType.encode(stream, encodedDontHave.type);
+    Uint256.encode(stream, encodedDontHave.reqHash);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class DontHave implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static DontHave decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static DontHave decode(XdrDataInputStream stream) throws IOException {
+    DontHave decodedDontHave = new DontHave();
+    decodedDontHave.type = MessageType.decode(stream);
+    decodedDontHave.reqHash = Uint256.decode(stream);
+    return decodedDontHave;
   }
 
   @Override

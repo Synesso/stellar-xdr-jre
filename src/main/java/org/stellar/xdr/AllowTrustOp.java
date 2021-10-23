@@ -22,17 +22,50 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AllowTrustOp implements XdrElement {
+  public AllowTrustOp() {
+  }
   private AccountID trustor;
+  public AccountID getTrustor() {
+    return this.trustor;
+  }
+  public void setTrustor(AccountID value) {
+    this.trustor = value;
+  }
+
   private AssetCode asset;
+  public AssetCode getAsset() {
+    return this.asset;
+  }
+
+  public void setAsset(AssetCode value) {
+    this.asset = value;
+  }
+
   private Uint32 authorize;
 
-  public AllowTrustOp() {
+  public Uint32 getAuthorize() {
+    return this.authorize;
+  }
+
+  public void setAuthorize(Uint32 value) {
+    this.authorize = value;
   }
 
   public static void encode(XdrDataOutputStream stream, AllowTrustOp encodedAllowTrustOp) throws IOException {
     AccountID.encode(stream, encodedAllowTrustOp.trustor);
     AssetCode.encode(stream, encodedAllowTrustOp.asset);
     Uint32.encode(stream, encodedAllowTrustOp.authorize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static AllowTrustOp decode(ByteString bs) throws IOException {
@@ -45,41 +78,6 @@ public class AllowTrustOp implements XdrElement {
     decodedAllowTrustOp.asset = AssetCode.decode(stream);
     decodedAllowTrustOp.authorize = Uint32.decode(stream);
     return decodedAllowTrustOp;
-  }
-
-  public AccountID getTrustor() {
-    return this.trustor;
-  }
-
-  public void setTrustor(AccountID value) {
-    this.trustor = value;
-  }
-
-  public AssetCode getAsset() {
-    return this.asset;
-  }
-
-  public void setAsset(AssetCode value) {
-    this.asset = value;
-  }
-
-  public Uint32 getAuthorize() {
-    return this.authorize;
-  }
-
-  public void setAuthorize(Uint32 value) {
-    this.authorize = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

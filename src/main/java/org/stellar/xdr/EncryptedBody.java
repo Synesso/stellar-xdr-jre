@@ -24,10 +24,29 @@ public class EncryptedBody implements XdrElement {
     this.EncryptedBody = EncryptedBody;
   }
 
+  public byte[] getEncryptedBody() {
+    return this.EncryptedBody;
+  }
+
+  public void setEncryptedBody(byte[] value) {
+    this.EncryptedBody = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, EncryptedBody encodedEncryptedBody) throws IOException {
     int EncryptedBodysize = encodedEncryptedBody.EncryptedBody.length;
     stream.writeInt(EncryptedBodysize);
     stream.write(encodedEncryptedBody.getEncryptedBody(), 0, EncryptedBodysize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static EncryptedBody decode(ByteString bs) throws IOException {
@@ -40,25 +59,6 @@ public class EncryptedBody implements XdrElement {
     decodedEncryptedBody.EncryptedBody = new byte[EncryptedBodysize];
     stream.read(decodedEncryptedBody.EncryptedBody, 0, EncryptedBodysize);
     return decodedEncryptedBody;
-  }
-
-  public byte[] getEncryptedBody() {
-    return this.EncryptedBody;
-  }
-
-  public void setEncryptedBody(byte[] value) {
-    this.EncryptedBody = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

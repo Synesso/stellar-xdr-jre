@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Liabilities implements XdrElement {
-  private Int64 buying;
-  private Int64 selling;
-
   public Liabilities() {
   }
-
-  public static void encode(XdrDataOutputStream stream, Liabilities encodedLiabilities) throws IOException {
-    Int64.encode(stream, encodedLiabilities.buying);
-    Int64.encode(stream, encodedLiabilities.selling);
-  }
-
-  public static Liabilities decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Liabilities decode(XdrDataInputStream stream) throws IOException {
-    Liabilities decodedLiabilities = new Liabilities();
-    decodedLiabilities.buying = Int64.decode(stream);
-    decodedLiabilities.selling = Int64.decode(stream);
-    return decodedLiabilities;
-  }
-
+  private Int64 buying;
   public Int64 getBuying() {
     return this.buying;
   }
@@ -49,12 +30,19 @@ public class Liabilities implements XdrElement {
     this.buying = value;
   }
 
+  private Int64 selling;
+
   public Int64 getSelling() {
     return this.selling;
   }
 
   public void setSelling(Int64 value) {
     this.selling = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, Liabilities encodedLiabilities) throws IOException {
+    Int64.encode(stream, encodedLiabilities.buying);
+    Int64.encode(stream, encodedLiabilities.selling);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class Liabilities implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Liabilities decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Liabilities decode(XdrDataInputStream stream) throws IOException {
+    Liabilities decodedLiabilities = new Liabilities();
+    decodedLiabilities.buying = Int64.decode(stream);
+    decodedLiabilities.selling = Int64.decode(stream);
+    return decodedLiabilities;
   }
 
   @Override

@@ -19,28 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Price implements XdrElement {
-  private Int32 n;
-  private Int32 d;
-
   public Price() {
   }
-
-  public static void encode(XdrDataOutputStream stream, Price encodedPrice) throws IOException {
-    Int32.encode(stream, encodedPrice.n);
-    Int32.encode(stream, encodedPrice.d);
-  }
-
-  public static Price decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static Price decode(XdrDataInputStream stream) throws IOException {
-    Price decodedPrice = new Price();
-    decodedPrice.n = Int32.decode(stream);
-    decodedPrice.d = Int32.decode(stream);
-    return decodedPrice;
-  }
-
+  private Int32 n;
   public Int32 getN() {
     return this.n;
   }
@@ -49,12 +30,19 @@ public class Price implements XdrElement {
     this.n = value;
   }
 
+  private Int32 d;
+
   public Int32 getD() {
     return this.d;
   }
 
   public void setD(Int32 value) {
     this.d = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, Price encodedPrice) throws IOException {
+    Int32.encode(stream, encodedPrice.n);
+    Int32.encode(stream, encodedPrice.d);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -66,6 +54,17 @@ public class Price implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static Price decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static Price decode(XdrDataInputStream stream) throws IOException {
+    Price decodedPrice = new Price();
+    decodedPrice.n = Int32.decode(stream);
+    decodedPrice.d = Int32.decode(stream);
+    return decodedPrice;
   }
 
   @Override

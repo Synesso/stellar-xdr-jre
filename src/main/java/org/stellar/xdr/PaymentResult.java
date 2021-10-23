@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class PaymentResult implements XdrElement {
+  public PaymentResult() {
+  }
+
   PaymentResultCode code;
 
-  public PaymentResult() {
+  public PaymentResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(PaymentResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private PaymentResultCode discriminant;
+
+    public Builder discriminant(PaymentResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public PaymentResult build() {
+      PaymentResult val = new PaymentResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(XdrDataOutputStream stream, PaymentResult encodedPaymentResult) throws IOException {
@@ -36,6 +59,17 @@ public class PaymentResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static PaymentResult decode(ByteString bs) throws IOException {
@@ -54,31 +88,10 @@ public class PaymentResult implements XdrElement {
     }
     return decodedPaymentResult;
   }
-
-  public PaymentResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(PaymentResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof PaymentResult)) {
@@ -87,20 +100,5 @@ public class PaymentResult implements XdrElement {
 
     PaymentResult other = (PaymentResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private PaymentResultCode discriminant;
-
-    public Builder discriminant(PaymentResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public PaymentResult build() {
-      PaymentResult val = new PaymentResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

@@ -19,10 +19,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ManageDataOp implements XdrElement {
+  public ManageDataOp() {
+  }
+
   private String64 dataName;
+
+  public String64 getDataName() {
+    return this.dataName;
+  }
+
+  public void setDataName(String64 value) {
+    this.dataName = value;
+  }
+
   private DataValue dataValue;
 
-  public ManageDataOp() {
+  public DataValue getDataValue() {
+    return this.dataValue;
+  }
+
+  public void setDataValue(DataValue value) {
+    this.dataValue = value;
   }
 
   public static void encode(XdrDataOutputStream stream, ManageDataOp encodedManageDataOp) throws IOException {
@@ -33,6 +50,17 @@ public class ManageDataOp implements XdrElement {
     } else {
       stream.writeInt(0);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static ManageDataOp decode(ByteString bs) throws IOException {
@@ -48,39 +76,10 @@ public class ManageDataOp implements XdrElement {
     }
     return decodedManageDataOp;
   }
-
-  public String64 getDataName() {
-    return this.dataName;
-  }
-
-  public void setDataName(String64 value) {
-    this.dataName = value;
-  }
-
-  public DataValue getDataValue() {
-    return this.dataValue;
-  }
-
-  public void setDataValue(DataValue value) {
-    this.dataValue = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.dataName, this.dataValue);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof ManageDataOp)) {

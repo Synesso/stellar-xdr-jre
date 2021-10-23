@@ -24,10 +24,29 @@ public class UpgradeType implements XdrElement {
     this.UpgradeType = UpgradeType;
   }
 
+  public byte[] getUpgradeType() {
+    return this.UpgradeType;
+  }
+
+  public void setUpgradeType(byte[] value) {
+    this.UpgradeType = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, UpgradeType encodedUpgradeType) throws IOException {
     int UpgradeTypesize = encodedUpgradeType.UpgradeType.length;
     stream.writeInt(UpgradeTypesize);
     stream.write(encodedUpgradeType.getUpgradeType(), 0, UpgradeTypesize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static UpgradeType decode(ByteString bs) throws IOException {
@@ -40,25 +59,6 @@ public class UpgradeType implements XdrElement {
     decodedUpgradeType.UpgradeType = new byte[UpgradeTypesize];
     stream.read(decodedUpgradeType.UpgradeType, 0, UpgradeTypesize);
     return decodedUpgradeType;
-  }
-
-  public byte[] getUpgradeType() {
-    return this.UpgradeType;
-  }
-
-  public void setUpgradeType(byte[] value) {
-    this.UpgradeType = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

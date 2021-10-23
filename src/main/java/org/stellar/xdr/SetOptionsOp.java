@@ -33,17 +33,97 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SetOptionsOp implements XdrElement {
+  public SetOptionsOp() {
+  }
+
   private AccountID inflationDest;
+
+  public AccountID getInflationDest() {
+    return this.inflationDest;
+  }
+
+  public void setInflationDest(AccountID value) {
+    this.inflationDest = value;
+  }
+
   private Uint32 clearFlags;
+
+  public Uint32 getClearFlags() {
+    return this.clearFlags;
+  }
+
+  public void setClearFlags(Uint32 value) {
+    this.clearFlags = value;
+  }
+
   private Uint32 setFlags;
+
+  public Uint32 getSetFlags() {
+    return this.setFlags;
+  }
+
+  public void setSetFlags(Uint32 value) {
+    this.setFlags = value;
+  }
+
   private Uint32 masterWeight;
+
+  public Uint32 getMasterWeight() {
+    return this.masterWeight;
+  }
+
+  public void setMasterWeight(Uint32 value) {
+    this.masterWeight = value;
+  }
+
   private Uint32 lowThreshold;
+
+  public Uint32 getLowThreshold() {
+    return this.lowThreshold;
+  }
+
+  public void setLowThreshold(Uint32 value) {
+    this.lowThreshold = value;
+  }
+
   private Uint32 medThreshold;
+
+  public Uint32 getMedThreshold() {
+    return this.medThreshold;
+  }
+
+  public void setMedThreshold(Uint32 value) {
+    this.medThreshold = value;
+  }
+
   private Uint32 highThreshold;
+
+  public Uint32 getHighThreshold() {
+    return this.highThreshold;
+  }
+
+  public void setHighThreshold(Uint32 value) {
+    this.highThreshold = value;
+  }
+
   private String32 homeDomain;
+
+  public String32 getHomeDomain() {
+    return this.homeDomain;
+  }
+
+  public void setHomeDomain(String32 value) {
+    this.homeDomain = value;
+  }
+
   private Signer signer;
 
-  public SetOptionsOp() {
+  public Signer getSigner() {
+    return this.signer;
+  }
+
+  public void setSigner(Signer value) {
+    this.signer = value;
   }
 
   public static void encode(XdrDataOutputStream stream, SetOptionsOp encodedSetOptionsOp) throws IOException {
@@ -103,6 +183,17 @@ public class SetOptionsOp implements XdrElement {
     }
   }
 
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
   public static SetOptionsOp decode(ByteString bs) throws IOException {
     return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
   }
@@ -147,96 +238,11 @@ public class SetOptionsOp implements XdrElement {
     }
     return decodedSetOptionsOp;
   }
-
-  public AccountID getInflationDest() {
-    return this.inflationDest;
-  }
-
-  public void setInflationDest(AccountID value) {
-    this.inflationDest = value;
-  }
-
-  public Uint32 getClearFlags() {
-    return this.clearFlags;
-  }
-
-  public void setClearFlags(Uint32 value) {
-    this.clearFlags = value;
-  }
-
-  public Uint32 getSetFlags() {
-    return this.setFlags;
-  }
-
-  public void setSetFlags(Uint32 value) {
-    this.setFlags = value;
-  }
-
-  public Uint32 getMasterWeight() {
-    return this.masterWeight;
-  }
-
-  public void setMasterWeight(Uint32 value) {
-    this.masterWeight = value;
-  }
-
-  public Uint32 getLowThreshold() {
-    return this.lowThreshold;
-  }
-
-  public void setLowThreshold(Uint32 value) {
-    this.lowThreshold = value;
-  }
-
-  public Uint32 getMedThreshold() {
-    return this.medThreshold;
-  }
-
-  public void setMedThreshold(Uint32 value) {
-    this.medThreshold = value;
-  }
-
-  public Uint32 getHighThreshold() {
-    return this.highThreshold;
-  }
-
-  public void setHighThreshold(Uint32 value) {
-    this.highThreshold = value;
-  }
-
-  public String32 getHomeDomain() {
-    return this.homeDomain;
-  }
-
-  public void setHomeDomain(String32 value) {
-    this.homeDomain = value;
-  }
-
-  public Signer getSigner() {
-    return this.signer;
-  }
-
-  public void setSigner(Signer value) {
-    this.signer = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.inflationDest, this.clearFlags, this.setFlags, this.masterWeight, this.lowThreshold,
         this.medThreshold, this.highThreshold, this.homeDomain, this.signer);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof SetOptionsOp)) {

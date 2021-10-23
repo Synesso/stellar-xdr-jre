@@ -24,41 +24,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class AuthenticatedMessage implements XdrElement {
-  Uint32 v;
-  private AuthenticatedMessageV0 v0;
-
   public AuthenticatedMessage() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      AuthenticatedMessage encodedAuthenticatedMessage
-  ) throws IOException {
-    //Xdrgen::AST::Identifier
-    //Uint32
-    stream.writeInt(encodedAuthenticatedMessage.getDiscriminant().getUint32());
-    switch (encodedAuthenticatedMessage.getDiscriminant().getUint32()) {
-      case 0:
-        AuthenticatedMessageV0.encode(stream, encodedAuthenticatedMessage.v0);
-        break;
-    }
-  }
-
-  public static AuthenticatedMessage decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static AuthenticatedMessage decode(XdrDataInputStream stream) throws IOException {
-    AuthenticatedMessage decodedAuthenticatedMessage = new AuthenticatedMessage();
-    Uint32 discriminant = Uint32.decode(stream);
-    decodedAuthenticatedMessage.setDiscriminant(discriminant);
-    switch (decodedAuthenticatedMessage.getDiscriminant().getUint32()) {
-      case 0:
-        decodedAuthenticatedMessage.v0 = AuthenticatedMessageV0.decode(stream);
-        break;
-    }
-    return decodedAuthenticatedMessage;
-  }
+  Uint32 v;
 
   public Uint32 getDiscriminant() {
     return this.v;
@@ -68,38 +37,14 @@ public class AuthenticatedMessage implements XdrElement {
     this.v = value;
   }
 
+  private AuthenticatedMessageV0 v0;
+
   public AuthenticatedMessageV0 getV0() {
     return this.v0;
   }
 
   public void setV0(AuthenticatedMessageV0 value) {
     this.v0 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.v0, this.v);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof AuthenticatedMessage)) {
-      return false;
-    }
-
-    AuthenticatedMessage other = (AuthenticatedMessage) object;
-    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v, other.v);
   }
 
   public static final class Builder {
@@ -124,12 +69,88 @@ public class AuthenticatedMessage implements XdrElement {
     }
   }
 
+  public static void encode(
+      XdrDataOutputStream stream,
+      AuthenticatedMessage encodedAuthenticatedMessage
+  ) throws IOException {
+    //Xdrgen::AST::Identifier
+    //Uint32
+    stream.writeInt(encodedAuthenticatedMessage.getDiscriminant().getUint32());
+    switch (encodedAuthenticatedMessage.getDiscriminant().getUint32()) {
+      case 0:
+        AuthenticatedMessageV0.encode(stream, encodedAuthenticatedMessage.v0);
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static AuthenticatedMessage decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static AuthenticatedMessage decode(XdrDataInputStream stream) throws IOException {
+    AuthenticatedMessage decodedAuthenticatedMessage = new AuthenticatedMessage();
+    Uint32 discriminant = Uint32.decode(stream);
+    decodedAuthenticatedMessage.setDiscriminant(discriminant);
+    switch (decodedAuthenticatedMessage.getDiscriminant().getUint32()) {
+      case 0:
+        decodedAuthenticatedMessage.v0 = AuthenticatedMessageV0.decode(stream);
+        break;
+    }
+    return decodedAuthenticatedMessage;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.v0, this.v);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof AuthenticatedMessage)) {
+      return false;
+    }
+
+    AuthenticatedMessage other = (AuthenticatedMessage) object;
+    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v, other.v);
+  }
+
   public static class AuthenticatedMessageV0 {
+    public AuthenticatedMessageV0() {
+    }
     private Uint64 sequence;
+    public Uint64 getSequence() {
+      return this.sequence;
+    }
+    public void setSequence(Uint64 value) {
+      this.sequence = value;
+    }
+
     private StellarMessage message;
+    public StellarMessage getMessage() {
+      return this.message;
+    }
+
+    public void setMessage(StellarMessage value) {
+      this.message = value;
+    }
+
     private HmacSha256Mac mac;
 
-    public AuthenticatedMessageV0() {
+    public HmacSha256Mac getMac() {
+      return this.mac;
+    }
+
+    public void setMac(HmacSha256Mac value) {
+      this.mac = value;
     }
 
     public static void encode(
@@ -139,6 +160,17 @@ public class AuthenticatedMessage implements XdrElement {
       Uint64.encode(stream, encodedAuthenticatedMessageV0.sequence);
       StellarMessage.encode(stream, encodedAuthenticatedMessageV0.message);
       HmacSha256Mac.encode(stream, encodedAuthenticatedMessageV0.mac);
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static AuthenticatedMessageV0 decode(ByteString bs) throws IOException {
@@ -151,41 +183,6 @@ public class AuthenticatedMessage implements XdrElement {
       decodedAuthenticatedMessageV0.message = StellarMessage.decode(stream);
       decodedAuthenticatedMessageV0.mac = HmacSha256Mac.decode(stream);
       return decodedAuthenticatedMessageV0;
-    }
-
-    public Uint64 getSequence() {
-      return this.sequence;
-    }
-
-    public void setSequence(Uint64 value) {
-      this.sequence = value;
-    }
-
-    public StellarMessage getMessage() {
-      return this.message;
-    }
-
-    public void setMessage(StellarMessage value) {
-      this.message = value;
-    }
-
-    public HmacSha256Mac getMac() {
-      return this.mac;
-    }
-
-    public void setMac(HmacSha256Mac value) {
-      this.mac = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
     }
 
     @Override

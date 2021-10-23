@@ -18,14 +18,33 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Curve25519Secret implements XdrElement {
+  public Curve25519Secret() {
+  }
+
   private byte[] key;
 
-  public Curve25519Secret() {
+  public byte[] getKey() {
+    return this.key;
+  }
+
+  public void setKey(byte[] value) {
+    this.key = value;
   }
 
   public static void encode(XdrDataOutputStream stream, Curve25519Secret encodedCurve25519Secret) throws IOException {
     int keysize = encodedCurve25519Secret.key.length;
     stream.write(encodedCurve25519Secret.getKey(), 0, keysize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Curve25519Secret decode(ByteString bs) throws IOException {
@@ -38,25 +57,6 @@ public class Curve25519Secret implements XdrElement {
     decodedCurve25519Secret.key = new byte[keysize];
     stream.read(decodedCurve25519Secret.key, 0, keysize);
     return decodedCurve25519Secret;
-  }
-
-  public byte[] getKey() {
-    return this.key;
-  }
-
-  public void setKey(byte[] value) {
-    this.key = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

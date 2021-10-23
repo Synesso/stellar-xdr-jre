@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class BumpSequenceResult implements XdrElement {
+  public BumpSequenceResult() {
+  }
+
   BumpSequenceResultCode code;
 
-  public BumpSequenceResult() {
+  public BumpSequenceResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(BumpSequenceResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private BumpSequenceResultCode discriminant;
+
+    public Builder discriminant(BumpSequenceResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public BumpSequenceResult build() {
+      BumpSequenceResult val = new BumpSequenceResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(
@@ -39,6 +62,17 @@ public class BumpSequenceResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static BumpSequenceResult decode(ByteString bs) throws IOException {
@@ -57,31 +91,10 @@ public class BumpSequenceResult implements XdrElement {
     }
     return decodedBumpSequenceResult;
   }
-
-  public BumpSequenceResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(BumpSequenceResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof BumpSequenceResult)) {
@@ -90,20 +103,5 @@ public class BumpSequenceResult implements XdrElement {
 
     BumpSequenceResult other = (BumpSequenceResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private BumpSequenceResultCode discriminant;
-
-    public Builder discriminant(BumpSequenceResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public BumpSequenceResult build() {
-      BumpSequenceResult val = new BumpSequenceResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

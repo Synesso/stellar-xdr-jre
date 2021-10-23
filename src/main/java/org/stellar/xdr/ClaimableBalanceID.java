@@ -19,41 +19,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ClaimableBalanceID implements XdrElement {
-  ClaimableBalanceIDType type;
-  private Hash v0;
-
   public ClaimableBalanceID() {
   }
 
-  public static void encode(
-      XdrDataOutputStream stream,
-      ClaimableBalanceID encodedClaimableBalanceID
-  ) throws IOException {
-    //Xdrgen::AST::Identifier
-    //ClaimableBalanceIDType
-    stream.writeInt(encodedClaimableBalanceID.getDiscriminant().getValue());
-    switch (encodedClaimableBalanceID.getDiscriminant()) {
-      case CLAIMABLE_BALANCE_ID_TYPE_V0:
-        Hash.encode(stream, encodedClaimableBalanceID.v0);
-        break;
-    }
-  }
-
-  public static ClaimableBalanceID decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static ClaimableBalanceID decode(XdrDataInputStream stream) throws IOException {
-    ClaimableBalanceID decodedClaimableBalanceID = new ClaimableBalanceID();
-    ClaimableBalanceIDType discriminant = ClaimableBalanceIDType.decode(stream);
-    decodedClaimableBalanceID.setDiscriminant(discriminant);
-    switch (decodedClaimableBalanceID.getDiscriminant()) {
-      case CLAIMABLE_BALANCE_ID_TYPE_V0:
-        decodedClaimableBalanceID.v0 = Hash.decode(stream);
-        break;
-    }
-    return decodedClaimableBalanceID;
-  }
+  ClaimableBalanceIDType type;
 
   public ClaimableBalanceIDType getDiscriminant() {
     return this.type;
@@ -63,38 +32,14 @@ public class ClaimableBalanceID implements XdrElement {
     this.type = value;
   }
 
+  private Hash v0;
+
   public Hash getV0() {
     return this.v0;
   }
 
   public void setV0(Hash value) {
     this.v0 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.v0, this.type);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof ClaimableBalanceID)) {
-      return false;
-    }
-
-    ClaimableBalanceID other = (ClaimableBalanceID) object;
-    return Objects.equal(this.v0, other.v0) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -117,5 +62,59 @@ public class ClaimableBalanceID implements XdrElement {
       val.setV0(v0);
       return val;
     }
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      ClaimableBalanceID encodedClaimableBalanceID
+  ) throws IOException {
+    //Xdrgen::AST::Identifier
+    //ClaimableBalanceIDType
+    stream.writeInt(encodedClaimableBalanceID.getDiscriminant().getValue());
+    switch (encodedClaimableBalanceID.getDiscriminant()) {
+      case CLAIMABLE_BALANCE_ID_TYPE_V0:
+        Hash.encode(stream, encodedClaimableBalanceID.v0);
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static ClaimableBalanceID decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static ClaimableBalanceID decode(XdrDataInputStream stream) throws IOException {
+    ClaimableBalanceID decodedClaimableBalanceID = new ClaimableBalanceID();
+    ClaimableBalanceIDType discriminant = ClaimableBalanceIDType.decode(stream);
+    decodedClaimableBalanceID.setDiscriminant(discriminant);
+    switch (decodedClaimableBalanceID.getDiscriminant()) {
+      case CLAIMABLE_BALANCE_ID_TYPE_V0:
+        decodedClaimableBalanceID.v0 = Hash.decode(stream);
+        break;
+    }
+    return decodedClaimableBalanceID;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.v0, this.type);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof ClaimableBalanceID)) {
+      return false;
+    }
+
+    ClaimableBalanceID other = (ClaimableBalanceID) object;
+    return Objects.equal(this.v0, other.v0) && Objects.equal(this.type, other.type);
   }
 }

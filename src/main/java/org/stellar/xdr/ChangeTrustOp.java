@@ -13,7 +13,7 @@ import okio.ByteString;
 
 //  struct ChangeTrustOp
 //  {
-//      Asset line;
+//      ChangeTrustAsset line;
 //
 //      // if limit is set to 0, deletes the trust line
 //      int64 limit;
@@ -21,35 +21,20 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ChangeTrustOp implements XdrElement {
-  private Asset line;
-  private Int64 limit;
-
   public ChangeTrustOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, ChangeTrustOp encodedChangeTrustOp) throws IOException {
-    Asset.encode(stream, encodedChangeTrustOp.line);
-    Int64.encode(stream, encodedChangeTrustOp.limit);
-  }
+  private ChangeTrustAsset line;
 
-  public static ChangeTrustOp decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static ChangeTrustOp decode(XdrDataInputStream stream) throws IOException {
-    ChangeTrustOp decodedChangeTrustOp = new ChangeTrustOp();
-    decodedChangeTrustOp.line = Asset.decode(stream);
-    decodedChangeTrustOp.limit = Int64.decode(stream);
-    return decodedChangeTrustOp;
-  }
-
-  public Asset getLine() {
+  public ChangeTrustAsset getLine() {
     return this.line;
   }
 
-  public void setLine(Asset value) {
+  public void setLine(ChangeTrustAsset value) {
     this.line = value;
   }
+
+  private Int64 limit;
 
   public Int64 getLimit() {
     return this.limit;
@@ -57,6 +42,11 @@ public class ChangeTrustOp implements XdrElement {
 
   public void setLimit(Int64 value) {
     this.limit = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, ChangeTrustOp encodedChangeTrustOp) throws IOException {
+    ChangeTrustAsset.encode(stream, encodedChangeTrustOp.line);
+    Int64.encode(stream, encodedChangeTrustOp.limit);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -68,6 +58,17 @@ public class ChangeTrustOp implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static ChangeTrustOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static ChangeTrustOp decode(XdrDataInputStream stream) throws IOException {
+    ChangeTrustOp decodedChangeTrustOp = new ChangeTrustOp();
+    decodedChangeTrustOp.line = ChangeTrustAsset.decode(stream);
+    decodedChangeTrustOp.limit = Int64.decode(stream);
+    return decodedChangeTrustOp;
   }
 
   @Override
@@ -86,10 +87,10 @@ public class ChangeTrustOp implements XdrElement {
   }
 
   public static final class Builder {
-    private Asset line;
+    private ChangeTrustAsset line;
     private Int64 limit;
 
-    public Builder line(Asset line) {
+    public Builder line(ChangeTrustAsset line) {
       this.line = line;
       return this;
     }

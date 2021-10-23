@@ -24,12 +24,31 @@ public class PeerStatList implements XdrElement {
     this.PeerStatList = PeerStatList;
   }
 
+  public PeerStats[] getPeerStatList() {
+    return this.PeerStatList;
+  }
+
+  public void setPeerStatList(PeerStats[] value) {
+    this.PeerStatList = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, PeerStatList encodedPeerStatList) throws IOException {
     int PeerStatListsize = encodedPeerStatList.getPeerStatList().length;
     stream.writeInt(PeerStatListsize);
     for (int i = 0; i < PeerStatListsize; i++) {
       PeerStats.encode(stream, encodedPeerStatList.PeerStatList[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static PeerStatList decode(ByteString bs) throws IOException {
@@ -44,25 +63,6 @@ public class PeerStatList implements XdrElement {
       decodedPeerStatList.PeerStatList[i] = PeerStats.decode(stream);
     }
     return decodedPeerStatList;
-  }
-
-  public PeerStats[] getPeerStatList() {
-    return this.PeerStatList;
-  }
-
-  public void setPeerStatList(PeerStats[] value) {
-    this.PeerStatList = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

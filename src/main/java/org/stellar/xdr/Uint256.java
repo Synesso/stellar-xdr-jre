@@ -24,9 +24,28 @@ public class Uint256 implements XdrElement {
     this.uint256 = uint256;
   }
 
+  public byte[] getUint256() {
+    return this.uint256;
+  }
+
+  public void setUint256(byte[] value) {
+    this.uint256 = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, Uint256 encodedUint256) throws IOException {
     int uint256size = encodedUint256.uint256.length;
     stream.write(encodedUint256.getUint256(), 0, uint256size);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Uint256 decode(ByteString bs) throws IOException {
@@ -39,25 +58,6 @@ public class Uint256 implements XdrElement {
     decodedUint256.uint256 = new byte[uint256size];
     stream.read(decodedUint256.uint256, 0, uint256size);
     return decodedUint256;
-  }
-
-  public byte[] getUint256() {
-    return this.uint256;
-  }
-
-  public void setUint256(byte[] value) {
-    this.uint256 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

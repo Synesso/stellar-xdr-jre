@@ -38,16 +38,73 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class OfferEntry implements XdrElement {
+  public OfferEntry() {
+  }
   private AccountID sellerID;
+  public AccountID getSellerID() {
+    return this.sellerID;
+  }
+  public void setSellerID(AccountID value) {
+    this.sellerID = value;
+  }
+
   private Int64 offerID;
+  public Int64 getOfferID() {
+    return this.offerID;
+  }
+  public void setOfferID(Int64 value) {
+    this.offerID = value;
+  }
+
   private Asset selling;
+  public Asset getSelling() {
+    return this.selling;
+  }
+  public void setSelling(Asset value) {
+    this.selling = value;
+  }
+
   private Asset buying;
+  public Asset getBuying() {
+    return this.buying;
+  }
+  public void setBuying(Asset value) {
+    this.buying = value;
+  }
+
   private Int64 amount;
+  public Int64 getAmount() {
+    return this.amount;
+  }
+  public void setAmount(Int64 value) {
+    this.amount = value;
+  }
+
   private Price price;
+  public Price getPrice() {
+    return this.price;
+  }
+  public void setPrice(Price value) {
+    this.price = value;
+  }
+
   private Uint32 flags;
+  public Uint32 getFlags() {
+    return this.flags;
+  }
+
+  public void setFlags(Uint32 value) {
+    this.flags = value;
+  }
+
   private OfferEntryExt ext;
 
-  public OfferEntry() {
+  public OfferEntryExt getExt() {
+    return this.ext;
+  }
+
+  public void setExt(OfferEntryExt value) {
+    this.ext = value;
   }
 
   public static void encode(XdrDataOutputStream stream, OfferEntry encodedOfferEntry) throws IOException {
@@ -59,6 +116,17 @@ public class OfferEntry implements XdrElement {
     Price.encode(stream, encodedOfferEntry.price);
     Uint32.encode(stream, encodedOfferEntry.flags);
     OfferEntryExt.encode(stream, encodedOfferEntry.ext);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static OfferEntry decode(ByteString bs) throws IOException {
@@ -76,81 +144,6 @@ public class OfferEntry implements XdrElement {
     decodedOfferEntry.flags = Uint32.decode(stream);
     decodedOfferEntry.ext = OfferEntryExt.decode(stream);
     return decodedOfferEntry;
-  }
-
-  public AccountID getSellerID() {
-    return this.sellerID;
-  }
-
-  public void setSellerID(AccountID value) {
-    this.sellerID = value;
-  }
-
-  public Int64 getOfferID() {
-    return this.offerID;
-  }
-
-  public void setOfferID(Int64 value) {
-    this.offerID = value;
-  }
-
-  public Asset getSelling() {
-    return this.selling;
-  }
-
-  public void setSelling(Asset value) {
-    this.selling = value;
-  }
-
-  public Asset getBuying() {
-    return this.buying;
-  }
-
-  public void setBuying(Asset value) {
-    this.buying = value;
-  }
-
-  public Int64 getAmount() {
-    return this.amount;
-  }
-
-  public void setAmount(Int64 value) {
-    this.amount = value;
-  }
-
-  public Price getPrice() {
-    return this.price;
-  }
-
-  public void setPrice(Price value) {
-    this.price = value;
-  }
-
-  public Uint32 getFlags() {
-    return this.flags;
-  }
-
-  public void setFlags(Uint32 value) {
-    this.flags = value;
-  }
-
-  public OfferEntryExt getExt() {
-    return this.ext;
-  }
-
-  public void setExt(OfferEntryExt value) {
-    this.ext = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -237,9 +230,32 @@ public class OfferEntry implements XdrElement {
   }
 
   public static class OfferEntryExt {
+    public OfferEntryExt() {
+    }
+
     Integer v;
 
-    public OfferEntryExt() {
+    public Integer getDiscriminant() {
+      return this.v;
+    }
+
+    public void setDiscriminant(Integer value) {
+      this.v = value;
+    }
+
+    public static final class Builder {
+      private Integer discriminant;
+
+      public Builder discriminant(Integer discriminant) {
+        this.discriminant = discriminant;
+        return this;
+      }
+
+      public OfferEntryExt build() {
+        OfferEntryExt val = new OfferEntryExt();
+        val.setDiscriminant(discriminant);
+        return val;
+      }
     }
 
     public static void encode(XdrDataOutputStream stream, OfferEntryExt encodedOfferEntryExt) throws IOException {
@@ -250,6 +266,17 @@ public class OfferEntry implements XdrElement {
         case 0:
           break;
       }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
     }
 
     public static OfferEntryExt decode(ByteString bs) throws IOException {
@@ -266,31 +293,10 @@ public class OfferEntry implements XdrElement {
       }
       return decodedOfferEntryExt;
     }
-
-    public Integer getDiscriminant() {
-      return this.v;
-    }
-
-    public void setDiscriminant(Integer value) {
-      this.v = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
     @Override
     public int hashCode() {
       return Objects.hashCode(this.v);
     }
-
     @Override
     public boolean equals(Object object) {
       if (!(object instanceof OfferEntryExt)) {
@@ -299,21 +305,6 @@ public class OfferEntry implements XdrElement {
 
       OfferEntryExt other = (OfferEntryExt) object;
       return Objects.equal(this.v, other.v);
-    }
-
-    public static final class Builder {
-      private Integer discriminant;
-
-      public Builder discriminant(Integer discriminant) {
-        this.discriminant = discriminant;
-        return this;
-      }
-
-      public OfferEntryExt build() {
-        OfferEntryExt val = new OfferEntryExt();
-        val.setDiscriminant(discriminant);
-        return val;
-      }
     }
 
   }

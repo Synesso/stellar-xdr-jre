@@ -24,26 +24,16 @@ public class SequenceNumber implements XdrElement {
     this.SequenceNumber = SequenceNumber;
   }
 
-  public static void encode(XdrDataOutputStream stream, SequenceNumber encodedSequenceNumber) throws IOException {
-    Int64.encode(stream, encodedSequenceNumber.SequenceNumber);
-  }
-
-  public static SequenceNumber decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static SequenceNumber decode(XdrDataInputStream stream) throws IOException {
-    SequenceNumber decodedSequenceNumber = new SequenceNumber();
-    decodedSequenceNumber.SequenceNumber = Int64.decode(stream);
-    return decodedSequenceNumber;
-  }
-
   public Int64 getSequenceNumber() {
     return this.SequenceNumber;
   }
 
   public void setSequenceNumber(Int64 value) {
     this.SequenceNumber = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, SequenceNumber encodedSequenceNumber) throws IOException {
+    Int64.encode(stream, encodedSequenceNumber.SequenceNumber);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -55,6 +45,16 @@ public class SequenceNumber implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static SequenceNumber decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static SequenceNumber decode(XdrDataInputStream stream) throws IOException {
+    SequenceNumber decodedSequenceNumber = new SequenceNumber();
+    decodedSequenceNumber.SequenceNumber = Int64.decode(stream);
+    return decodedSequenceNumber;
   }
 
   @Override

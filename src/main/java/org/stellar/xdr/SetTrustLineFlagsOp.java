@@ -22,12 +22,41 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SetTrustLineFlagsOp implements XdrElement {
+  public SetTrustLineFlagsOp() {
+  }
   private AccountID trustor;
+  public AccountID getTrustor() {
+    return this.trustor;
+  }
+  public void setTrustor(AccountID value) {
+    this.trustor = value;
+  }
+
   private Asset asset;
+  public Asset getAsset() {
+    return this.asset;
+  }
+  public void setAsset(Asset value) {
+    this.asset = value;
+  }
+
   private Uint32 clearFlags;
+  public Uint32 getClearFlags() {
+    return this.clearFlags;
+  }
+
+  public void setClearFlags(Uint32 value) {
+    this.clearFlags = value;
+  }
+
   private Uint32 setFlags;
 
-  public SetTrustLineFlagsOp() {
+  public Uint32 getSetFlags() {
+    return this.setFlags;
+  }
+
+  public void setSetFlags(Uint32 value) {
+    this.setFlags = value;
   }
 
   public static void encode(
@@ -38,6 +67,17 @@ public class SetTrustLineFlagsOp implements XdrElement {
     Asset.encode(stream, encodedSetTrustLineFlagsOp.asset);
     Uint32.encode(stream, encodedSetTrustLineFlagsOp.clearFlags);
     Uint32.encode(stream, encodedSetTrustLineFlagsOp.setFlags);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SetTrustLineFlagsOp decode(ByteString bs) throws IOException {
@@ -51,49 +91,6 @@ public class SetTrustLineFlagsOp implements XdrElement {
     decodedSetTrustLineFlagsOp.clearFlags = Uint32.decode(stream);
     decodedSetTrustLineFlagsOp.setFlags = Uint32.decode(stream);
     return decodedSetTrustLineFlagsOp;
-  }
-
-  public AccountID getTrustor() {
-    return this.trustor;
-  }
-
-  public void setTrustor(AccountID value) {
-    this.trustor = value;
-  }
-
-  public Asset getAsset() {
-    return this.asset;
-  }
-
-  public void setAsset(Asset value) {
-    this.asset = value;
-  }
-
-  public Uint32 getClearFlags() {
-    return this.clearFlags;
-  }
-
-  public void setClearFlags(Uint32 value) {
-    this.clearFlags = value;
-  }
-
-  public Uint32 getSetFlags() {
-    return this.setFlags;
-  }
-
-  public void setSetFlags(Uint32 value) {
-    this.setFlags = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

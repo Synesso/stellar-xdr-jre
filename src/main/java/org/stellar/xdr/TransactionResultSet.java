@@ -18,9 +18,17 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionResultSet implements XdrElement {
+  public TransactionResultSet() {
+  }
+
   private TransactionResultPair[] results;
 
-  public TransactionResultSet() {
+  public TransactionResultPair[] getResults() {
+    return this.results;
+  }
+
+  public void setResults(TransactionResultPair[] value) {
+    this.results = value;
   }
 
   public static void encode(
@@ -32,6 +40,17 @@ public class TransactionResultSet implements XdrElement {
     for (int i = 0; i < resultssize; i++) {
       TransactionResultPair.encode(stream, encodedTransactionResultSet.results[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static TransactionResultSet decode(ByteString bs) throws IOException {
@@ -47,31 +66,10 @@ public class TransactionResultSet implements XdrElement {
     }
     return decodedTransactionResultSet;
   }
-
-  public TransactionResultPair[] getResults() {
-    return this.results;
-  }
-
-  public void setResults(TransactionResultPair[] value) {
-    this.results = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Arrays.hashCode(this.results);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof TransactionResultSet)) {

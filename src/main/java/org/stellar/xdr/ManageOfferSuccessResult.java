@@ -15,7 +15,7 @@ import okio.ByteString;
 //  struct ManageOfferSuccessResult
 //  {
 //      // offers that got claimed while creating this offer
-//      ClaimOfferAtom offersClaimed<>;
+//      ClaimAtom offersClaimed<>;
 //
 //      union switch (ManageOfferEffect effect)
 //      {
@@ -30,10 +30,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class ManageOfferSuccessResult implements XdrElement {
-  private ClaimOfferAtom[] offersClaimed;
+  public ManageOfferSuccessResult() {
+  }
+
+  private ClaimAtom[] offersClaimed;
+
+  public ClaimAtom[] getOffersClaimed() {
+    return this.offersClaimed;
+  }
+
+  public void setOffersClaimed(ClaimAtom[] value) {
+    this.offersClaimed = value;
+  }
+
   private ManageOfferSuccessResultOffer offer;
 
-  public ManageOfferSuccessResult() {
+  public ManageOfferSuccessResultOffer getOffer() {
+    return this.offer;
+  }
+
+  public void setOffer(ManageOfferSuccessResultOffer value) {
+    this.offer = value;
   }
 
   public static void encode(
@@ -43,40 +60,9 @@ public class ManageOfferSuccessResult implements XdrElement {
     int offersClaimedsize = encodedManageOfferSuccessResult.getOffersClaimed().length;
     stream.writeInt(offersClaimedsize);
     for (int i = 0; i < offersClaimedsize; i++) {
-      ClaimOfferAtom.encode(stream, encodedManageOfferSuccessResult.offersClaimed[i]);
+      ClaimAtom.encode(stream, encodedManageOfferSuccessResult.offersClaimed[i]);
     }
     ManageOfferSuccessResultOffer.encode(stream, encodedManageOfferSuccessResult.offer);
-  }
-
-  public static ManageOfferSuccessResult decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static ManageOfferSuccessResult decode(XdrDataInputStream stream) throws IOException {
-    ManageOfferSuccessResult decodedManageOfferSuccessResult = new ManageOfferSuccessResult();
-    int offersClaimedsize = stream.readInt();
-    decodedManageOfferSuccessResult.offersClaimed = new ClaimOfferAtom[offersClaimedsize];
-    for (int i = 0; i < offersClaimedsize; i++) {
-      decodedManageOfferSuccessResult.offersClaimed[i] = ClaimOfferAtom.decode(stream);
-    }
-    decodedManageOfferSuccessResult.offer = ManageOfferSuccessResultOffer.decode(stream);
-    return decodedManageOfferSuccessResult;
-  }
-
-  public ClaimOfferAtom[] getOffersClaimed() {
-    return this.offersClaimed;
-  }
-
-  public void setOffersClaimed(ClaimOfferAtom[] value) {
-    this.offersClaimed = value;
-  }
-
-  public ManageOfferSuccessResultOffer getOffer() {
-    return this.offer;
-  }
-
-  public void setOffer(ManageOfferSuccessResultOffer value) {
-    this.offer = value;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -90,11 +76,24 @@ public class ManageOfferSuccessResult implements XdrElement {
     return new ByteString(byteStream.toByteArray());
   }
 
+  public static ManageOfferSuccessResult decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static ManageOfferSuccessResult decode(XdrDataInputStream stream) throws IOException {
+    ManageOfferSuccessResult decodedManageOfferSuccessResult = new ManageOfferSuccessResult();
+    int offersClaimedsize = stream.readInt();
+    decodedManageOfferSuccessResult.offersClaimed = new ClaimAtom[offersClaimedsize];
+    for (int i = 0; i < offersClaimedsize; i++) {
+      decodedManageOfferSuccessResult.offersClaimed[i] = ClaimAtom.decode(stream);
+    }
+    decodedManageOfferSuccessResult.offer = ManageOfferSuccessResultOffer.decode(stream);
+    return decodedManageOfferSuccessResult;
+  }
   @Override
   public int hashCode() {
     return Objects.hashCode(Arrays.hashCode(this.offersClaimed), this.offer);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof ManageOfferSuccessResult)) {
@@ -106,10 +105,10 @@ public class ManageOfferSuccessResult implements XdrElement {
   }
 
   public static final class Builder {
-    private ClaimOfferAtom[] offersClaimed;
+    private ClaimAtom[] offersClaimed;
     private ManageOfferSuccessResultOffer offer;
 
-    public Builder offersClaimed(ClaimOfferAtom[] offersClaimed) {
+    public Builder offersClaimed(ClaimAtom[] offersClaimed) {
       this.offersClaimed = offersClaimed;
       return this;
     }
@@ -128,47 +127,10 @@ public class ManageOfferSuccessResult implements XdrElement {
   }
 
   public static class ManageOfferSuccessResultOffer {
-    ManageOfferEffect effect;
-    private OfferEntry offer;
-
     public ManageOfferSuccessResultOffer() {
     }
 
-    public static void encode(
-        XdrDataOutputStream stream,
-        ManageOfferSuccessResultOffer encodedManageOfferSuccessResultOffer
-    ) throws IOException {
-      //Xdrgen::AST::Identifier
-      //ManageOfferEffect
-      stream.writeInt(encodedManageOfferSuccessResultOffer.getDiscriminant().getValue());
-      switch (encodedManageOfferSuccessResultOffer.getDiscriminant()) {
-        case MANAGE_OFFER_CREATED:
-        case MANAGE_OFFER_UPDATED:
-          OfferEntry.encode(stream, encodedManageOfferSuccessResultOffer.offer);
-          break;
-        default:
-          break;
-      }
-    }
-
-    public static ManageOfferSuccessResultOffer decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static ManageOfferSuccessResultOffer decode(XdrDataInputStream stream) throws IOException {
-      ManageOfferSuccessResultOffer decodedManageOfferSuccessResultOffer = new ManageOfferSuccessResultOffer();
-      ManageOfferEffect discriminant = ManageOfferEffect.decode(stream);
-      decodedManageOfferSuccessResultOffer.setDiscriminant(discriminant);
-      switch (decodedManageOfferSuccessResultOffer.getDiscriminant()) {
-        case MANAGE_OFFER_CREATED:
-        case MANAGE_OFFER_UPDATED:
-          decodedManageOfferSuccessResultOffer.offer = OfferEntry.decode(stream);
-          break;
-        default:
-          break;
-      }
-      return decodedManageOfferSuccessResultOffer;
-    }
+    ManageOfferEffect effect;
 
     public ManageOfferEffect getDiscriminant() {
       return this.effect;
@@ -178,38 +140,14 @@ public class ManageOfferSuccessResult implements XdrElement {
       this.effect = value;
     }
 
+    private OfferEntry offer;
+
     public OfferEntry getOffer() {
       return this.offer;
     }
 
     public void setOffer(OfferEntry value) {
       this.offer = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(this.offer, this.effect);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-      if (!(object instanceof ManageOfferSuccessResultOffer)) {
-        return false;
-      }
-
-      ManageOfferSuccessResultOffer other = (ManageOfferSuccessResultOffer) object;
-      return Objects.equal(this.offer, other.offer) && Objects.equal(this.effect, other.effect);
     }
 
     public static final class Builder {
@@ -232,6 +170,66 @@ public class ManageOfferSuccessResult implements XdrElement {
         val.setOffer(offer);
         return val;
       }
+    }
+
+    public static void encode(
+        XdrDataOutputStream stream,
+        ManageOfferSuccessResultOffer encodedManageOfferSuccessResultOffer
+    ) throws IOException {
+      //Xdrgen::AST::Identifier
+      //ManageOfferEffect
+      stream.writeInt(encodedManageOfferSuccessResultOffer.getDiscriminant().getValue());
+      switch (encodedManageOfferSuccessResultOffer.getDiscriminant()) {
+        case MANAGE_OFFER_CREATED:
+        case MANAGE_OFFER_UPDATED:
+          OfferEntry.encode(stream, encodedManageOfferSuccessResultOffer.offer);
+          break;
+        default:
+          break;
+      }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
+    public static ManageOfferSuccessResultOffer decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static ManageOfferSuccessResultOffer decode(XdrDataInputStream stream) throws IOException {
+      ManageOfferSuccessResultOffer decodedManageOfferSuccessResultOffer = new ManageOfferSuccessResultOffer();
+      ManageOfferEffect discriminant = ManageOfferEffect.decode(stream);
+      decodedManageOfferSuccessResultOffer.setDiscriminant(discriminant);
+      switch (decodedManageOfferSuccessResultOffer.getDiscriminant()) {
+        case MANAGE_OFFER_CREATED:
+        case MANAGE_OFFER_UPDATED:
+          decodedManageOfferSuccessResultOffer.offer = OfferEntry.decode(stream);
+          break;
+        default:
+          break;
+      }
+      return decodedManageOfferSuccessResultOffer;
+    }
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(this.offer, this.effect);
+    }
+    @Override
+    public boolean equals(Object object) {
+      if (!(object instanceof ManageOfferSuccessResultOffer)) {
+        return false;
+      }
+
+      ManageOfferSuccessResultOffer other = (ManageOfferSuccessResultOffer) object;
+      return Objects.equal(this.offer, other.offer) && Objects.equal(this.effect, other.effect);
     }
 
   }

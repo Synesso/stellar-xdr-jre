@@ -19,31 +19,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SignedSurveyRequestMessage implements XdrElement {
-  private Signature requestSignature;
-  private SurveyRequestMessage request;
-
   public SignedSurveyRequestMessage() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      SignedSurveyRequestMessage encodedSignedSurveyRequestMessage
-  ) throws IOException {
-    Signature.encode(stream, encodedSignedSurveyRequestMessage.requestSignature);
-    SurveyRequestMessage.encode(stream, encodedSignedSurveyRequestMessage.request);
-  }
-
-  public static SignedSurveyRequestMessage decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static SignedSurveyRequestMessage decode(XdrDataInputStream stream) throws IOException {
-    SignedSurveyRequestMessage decodedSignedSurveyRequestMessage = new SignedSurveyRequestMessage();
-    decodedSignedSurveyRequestMessage.requestSignature = Signature.decode(stream);
-    decodedSignedSurveyRequestMessage.request = SurveyRequestMessage.decode(stream);
-    return decodedSignedSurveyRequestMessage;
-  }
-
+  private Signature requestSignature;
   public Signature getRequestSignature() {
     return this.requestSignature;
   }
@@ -52,12 +30,22 @@ public class SignedSurveyRequestMessage implements XdrElement {
     this.requestSignature = value;
   }
 
+  private SurveyRequestMessage request;
+
   public SurveyRequestMessage getRequest() {
     return this.request;
   }
 
   public void setRequest(SurveyRequestMessage value) {
     this.request = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      SignedSurveyRequestMessage encodedSignedSurveyRequestMessage
+  ) throws IOException {
+    Signature.encode(stream, encodedSignedSurveyRequestMessage.requestSignature);
+    SurveyRequestMessage.encode(stream, encodedSignedSurveyRequestMessage.request);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -69,6 +57,17 @@ public class SignedSurveyRequestMessage implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static SignedSurveyRequestMessage decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static SignedSurveyRequestMessage decode(XdrDataInputStream stream) throws IOException {
+    SignedSurveyRequestMessage decodedSignedSurveyRequestMessage = new SignedSurveyRequestMessage();
+    decodedSignedSurveyRequestMessage.requestSignature = Signature.decode(stream);
+    decodedSignedSurveyRequestMessage.request = SurveyRequestMessage.decode(stream);
+    return decodedSignedSurveyRequestMessage;
   }
 
   @Override

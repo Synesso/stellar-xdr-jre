@@ -18,24 +18,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class BumpSequenceOp implements XdrElement {
-  private SequenceNumber bumpTo;
-
   public BumpSequenceOp() {
   }
 
-  public static void encode(XdrDataOutputStream stream, BumpSequenceOp encodedBumpSequenceOp) throws IOException {
-    SequenceNumber.encode(stream, encodedBumpSequenceOp.bumpTo);
-  }
-
-  public static BumpSequenceOp decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static BumpSequenceOp decode(XdrDataInputStream stream) throws IOException {
-    BumpSequenceOp decodedBumpSequenceOp = new BumpSequenceOp();
-    decodedBumpSequenceOp.bumpTo = SequenceNumber.decode(stream);
-    return decodedBumpSequenceOp;
-  }
+  private SequenceNumber bumpTo;
 
   public SequenceNumber getBumpTo() {
     return this.bumpTo;
@@ -43,6 +29,10 @@ public class BumpSequenceOp implements XdrElement {
 
   public void setBumpTo(SequenceNumber value) {
     this.bumpTo = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, BumpSequenceOp encodedBumpSequenceOp) throws IOException {
+    SequenceNumber.encode(stream, encodedBumpSequenceOp.bumpTo);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -54,6 +44,16 @@ public class BumpSequenceOp implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static BumpSequenceOp decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static BumpSequenceOp decode(XdrDataInputStream stream) throws IOException {
+    BumpSequenceOp decodedBumpSequenceOp = new BumpSequenceOp();
+    decodedBumpSequenceOp.bumpTo = SequenceNumber.decode(stream);
+    return decodedBumpSequenceOp;
   }
 
   @Override

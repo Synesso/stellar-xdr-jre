@@ -26,17 +26,81 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class Hello implements XdrElement {
+  public Hello() {
+  }
   private Uint32 ledgerVersion;
+  public Uint32 getLedgerVersion() {
+    return this.ledgerVersion;
+  }
+  public void setLedgerVersion(Uint32 value) {
+    this.ledgerVersion = value;
+  }
+
   private Uint32 overlayVersion;
+  public Uint32 getOverlayVersion() {
+    return this.overlayVersion;
+  }
+  public void setOverlayVersion(Uint32 value) {
+    this.overlayVersion = value;
+  }
+
   private Uint32 overlayMinVersion;
+  public Uint32 getOverlayMinVersion() {
+    return this.overlayMinVersion;
+  }
+  public void setOverlayMinVersion(Uint32 value) {
+    this.overlayMinVersion = value;
+  }
+
   private Hash networkID;
+  public Hash getNetworkID() {
+    return this.networkID;
+  }
+  public void setNetworkID(Hash value) {
+    this.networkID = value;
+  }
+
   private XdrString versionStr;
+  public XdrString getVersionStr() {
+    return this.versionStr;
+  }
+  public void setVersionStr(XdrString value) {
+    this.versionStr = value;
+  }
+
   private Integer listeningPort;
+  public Integer getListeningPort() {
+    return this.listeningPort;
+  }
+  public void setListeningPort(Integer value) {
+    this.listeningPort = value;
+  }
+
   private NodeID peerID;
+  public NodeID getPeerID() {
+    return this.peerID;
+  }
+  public void setPeerID(NodeID value) {
+    this.peerID = value;
+  }
+
   private AuthCert cert;
+  public AuthCert getCert() {
+    return this.cert;
+  }
+
+  public void setCert(AuthCert value) {
+    this.cert = value;
+  }
+
   private Uint256 nonce;
 
-  public Hello() {
+  public Uint256 getNonce() {
+    return this.nonce;
+  }
+
+  public void setNonce(Uint256 value) {
+    this.nonce = value;
   }
 
   public static void encode(XdrDataOutputStream stream, Hello encodedHello) throws IOException {
@@ -49,6 +113,17 @@ public class Hello implements XdrElement {
     NodeID.encode(stream, encodedHello.peerID);
     AuthCert.encode(stream, encodedHello.cert);
     Uint256.encode(stream, encodedHello.nonce);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static Hello decode(ByteString bs) throws IOException {
@@ -67,89 +142,6 @@ public class Hello implements XdrElement {
     decodedHello.cert = AuthCert.decode(stream);
     decodedHello.nonce = Uint256.decode(stream);
     return decodedHello;
-  }
-
-  public Uint32 getLedgerVersion() {
-    return this.ledgerVersion;
-  }
-
-  public void setLedgerVersion(Uint32 value) {
-    this.ledgerVersion = value;
-  }
-
-  public Uint32 getOverlayVersion() {
-    return this.overlayVersion;
-  }
-
-  public void setOverlayVersion(Uint32 value) {
-    this.overlayVersion = value;
-  }
-
-  public Uint32 getOverlayMinVersion() {
-    return this.overlayMinVersion;
-  }
-
-  public void setOverlayMinVersion(Uint32 value) {
-    this.overlayMinVersion = value;
-  }
-
-  public Hash getNetworkID() {
-    return this.networkID;
-  }
-
-  public void setNetworkID(Hash value) {
-    this.networkID = value;
-  }
-
-  public XdrString getVersionStr() {
-    return this.versionStr;
-  }
-
-  public void setVersionStr(XdrString value) {
-    this.versionStr = value;
-  }
-
-  public Integer getListeningPort() {
-    return this.listeningPort;
-  }
-
-  public void setListeningPort(Integer value) {
-    this.listeningPort = value;
-  }
-
-  public NodeID getPeerID() {
-    return this.peerID;
-  }
-
-  public void setPeerID(NodeID value) {
-    this.peerID = value;
-  }
-
-  public AuthCert getCert() {
-    return this.cert;
-  }
-
-  public void setCert(AuthCert value) {
-    this.cert = value;
-  }
-
-  public Uint256 getNonce() {
-    return this.nonce;
-  }
-
-  public void setNonce(Uint256 value) {
-    this.nonce = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

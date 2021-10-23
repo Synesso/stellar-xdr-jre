@@ -16,7 +16,8 @@ import okio.ByteString;
 //      TRUSTLINE = 1,
 //      OFFER = 2,
 //      DATA = 3,
-//      CLAIMABLE_BALANCE = 4
+//      CLAIMABLE_BALANCE = 4,
+//      LIQUIDITY_POOL = 5
 //  };
 
 //  ===========================================================================
@@ -26,11 +27,16 @@ public enum LedgerEntryType implements XdrElement {
   OFFER(2),
   DATA(3),
   CLAIMABLE_BALANCE(4),
+  LIQUIDITY_POOL(5),
   ;
   private int mValue;
 
   LedgerEntryType(int value) {
     mValue = value;
+  }
+
+  public int getValue() {
+    return mValue;
   }
 
   public static LedgerEntryType decode(ByteString bs) throws IOException {
@@ -50,6 +56,8 @@ public enum LedgerEntryType implements XdrElement {
         return DATA;
       case 4:
         return CLAIMABLE_BALANCE;
+      case 5:
+        return LIQUIDITY_POOL;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -57,10 +65,6 @@ public enum LedgerEntryType implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, LedgerEntryType value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

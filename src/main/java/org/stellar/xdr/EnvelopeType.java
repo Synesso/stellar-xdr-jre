@@ -18,7 +18,8 @@ import okio.ByteString;
 //      ENVELOPE_TYPE_AUTH = 3,
 //      ENVELOPE_TYPE_SCPVALUE = 4,
 //      ENVELOPE_TYPE_TX_FEE_BUMP = 5,
-//      ENVELOPE_TYPE_OP_ID = 6
+//      ENVELOPE_TYPE_OP_ID = 6,
+//      ENVELOPE_TYPE_POOL_REVOKE_OP_ID = 7
 //  };
 
 //  ===========================================================================
@@ -30,11 +31,16 @@ public enum EnvelopeType implements XdrElement {
   ENVELOPE_TYPE_SCPVALUE(4),
   ENVELOPE_TYPE_TX_FEE_BUMP(5),
   ENVELOPE_TYPE_OP_ID(6),
+  ENVELOPE_TYPE_POOL_REVOKE_OP_ID(7),
   ;
   private int mValue;
 
   EnvelopeType(int value) {
     mValue = value;
+  }
+
+  public int getValue() {
+    return mValue;
   }
 
   public static EnvelopeType decode(ByteString bs) throws IOException {
@@ -58,6 +64,8 @@ public enum EnvelopeType implements XdrElement {
         return ENVELOPE_TYPE_TX_FEE_BUMP;
       case 6:
         return ENVELOPE_TYPE_OP_ID;
+      case 7:
+        return ENVELOPE_TYPE_POOL_REVOKE_OP_ID;
       default:
         throw new RuntimeException("Unknown enum value: " + value);
     }
@@ -65,10 +73,6 @@ public enum EnvelopeType implements XdrElement {
 
   public static void encode(XdrDataOutputStream stream, EnvelopeType value) throws IOException {
     stream.writeInt(value.getValue());
-  }
-
-  public int getValue() {
-    return mValue;
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {

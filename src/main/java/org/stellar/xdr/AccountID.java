@@ -24,26 +24,16 @@ public class AccountID implements XdrElement {
     this.AccountID = AccountID;
   }
 
-  public static void encode(XdrDataOutputStream stream, AccountID encodedAccountID) throws IOException {
-    PublicKey.encode(stream, encodedAccountID.AccountID);
-  }
-
-  public static AccountID decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static AccountID decode(XdrDataInputStream stream) throws IOException {
-    AccountID decodedAccountID = new AccountID();
-    decodedAccountID.AccountID = PublicKey.decode(stream);
-    return decodedAccountID;
-  }
-
   public PublicKey getAccountID() {
     return this.AccountID;
   }
 
   public void setAccountID(PublicKey value) {
     this.AccountID = value;
+  }
+
+  public static void encode(XdrDataOutputStream stream, AccountID encodedAccountID) throws IOException {
+    PublicKey.encode(stream, encodedAccountID.AccountID);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -55,6 +45,16 @@ public class AccountID implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static AccountID decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static AccountID decode(XdrDataInputStream stream) throws IOException {
+    AccountID decodedAccountID = new AccountID();
+    decodedAccountID.AccountID = PublicKey.decode(stream);
+    return decodedAccountID;
   }
 
   @Override

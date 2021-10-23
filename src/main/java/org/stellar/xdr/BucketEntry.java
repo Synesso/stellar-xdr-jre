@@ -25,54 +25,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class BucketEntry implements XdrElement {
-  BucketEntryType type;
-  private LedgerEntry liveEntry;
-  private LedgerKey deadEntry;
-  private BucketMetadata metaEntry;
-
   public BucketEntry() {
   }
 
-  public static void encode(XdrDataOutputStream stream, BucketEntry encodedBucketEntry) throws IOException {
-    //Xdrgen::AST::Identifier
-    //BucketEntryType
-    stream.writeInt(encodedBucketEntry.getDiscriminant().getValue());
-    switch (encodedBucketEntry.getDiscriminant()) {
-      case LIVEENTRY:
-      case INITENTRY:
-        LedgerEntry.encode(stream, encodedBucketEntry.liveEntry);
-        break;
-      case DEADENTRY:
-        LedgerKey.encode(stream, encodedBucketEntry.deadEntry);
-        break;
-      case METAENTRY:
-        BucketMetadata.encode(stream, encodedBucketEntry.metaEntry);
-        break;
-    }
-  }
-
-  public static BucketEntry decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static BucketEntry decode(XdrDataInputStream stream) throws IOException {
-    BucketEntry decodedBucketEntry = new BucketEntry();
-    BucketEntryType discriminant = BucketEntryType.decode(stream);
-    decodedBucketEntry.setDiscriminant(discriminant);
-    switch (decodedBucketEntry.getDiscriminant()) {
-      case LIVEENTRY:
-      case INITENTRY:
-        decodedBucketEntry.liveEntry = LedgerEntry.decode(stream);
-        break;
-      case DEADENTRY:
-        decodedBucketEntry.deadEntry = LedgerKey.decode(stream);
-        break;
-      case METAENTRY:
-        decodedBucketEntry.metaEntry = BucketMetadata.decode(stream);
-        break;
-    }
-    return decodedBucketEntry;
-  }
+  BucketEntryType type;
 
   public BucketEntryType getDiscriminant() {
     return this.type;
@@ -82,6 +38,8 @@ public class BucketEntry implements XdrElement {
     this.type = value;
   }
 
+  private LedgerEntry liveEntry;
+
   public LedgerEntry getLiveEntry() {
     return this.liveEntry;
   }
@@ -89,6 +47,8 @@ public class BucketEntry implements XdrElement {
   public void setLiveEntry(LedgerEntry value) {
     this.liveEntry = value;
   }
+
+  private LedgerKey deadEntry;
 
   public LedgerKey getDeadEntry() {
     return this.deadEntry;
@@ -98,39 +58,14 @@ public class BucketEntry implements XdrElement {
     this.deadEntry = value;
   }
 
+  private BucketMetadata metaEntry;
+
   public BucketMetadata getMetaEntry() {
     return this.metaEntry;
   }
 
   public void setMetaEntry(BucketMetadata value) {
     this.metaEntry = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.liveEntry, this.deadEntry, this.metaEntry, this.type);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof BucketEntry)) {
-      return false;
-    }
-
-    BucketEntry other = (BucketEntry) object;
-    return Objects.equal(this.liveEntry, other.liveEntry) && Objects.equal(this.deadEntry, other.deadEntry) && Objects
-        .equal(this.metaEntry, other.metaEntry) && Objects.equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -167,5 +102,71 @@ public class BucketEntry implements XdrElement {
       val.setMetaEntry(metaEntry);
       return val;
     }
+  }
+
+  public static void encode(XdrDataOutputStream stream, BucketEntry encodedBucketEntry) throws IOException {
+    //Xdrgen::AST::Identifier
+    //BucketEntryType
+    stream.writeInt(encodedBucketEntry.getDiscriminant().getValue());
+    switch (encodedBucketEntry.getDiscriminant()) {
+      case LIVEENTRY:
+      case INITENTRY:
+        LedgerEntry.encode(stream, encodedBucketEntry.liveEntry);
+        break;
+      case DEADENTRY:
+        LedgerKey.encode(stream, encodedBucketEntry.deadEntry);
+        break;
+      case METAENTRY:
+        BucketMetadata.encode(stream, encodedBucketEntry.metaEntry);
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static BucketEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static BucketEntry decode(XdrDataInputStream stream) throws IOException {
+    BucketEntry decodedBucketEntry = new BucketEntry();
+    BucketEntryType discriminant = BucketEntryType.decode(stream);
+    decodedBucketEntry.setDiscriminant(discriminant);
+    switch (decodedBucketEntry.getDiscriminant()) {
+      case LIVEENTRY:
+      case INITENTRY:
+        decodedBucketEntry.liveEntry = LedgerEntry.decode(stream);
+        break;
+      case DEADENTRY:
+        decodedBucketEntry.deadEntry = LedgerKey.decode(stream);
+        break;
+      case METAENTRY:
+        decodedBucketEntry.metaEntry = BucketMetadata.decode(stream);
+        break;
+    }
+    return decodedBucketEntry;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.liveEntry, this.deadEntry, this.metaEntry, this.type);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof BucketEntry)) {
+      return false;
+    }
+
+    BucketEntry other = (BucketEntry) object;
+    return Objects.equal(this.liveEntry, other.liveEntry) && Objects.equal(this.deadEntry, other.deadEntry) && Objects
+        .equal(this.metaEntry, other.metaEntry) && Objects.equal(this.type, other.type);
   }
 }

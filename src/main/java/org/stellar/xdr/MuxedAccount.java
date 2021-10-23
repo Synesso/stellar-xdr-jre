@@ -25,45 +25,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class MuxedAccount implements XdrElement {
-  CryptoKeyType type;
-  private Uint256 ed25519;
-  private MuxedAccountMed25519 med25519;
-
   public MuxedAccount() {
   }
 
-  public static void encode(XdrDataOutputStream stream, MuxedAccount encodedMuxedAccount) throws IOException {
-    //Xdrgen::AST::Identifier
-    //CryptoKeyType
-    stream.writeInt(encodedMuxedAccount.getDiscriminant().getValue());
-    switch (encodedMuxedAccount.getDiscriminant()) {
-      case KEY_TYPE_ED25519:
-        Uint256.encode(stream, encodedMuxedAccount.ed25519);
-        break;
-      case KEY_TYPE_MUXED_ED25519:
-        MuxedAccountMed25519.encode(stream, encodedMuxedAccount.med25519);
-        break;
-    }
-  }
-
-  public static MuxedAccount decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static MuxedAccount decode(XdrDataInputStream stream) throws IOException {
-    MuxedAccount decodedMuxedAccount = new MuxedAccount();
-    CryptoKeyType discriminant = CryptoKeyType.decode(stream);
-    decodedMuxedAccount.setDiscriminant(discriminant);
-    switch (decodedMuxedAccount.getDiscriminant()) {
-      case KEY_TYPE_ED25519:
-        decodedMuxedAccount.ed25519 = Uint256.decode(stream);
-        break;
-      case KEY_TYPE_MUXED_ED25519:
-        decodedMuxedAccount.med25519 = MuxedAccountMed25519.decode(stream);
-        break;
-    }
-    return decodedMuxedAccount;
-  }
+  CryptoKeyType type;
 
   public CryptoKeyType getDiscriminant() {
     return this.type;
@@ -73,6 +38,8 @@ public class MuxedAccount implements XdrElement {
     this.type = value;
   }
 
+  private Uint256 ed25519;
+
   public Uint256 getEd25519() {
     return this.ed25519;
   }
@@ -81,39 +48,14 @@ public class MuxedAccount implements XdrElement {
     this.ed25519 = value;
   }
 
+  private MuxedAccountMed25519 med25519;
+
   public MuxedAccountMed25519 getMed25519() {
     return this.med25519;
   }
 
   public void setMed25519(MuxedAccountMed25519 value) {
     this.med25519 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.ed25519, this.med25519, this.type);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof MuxedAccount)) {
-      return false;
-    }
-
-    MuxedAccount other = (MuxedAccount) object;
-    return Objects.equal(this.ed25519, other.ed25519) && Objects.equal(this.med25519, other.med25519) && Objects
-        .equal(this.type, other.type);
   }
 
   public static final class Builder {
@@ -145,32 +87,68 @@ public class MuxedAccount implements XdrElement {
     }
   }
 
-  public static class MuxedAccountMed25519 {
-    private Uint64 id;
-    private Uint256 ed25519;
+  public static void encode(XdrDataOutputStream stream, MuxedAccount encodedMuxedAccount) throws IOException {
+    //Xdrgen::AST::Identifier
+    //CryptoKeyType
+    stream.writeInt(encodedMuxedAccount.getDiscriminant().getValue());
+    switch (encodedMuxedAccount.getDiscriminant()) {
+      case KEY_TYPE_ED25519:
+        Uint256.encode(stream, encodedMuxedAccount.ed25519);
+        break;
+      case KEY_TYPE_MUXED_ED25519:
+        MuxedAccountMed25519.encode(stream, encodedMuxedAccount.med25519);
+        break;
+    }
+  }
 
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static MuxedAccount decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static MuxedAccount decode(XdrDataInputStream stream) throws IOException {
+    MuxedAccount decodedMuxedAccount = new MuxedAccount();
+    CryptoKeyType discriminant = CryptoKeyType.decode(stream);
+    decodedMuxedAccount.setDiscriminant(discriminant);
+    switch (decodedMuxedAccount.getDiscriminant()) {
+      case KEY_TYPE_ED25519:
+        decodedMuxedAccount.ed25519 = Uint256.decode(stream);
+        break;
+      case KEY_TYPE_MUXED_ED25519:
+        decodedMuxedAccount.med25519 = MuxedAccountMed25519.decode(stream);
+        break;
+    }
+    return decodedMuxedAccount;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.ed25519, this.med25519, this.type);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof MuxedAccount)) {
+      return false;
+    }
+
+    MuxedAccount other = (MuxedAccount) object;
+    return Objects.equal(this.ed25519, other.ed25519) && Objects.equal(this.med25519, other.med25519) && Objects
+        .equal(this.type, other.type);
+  }
+
+  public static class MuxedAccountMed25519 {
     public MuxedAccountMed25519() {
     }
-
-    public static void encode(
-        XdrDataOutputStream stream,
-        MuxedAccountMed25519 encodedMuxedAccountMed25519
-    ) throws IOException {
-      Uint64.encode(stream, encodedMuxedAccountMed25519.id);
-      Uint256.encode(stream, encodedMuxedAccountMed25519.ed25519);
-    }
-
-    public static MuxedAccountMed25519 decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static MuxedAccountMed25519 decode(XdrDataInputStream stream) throws IOException {
-      MuxedAccountMed25519 decodedMuxedAccountMed25519 = new MuxedAccountMed25519();
-      decodedMuxedAccountMed25519.id = Uint64.decode(stream);
-      decodedMuxedAccountMed25519.ed25519 = Uint256.decode(stream);
-      return decodedMuxedAccountMed25519;
-    }
-
+    private Uint64 id;
     public Uint64 getId() {
       return this.id;
     }
@@ -179,12 +157,22 @@ public class MuxedAccount implements XdrElement {
       this.id = value;
     }
 
+    private Uint256 ed25519;
+
     public Uint256 getEd25519() {
       return this.ed25519;
     }
 
     public void setEd25519(Uint256 value) {
       this.ed25519 = value;
+    }
+
+    public static void encode(
+        XdrDataOutputStream stream,
+        MuxedAccountMed25519 encodedMuxedAccountMed25519
+    ) throws IOException {
+      Uint64.encode(stream, encodedMuxedAccountMed25519.id);
+      Uint256.encode(stream, encodedMuxedAccountMed25519.ed25519);
     }
 
     public void encode(XdrDataOutputStream stream) throws IOException {
@@ -196,6 +184,17 @@ public class MuxedAccount implements XdrElement {
       XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
       encode(xdrOutputStream);
       return new ByteString(byteStream.toByteArray());
+    }
+
+    public static MuxedAccountMed25519 decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static MuxedAccountMed25519 decode(XdrDataInputStream stream) throws IOException {
+      MuxedAccountMed25519 decodedMuxedAccountMed25519 = new MuxedAccountMed25519();
+      decodedMuxedAccountMed25519.id = Uint64.decode(stream);
+      decodedMuxedAccountMed25519.ed25519 = Uint256.decode(stream);
+      return decodedMuxedAccountMed25519;
     }
 
     @Override

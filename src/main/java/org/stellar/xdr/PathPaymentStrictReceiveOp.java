@@ -28,14 +28,57 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class PathPaymentStrictReceiveOp implements XdrElement {
+  public PathPaymentStrictReceiveOp() {
+  }
   private Asset sendAsset;
+  public Asset getSendAsset() {
+    return this.sendAsset;
+  }
+  public void setSendAsset(Asset value) {
+    this.sendAsset = value;
+  }
+
   private Int64 sendMax;
+  public Int64 getSendMax() {
+    return this.sendMax;
+  }
+  public void setSendMax(Int64 value) {
+    this.sendMax = value;
+  }
+
   private MuxedAccount destination;
+  public MuxedAccount getDestination() {
+    return this.destination;
+  }
+  public void setDestination(MuxedAccount value) {
+    this.destination = value;
+  }
+
   private Asset destAsset;
+  public Asset getDestAsset() {
+    return this.destAsset;
+  }
+  public void setDestAsset(Asset value) {
+    this.destAsset = value;
+  }
+
   private Int64 destAmount;
+  public Int64 getDestAmount() {
+    return this.destAmount;
+  }
+
+  public void setDestAmount(Int64 value) {
+    this.destAmount = value;
+  }
+
   private Asset[] path;
 
-  public PathPaymentStrictReceiveOp() {
+  public Asset[] getPath() {
+    return this.path;
+  }
+
+  public void setPath(Asset[] value) {
+    this.path = value;
   }
 
   public static void encode(
@@ -52,6 +95,17 @@ public class PathPaymentStrictReceiveOp implements XdrElement {
     for (int i = 0; i < pathsize; i++) {
       Asset.encode(stream, encodedPathPaymentStrictReceiveOp.path[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static PathPaymentStrictReceiveOp decode(ByteString bs) throws IOException {
@@ -71,65 +125,6 @@ public class PathPaymentStrictReceiveOp implements XdrElement {
       decodedPathPaymentStrictReceiveOp.path[i] = Asset.decode(stream);
     }
     return decodedPathPaymentStrictReceiveOp;
-  }
-
-  public Asset getSendAsset() {
-    return this.sendAsset;
-  }
-
-  public void setSendAsset(Asset value) {
-    this.sendAsset = value;
-  }
-
-  public Int64 getSendMax() {
-    return this.sendMax;
-  }
-
-  public void setSendMax(Int64 value) {
-    this.sendMax = value;
-  }
-
-  public MuxedAccount getDestination() {
-    return this.destination;
-  }
-
-  public void setDestination(MuxedAccount value) {
-    this.destination = value;
-  }
-
-  public Asset getDestAsset() {
-    return this.destAsset;
-  }
-
-  public void setDestAsset(Asset value) {
-    this.destAsset = value;
-  }
-
-  public Int64 getDestAmount() {
-    return this.destAmount;
-  }
-
-  public void setDestAmount(Int64 value) {
-    this.destAmount = value;
-  }
-
-  public Asset[] getPath() {
-    return this.path;
-  }
-
-  public void setPath(Asset[] value) {
-    this.path = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

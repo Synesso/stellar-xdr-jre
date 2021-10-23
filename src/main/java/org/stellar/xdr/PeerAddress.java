@@ -28,17 +28,50 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class PeerAddress implements XdrElement {
+  public PeerAddress() {
+  }
   private PeerAddressIp ip;
+  public PeerAddressIp getIp() {
+    return this.ip;
+  }
+  public void setIp(PeerAddressIp value) {
+    this.ip = value;
+  }
+
   private Uint32 port;
+  public Uint32 getPort() {
+    return this.port;
+  }
+
+  public void setPort(Uint32 value) {
+    this.port = value;
+  }
+
   private Uint32 numFailures;
 
-  public PeerAddress() {
+  public Uint32 getNumFailures() {
+    return this.numFailures;
+  }
+
+  public void setNumFailures(Uint32 value) {
+    this.numFailures = value;
   }
 
   public static void encode(XdrDataOutputStream stream, PeerAddress encodedPeerAddress) throws IOException {
     PeerAddressIp.encode(stream, encodedPeerAddress.ip);
     Uint32.encode(stream, encodedPeerAddress.port);
     Uint32.encode(stream, encodedPeerAddress.numFailures);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static PeerAddress decode(ByteString bs) throws IOException {
@@ -51,41 +84,6 @@ public class PeerAddress implements XdrElement {
     decodedPeerAddress.port = Uint32.decode(stream);
     decodedPeerAddress.numFailures = Uint32.decode(stream);
     return decodedPeerAddress;
-  }
-
-  public PeerAddressIp getIp() {
-    return this.ip;
-  }
-
-  public void setIp(PeerAddressIp value) {
-    this.ip = value;
-  }
-
-  public Uint32 getPort() {
-    return this.port;
-  }
-
-  public void setPort(Uint32 value) {
-    this.port = value;
-  }
-
-  public Uint32 getNumFailures() {
-    return this.numFailures;
-  }
-
-  public void setNumFailures(Uint32 value) {
-    this.numFailures = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -134,51 +132,10 @@ public class PeerAddress implements XdrElement {
   }
 
   public static class PeerAddressIp {
-    IPAddrType type;
-    private byte[] ipv4;
-    private byte[] ipv6;
-
     public PeerAddressIp() {
     }
 
-    public static void encode(XdrDataOutputStream stream, PeerAddressIp encodedPeerAddressIp) throws IOException {
-      //Xdrgen::AST::Identifier
-      //IPAddrType
-      stream.writeInt(encodedPeerAddressIp.getDiscriminant().getValue());
-      switch (encodedPeerAddressIp.getDiscriminant()) {
-        case IPv4:
-          int ipv4size = encodedPeerAddressIp.ipv4.length;
-          stream.write(encodedPeerAddressIp.getIpv4(), 0, ipv4size);
-          break;
-        case IPv6:
-          int ipv6size = encodedPeerAddressIp.ipv6.length;
-          stream.write(encodedPeerAddressIp.getIpv6(), 0, ipv6size);
-          break;
-      }
-    }
-
-    public static PeerAddressIp decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static PeerAddressIp decode(XdrDataInputStream stream) throws IOException {
-      PeerAddressIp decodedPeerAddressIp = new PeerAddressIp();
-      IPAddrType discriminant = IPAddrType.decode(stream);
-      decodedPeerAddressIp.setDiscriminant(discriminant);
-      switch (decodedPeerAddressIp.getDiscriminant()) {
-        case IPv4:
-          int ipv4size = 4;
-          decodedPeerAddressIp.ipv4 = new byte[ipv4size];
-          stream.read(decodedPeerAddressIp.ipv4, 0, ipv4size);
-          break;
-        case IPv6:
-          int ipv6size = 16;
-          decodedPeerAddressIp.ipv6 = new byte[ipv6size];
-          stream.read(decodedPeerAddressIp.ipv6, 0, ipv6size);
-          break;
-      }
-      return decodedPeerAddressIp;
-    }
+    IPAddrType type;
 
     public IPAddrType getDiscriminant() {
       return this.type;
@@ -188,6 +145,8 @@ public class PeerAddress implements XdrElement {
       this.type = value;
     }
 
+    private byte[] ipv4;
+
     public byte[] getIpv4() {
       return this.ipv4;
     }
@@ -196,39 +155,14 @@ public class PeerAddress implements XdrElement {
       this.ipv4 = value;
     }
 
+    private byte[] ipv6;
+
     public byte[] getIpv6() {
       return this.ipv6;
     }
 
     public void setIpv6(byte[] value) {
       this.ipv6 = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(Arrays.hashCode(this.ipv4), Arrays.hashCode(this.ipv6), this.type);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-      if (!(object instanceof PeerAddressIp)) {
-        return false;
-      }
-
-      PeerAddressIp other = (PeerAddressIp) object;
-      return Arrays.equals(this.ipv4, other.ipv4) && Arrays.equals(this.ipv6, other.ipv6) && Objects
-          .equal(this.type, other.type);
     }
 
     public static final class Builder {
@@ -258,6 +192,70 @@ public class PeerAddress implements XdrElement {
         val.setIpv6(ipv6);
         return val;
       }
+    }
+
+    public static void encode(XdrDataOutputStream stream, PeerAddressIp encodedPeerAddressIp) throws IOException {
+      //Xdrgen::AST::Identifier
+      //IPAddrType
+      stream.writeInt(encodedPeerAddressIp.getDiscriminant().getValue());
+      switch (encodedPeerAddressIp.getDiscriminant()) {
+        case IPv4:
+          int ipv4size = encodedPeerAddressIp.ipv4.length;
+          stream.write(encodedPeerAddressIp.getIpv4(), 0, ipv4size);
+          break;
+        case IPv6:
+          int ipv6size = encodedPeerAddressIp.ipv6.length;
+          stream.write(encodedPeerAddressIp.getIpv6(), 0, ipv6size);
+          break;
+      }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
+    public static PeerAddressIp decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static PeerAddressIp decode(XdrDataInputStream stream) throws IOException {
+      PeerAddressIp decodedPeerAddressIp = new PeerAddressIp();
+      IPAddrType discriminant = IPAddrType.decode(stream);
+      decodedPeerAddressIp.setDiscriminant(discriminant);
+      switch (decodedPeerAddressIp.getDiscriminant()) {
+        case IPv4:
+          int ipv4size = 4;
+          decodedPeerAddressIp.ipv4 = new byte[ipv4size];
+          stream.read(decodedPeerAddressIp.ipv4, 0, ipv4size);
+          break;
+        case IPv6:
+          int ipv6size = 16;
+          decodedPeerAddressIp.ipv6 = new byte[ipv6size];
+          stream.read(decodedPeerAddressIp.ipv6, 0, ipv6size);
+          break;
+      }
+      return decodedPeerAddressIp;
+    }
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(Arrays.hashCode(this.ipv4), Arrays.hashCode(this.ipv6), this.type);
+    }
+    @Override
+    public boolean equals(Object object) {
+      if (!(object instanceof PeerAddressIp)) {
+        return false;
+      }
+
+      PeerAddressIp other = (PeerAddressIp) object;
+      return Arrays.equals(this.ipv4, other.ipv4) && Arrays.equals(this.ipv6, other.ipv6) && Objects
+          .equal(this.type, other.type);
     }
 
   }

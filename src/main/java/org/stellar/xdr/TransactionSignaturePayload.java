@@ -27,31 +27,9 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class TransactionSignaturePayload implements XdrElement {
-  private Hash networkId;
-  private TransactionSignaturePayloadTaggedTransaction taggedTransaction;
-
   public TransactionSignaturePayload() {
   }
-
-  public static void encode(
-      XdrDataOutputStream stream,
-      TransactionSignaturePayload encodedTransactionSignaturePayload
-  ) throws IOException {
-    Hash.encode(stream, encodedTransactionSignaturePayload.networkId);
-    TransactionSignaturePayloadTaggedTransaction.encode(stream, encodedTransactionSignaturePayload.taggedTransaction);
-  }
-
-  public static TransactionSignaturePayload decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static TransactionSignaturePayload decode(XdrDataInputStream stream) throws IOException {
-    TransactionSignaturePayload decodedTransactionSignaturePayload = new TransactionSignaturePayload();
-    decodedTransactionSignaturePayload.networkId = Hash.decode(stream);
-    decodedTransactionSignaturePayload.taggedTransaction = TransactionSignaturePayloadTaggedTransaction.decode(stream);
-    return decodedTransactionSignaturePayload;
-  }
-
+  private Hash networkId;
   public Hash getNetworkId() {
     return this.networkId;
   }
@@ -60,12 +38,22 @@ public class TransactionSignaturePayload implements XdrElement {
     this.networkId = value;
   }
 
+  private TransactionSignaturePayloadTaggedTransaction taggedTransaction;
+
   public TransactionSignaturePayloadTaggedTransaction getTaggedTransaction() {
     return this.taggedTransaction;
   }
 
   public void setTaggedTransaction(TransactionSignaturePayloadTaggedTransaction value) {
     this.taggedTransaction = value;
+  }
+
+  public static void encode(
+      XdrDataOutputStream stream,
+      TransactionSignaturePayload encodedTransactionSignaturePayload
+  ) throws IOException {
+    Hash.encode(stream, encodedTransactionSignaturePayload.networkId);
+    TransactionSignaturePayloadTaggedTransaction.encode(stream, encodedTransactionSignaturePayload.taggedTransaction);
   }
 
   public void encode(XdrDataOutputStream stream) throws IOException {
@@ -77,6 +65,17 @@ public class TransactionSignaturePayload implements XdrElement {
     XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
     encode(xdrOutputStream);
     return new ByteString(byteStream.toByteArray());
+  }
+
+  public static TransactionSignaturePayload decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static TransactionSignaturePayload decode(XdrDataInputStream stream) throws IOException {
+    TransactionSignaturePayload decodedTransactionSignaturePayload = new TransactionSignaturePayload();
+    decodedTransactionSignaturePayload.networkId = Hash.decode(stream);
+    decodedTransactionSignaturePayload.taggedTransaction = TransactionSignaturePayloadTaggedTransaction.decode(stream);
+    return decodedTransactionSignaturePayload;
   }
 
   @Override
@@ -118,49 +117,10 @@ public class TransactionSignaturePayload implements XdrElement {
   }
 
   public static class TransactionSignaturePayloadTaggedTransaction {
-    EnvelopeType type;
-    private Transaction tx;
-    private FeeBumpTransaction feeBump;
-
     public TransactionSignaturePayloadTaggedTransaction() {
     }
 
-    public static void encode(
-        XdrDataOutputStream stream,
-        TransactionSignaturePayloadTaggedTransaction encodedTransactionSignaturePayloadTaggedTransaction
-    ) throws IOException {
-      //Xdrgen::AST::Identifier
-      //EnvelopeType
-      stream.writeInt(encodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant().getValue());
-      switch (encodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant()) {
-        case ENVELOPE_TYPE_TX:
-          Transaction.encode(stream, encodedTransactionSignaturePayloadTaggedTransaction.tx);
-          break;
-        case ENVELOPE_TYPE_TX_FEE_BUMP:
-          FeeBumpTransaction.encode(stream, encodedTransactionSignaturePayloadTaggedTransaction.feeBump);
-          break;
-      }
-    }
-
-    public static TransactionSignaturePayloadTaggedTransaction decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static TransactionSignaturePayloadTaggedTransaction decode(XdrDataInputStream stream) throws IOException {
-      TransactionSignaturePayloadTaggedTransaction decodedTransactionSignaturePayloadTaggedTransaction =
-          new TransactionSignaturePayloadTaggedTransaction();
-      EnvelopeType discriminant = EnvelopeType.decode(stream);
-      decodedTransactionSignaturePayloadTaggedTransaction.setDiscriminant(discriminant);
-      switch (decodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant()) {
-        case ENVELOPE_TYPE_TX:
-          decodedTransactionSignaturePayloadTaggedTransaction.tx = Transaction.decode(stream);
-          break;
-        case ENVELOPE_TYPE_TX_FEE_BUMP:
-          decodedTransactionSignaturePayloadTaggedTransaction.feeBump = FeeBumpTransaction.decode(stream);
-          break;
-      }
-      return decodedTransactionSignaturePayloadTaggedTransaction;
-    }
+    EnvelopeType type;
 
     public EnvelopeType getDiscriminant() {
       return this.type;
@@ -170,6 +130,8 @@ public class TransactionSignaturePayload implements XdrElement {
       this.type = value;
     }
 
+    private Transaction tx;
+
     public Transaction getTx() {
       return this.tx;
     }
@@ -178,39 +140,14 @@ public class TransactionSignaturePayload implements XdrElement {
       this.tx = value;
     }
 
+    private FeeBumpTransaction feeBump;
+
     public FeeBumpTransaction getFeeBump() {
       return this.feeBump;
     }
 
     public void setFeeBump(FeeBumpTransaction value) {
       this.feeBump = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(this.tx, this.feeBump, this.type);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-      if (!(object instanceof TransactionSignaturePayloadTaggedTransaction)) {
-        return false;
-      }
-
-      TransactionSignaturePayloadTaggedTransaction other = (TransactionSignaturePayloadTaggedTransaction) object;
-      return Objects.equal(this.tx, other.tx) && Objects.equal(this.feeBump, other.feeBump) && Objects
-          .equal(this.type, other.type);
     }
 
     public static final class Builder {
@@ -240,6 +177,68 @@ public class TransactionSignaturePayload implements XdrElement {
         val.setFeeBump(feeBump);
         return val;
       }
+    }
+
+    public static void encode(
+        XdrDataOutputStream stream,
+        TransactionSignaturePayloadTaggedTransaction encodedTransactionSignaturePayloadTaggedTransaction
+    ) throws IOException {
+      //Xdrgen::AST::Identifier
+      //EnvelopeType
+      stream.writeInt(encodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant().getValue());
+      switch (encodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant()) {
+        case ENVELOPE_TYPE_TX:
+          Transaction.encode(stream, encodedTransactionSignaturePayloadTaggedTransaction.tx);
+          break;
+        case ENVELOPE_TYPE_TX_FEE_BUMP:
+          FeeBumpTransaction.encode(stream, encodedTransactionSignaturePayloadTaggedTransaction.feeBump);
+          break;
+      }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
+    public static TransactionSignaturePayloadTaggedTransaction decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static TransactionSignaturePayloadTaggedTransaction decode(XdrDataInputStream stream) throws IOException {
+      TransactionSignaturePayloadTaggedTransaction decodedTransactionSignaturePayloadTaggedTransaction =
+          new TransactionSignaturePayloadTaggedTransaction();
+      EnvelopeType discriminant = EnvelopeType.decode(stream);
+      decodedTransactionSignaturePayloadTaggedTransaction.setDiscriminant(discriminant);
+      switch (decodedTransactionSignaturePayloadTaggedTransaction.getDiscriminant()) {
+        case ENVELOPE_TYPE_TX:
+          decodedTransactionSignaturePayloadTaggedTransaction.tx = Transaction.decode(stream);
+          break;
+        case ENVELOPE_TYPE_TX_FEE_BUMP:
+          decodedTransactionSignaturePayloadTaggedTransaction.feeBump = FeeBumpTransaction.decode(stream);
+          break;
+      }
+      return decodedTransactionSignaturePayloadTaggedTransaction;
+    }
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(this.tx, this.feeBump, this.type);
+    }
+    @Override
+    public boolean equals(Object object) {
+      if (!(object instanceof TransactionSignaturePayloadTaggedTransaction)) {
+        return false;
+      }
+
+      TransactionSignaturePayloadTaggedTransaction other = (TransactionSignaturePayloadTaggedTransaction) object;
+      return Objects.equal(this.tx, other.tx) && Objects.equal(this.feeBump, other.feeBump) && Objects
+          .equal(this.type, other.type);
     }
 
   }

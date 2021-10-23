@@ -8,6 +8,5 @@ import okio.ByteString;
  */
 interface XdrElement {
   public abstract void encode(XdrDataOutputStream stream) throws IOException;
-
   public abstract ByteString encode() throws IOException;
 }

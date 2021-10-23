@@ -24,9 +24,28 @@ public class SignatureHint implements XdrElement {
     this.SignatureHint = SignatureHint;
   }
 
+  public byte[] getSignatureHint() {
+    return this.SignatureHint;
+  }
+
+  public void setSignatureHint(byte[] value) {
+    this.SignatureHint = value;
+  }
+
   public static void encode(XdrDataOutputStream stream, SignatureHint encodedSignatureHint) throws IOException {
     int SignatureHintsize = encodedSignatureHint.SignatureHint.length;
     stream.write(encodedSignatureHint.getSignatureHint(), 0, SignatureHintsize);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SignatureHint decode(ByteString bs) throws IOException {
@@ -39,25 +58,6 @@ public class SignatureHint implements XdrElement {
     decodedSignatureHint.SignatureHint = new byte[SignatureHintsize];
     stream.read(decodedSignatureHint.SignatureHint, 0, SignatureHintsize);
     return decodedSignatureHint;
-  }
-
-  public byte[] getSignatureHint() {
-    return this.SignatureHint;
-  }
-
-  public void setSignatureHint(byte[] value) {
-    this.SignatureHint = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override

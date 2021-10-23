@@ -20,10 +20,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class LedgerSCPMessages implements XdrElement {
+  public LedgerSCPMessages() {
+  }
+
   private Uint32 ledgerSeq;
+
+  public Uint32 getLedgerSeq() {
+    return this.ledgerSeq;
+  }
+
+  public void setLedgerSeq(Uint32 value) {
+    this.ledgerSeq = value;
+  }
+
   private SCPEnvelope[] messages;
 
-  public LedgerSCPMessages() {
+  public SCPEnvelope[] getMessages() {
+    return this.messages;
+  }
+
+  public void setMessages(SCPEnvelope[] value) {
+    this.messages = value;
   }
 
   public static void encode(XdrDataOutputStream stream, LedgerSCPMessages encodedLedgerSCPMessages) throws IOException {
@@ -33,6 +50,17 @@ public class LedgerSCPMessages implements XdrElement {
     for (int i = 0; i < messagessize; i++) {
       SCPEnvelope.encode(stream, encodedLedgerSCPMessages.messages[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static LedgerSCPMessages decode(ByteString bs) throws IOException {
@@ -49,39 +77,10 @@ public class LedgerSCPMessages implements XdrElement {
     }
     return decodedLedgerSCPMessages;
   }
-
-  public Uint32 getLedgerSeq() {
-    return this.ledgerSeq;
-  }
-
-  public void setLedgerSeq(Uint32 value) {
-    this.ledgerSeq = value;
-  }
-
-  public SCPEnvelope[] getMessages() {
-    return this.messages;
-  }
-
-  public void setMessages(SCPEnvelope[] value) {
-    this.messages = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.ledgerSeq, Arrays.hashCode(this.messages));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof LedgerSCPMessages)) {

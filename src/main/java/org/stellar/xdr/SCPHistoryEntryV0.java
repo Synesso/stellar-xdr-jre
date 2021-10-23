@@ -20,10 +20,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SCPHistoryEntryV0 implements XdrElement {
+  public SCPHistoryEntryV0() {
+  }
+
   private SCPQuorumSet[] quorumSets;
+
+  public SCPQuorumSet[] getQuorumSets() {
+    return this.quorumSets;
+  }
+
+  public void setQuorumSets(SCPQuorumSet[] value) {
+    this.quorumSets = value;
+  }
+
   private LedgerSCPMessages ledgerMessages;
 
-  public SCPHistoryEntryV0() {
+  public LedgerSCPMessages getLedgerMessages() {
+    return this.ledgerMessages;
+  }
+
+  public void setLedgerMessages(LedgerSCPMessages value) {
+    this.ledgerMessages = value;
   }
 
   public static void encode(XdrDataOutputStream stream, SCPHistoryEntryV0 encodedSCPHistoryEntryV0) throws IOException {
@@ -33,6 +50,17 @@ public class SCPHistoryEntryV0 implements XdrElement {
       SCPQuorumSet.encode(stream, encodedSCPHistoryEntryV0.quorumSets[i]);
     }
     LedgerSCPMessages.encode(stream, encodedSCPHistoryEntryV0.ledgerMessages);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SCPHistoryEntryV0 decode(ByteString bs) throws IOException {
@@ -49,39 +77,10 @@ public class SCPHistoryEntryV0 implements XdrElement {
     decodedSCPHistoryEntryV0.ledgerMessages = LedgerSCPMessages.decode(stream);
     return decodedSCPHistoryEntryV0;
   }
-
-  public SCPQuorumSet[] getQuorumSets() {
-    return this.quorumSets;
-  }
-
-  public void setQuorumSets(SCPQuorumSet[] value) {
-    this.quorumSets = value;
-  }
-
-  public LedgerSCPMessages getLedgerMessages() {
-    return this.ledgerMessages;
-  }
-
-  public void setLedgerMessages(LedgerSCPMessages value) {
-    this.ledgerMessages = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(Arrays.hashCode(this.quorumSets), this.ledgerMessages);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof SCPHistoryEntryV0)) {

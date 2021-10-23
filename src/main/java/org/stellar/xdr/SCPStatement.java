@@ -52,17 +52,50 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SCPStatement implements XdrElement {
+  public SCPStatement() {
+  }
   private NodeID nodeID;
+  public NodeID getNodeID() {
+    return this.nodeID;
+  }
+  public void setNodeID(NodeID value) {
+    this.nodeID = value;
+  }
+
   private Uint64 slotIndex;
+  public Uint64 getSlotIndex() {
+    return this.slotIndex;
+  }
+
+  public void setSlotIndex(Uint64 value) {
+    this.slotIndex = value;
+  }
+
   private SCPStatementPledges pledges;
 
-  public SCPStatement() {
+  public SCPStatementPledges getPledges() {
+    return this.pledges;
+  }
+
+  public void setPledges(SCPStatementPledges value) {
+    this.pledges = value;
   }
 
   public static void encode(XdrDataOutputStream stream, SCPStatement encodedSCPStatement) throws IOException {
     NodeID.encode(stream, encodedSCPStatement.nodeID);
     Uint64.encode(stream, encodedSCPStatement.slotIndex);
     SCPStatementPledges.encode(stream, encodedSCPStatement.pledges);
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SCPStatement decode(ByteString bs) throws IOException {
@@ -75,41 +108,6 @@ public class SCPStatement implements XdrElement {
     decodedSCPStatement.slotIndex = Uint64.decode(stream);
     decodedSCPStatement.pledges = SCPStatementPledges.decode(stream);
     return decodedSCPStatement;
-  }
-
-  public NodeID getNodeID() {
-    return this.nodeID;
-  }
-
-  public void setNodeID(NodeID value) {
-    this.nodeID = value;
-  }
-
-  public Uint64 getSlotIndex() {
-    return this.slotIndex;
-  }
-
-  public void setSlotIndex(Uint64 value) {
-    this.slotIndex = value;
-  }
-
-  public SCPStatementPledges getPledges() {
-    return this.pledges;
-  }
-
-  public void setPledges(SCPStatementPledges value) {
-    this.pledges = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
   }
 
   @Override
@@ -158,129 +156,46 @@ public class SCPStatement implements XdrElement {
   }
 
   public static class SCPStatementPledges {
-    SCPStatementType type;
-    private SCPStatementPrepare prepare;
-    private SCPStatementConfirm confirm;
-    private SCPStatementExternalize externalize;
-    private SCPNomination nominate;
-
     public SCPStatementPledges() {
     }
-
-    public static void encode(
-        XdrDataOutputStream stream,
-        SCPStatementPledges encodedSCPStatementPledges
-    ) throws IOException {
-      //Xdrgen::AST::Identifier
-      //SCPStatementType
-      stream.writeInt(encodedSCPStatementPledges.getDiscriminant().getValue());
-      switch (encodedSCPStatementPledges.getDiscriminant()) {
-        case SCP_ST_PREPARE:
-          SCPStatementPrepare.encode(stream, encodedSCPStatementPledges.prepare);
-          break;
-        case SCP_ST_CONFIRM:
-          SCPStatementConfirm.encode(stream, encodedSCPStatementPledges.confirm);
-          break;
-        case SCP_ST_EXTERNALIZE:
-          SCPStatementExternalize.encode(stream, encodedSCPStatementPledges.externalize);
-          break;
-        case SCP_ST_NOMINATE:
-          SCPNomination.encode(stream, encodedSCPStatementPledges.nominate);
-          break;
-      }
-    }
-
-    public static SCPStatementPledges decode(ByteString bs) throws IOException {
-      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-    }
-
-    public static SCPStatementPledges decode(XdrDataInputStream stream) throws IOException {
-      SCPStatementPledges decodedSCPStatementPledges = new SCPStatementPledges();
-      SCPStatementType discriminant = SCPStatementType.decode(stream);
-      decodedSCPStatementPledges.setDiscriminant(discriminant);
-      switch (decodedSCPStatementPledges.getDiscriminant()) {
-        case SCP_ST_PREPARE:
-          decodedSCPStatementPledges.prepare = SCPStatementPrepare.decode(stream);
-          break;
-        case SCP_ST_CONFIRM:
-          decodedSCPStatementPledges.confirm = SCPStatementConfirm.decode(stream);
-          break;
-        case SCP_ST_EXTERNALIZE:
-          decodedSCPStatementPledges.externalize = SCPStatementExternalize.decode(stream);
-          break;
-        case SCP_ST_NOMINATE:
-          decodedSCPStatementPledges.nominate = SCPNomination.decode(stream);
-          break;
-      }
-      return decodedSCPStatementPledges;
-    }
-
+    SCPStatementType type;
     public SCPStatementType getDiscriminant() {
       return this.type;
     }
-
     public void setDiscriminant(SCPStatementType value) {
       this.type = value;
     }
 
+    private SCPStatementPrepare prepare;
     public SCPStatementPrepare getPrepare() {
       return this.prepare;
     }
-
     public void setPrepare(SCPStatementPrepare value) {
       this.prepare = value;
     }
 
+    private SCPStatementConfirm confirm;
     public SCPStatementConfirm getConfirm() {
       return this.confirm;
     }
-
     public void setConfirm(SCPStatementConfirm value) {
       this.confirm = value;
     }
 
+    private SCPStatementExternalize externalize;
     public SCPStatementExternalize getExternalize() {
       return this.externalize;
     }
-
     public void setExternalize(SCPStatementExternalize value) {
       this.externalize = value;
     }
 
+    private SCPNomination nominate;
     public SCPNomination getNominate() {
       return this.nominate;
     }
-
     public void setNominate(SCPNomination value) {
       this.nominate = value;
-    }
-
-    public void encode(XdrDataOutputStream stream) throws IOException {
-      encode(stream, this);
-    }
-
-    public ByteString encode() throws IOException {
-      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-      encode(xdrOutputStream);
-      return new ByteString(byteStream.toByteArray());
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hashCode(this.prepare, this.confirm, this.externalize, this.nominate, this.type);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-      if (!(object instanceof SCPStatementPledges)) {
-        return false;
-      }
-
-      SCPStatementPledges other = (SCPStatementPledges) object;
-      return Objects.equal(this.prepare, other.prepare) && Objects.equal(this.confirm, other.confirm) && Objects
-          .equal(this.externalize, other.externalize) && Objects.equal(this.nominate, other.nominate) && Objects
-          .equal(this.type, other.type);
     }
 
     public static final class Builder {
@@ -326,15 +241,144 @@ public class SCPStatement implements XdrElement {
       }
     }
 
+    public static void encode(
+        XdrDataOutputStream stream,
+        SCPStatementPledges encodedSCPStatementPledges
+    ) throws IOException {
+      //Xdrgen::AST::Identifier
+      //SCPStatementType
+      stream.writeInt(encodedSCPStatementPledges.getDiscriminant().getValue());
+      switch (encodedSCPStatementPledges.getDiscriminant()) {
+        case SCP_ST_PREPARE:
+          SCPStatementPrepare.encode(stream, encodedSCPStatementPledges.prepare);
+          break;
+        case SCP_ST_CONFIRM:
+          SCPStatementConfirm.encode(stream, encodedSCPStatementPledges.confirm);
+          break;
+        case SCP_ST_EXTERNALIZE:
+          SCPStatementExternalize.encode(stream, encodedSCPStatementPledges.externalize);
+          break;
+        case SCP_ST_NOMINATE:
+          SCPNomination.encode(stream, encodedSCPStatementPledges.nominate);
+          break;
+      }
+    }
+
+    public void encode(XdrDataOutputStream stream) throws IOException {
+      encode(stream, this);
+    }
+
+    public ByteString encode() throws IOException {
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+      encode(xdrOutputStream);
+      return new ByteString(byteStream.toByteArray());
+    }
+
+    public static SCPStatementPledges decode(ByteString bs) throws IOException {
+      return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+    }
+
+    public static SCPStatementPledges decode(XdrDataInputStream stream) throws IOException {
+      SCPStatementPledges decodedSCPStatementPledges = new SCPStatementPledges();
+      SCPStatementType discriminant = SCPStatementType.decode(stream);
+      decodedSCPStatementPledges.setDiscriminant(discriminant);
+      switch (decodedSCPStatementPledges.getDiscriminant()) {
+        case SCP_ST_PREPARE:
+          decodedSCPStatementPledges.prepare = SCPStatementPrepare.decode(stream);
+          break;
+        case SCP_ST_CONFIRM:
+          decodedSCPStatementPledges.confirm = SCPStatementConfirm.decode(stream);
+          break;
+        case SCP_ST_EXTERNALIZE:
+          decodedSCPStatementPledges.externalize = SCPStatementExternalize.decode(stream);
+          break;
+        case SCP_ST_NOMINATE:
+          decodedSCPStatementPledges.nominate = SCPNomination.decode(stream);
+          break;
+      }
+      return decodedSCPStatementPledges;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(this.prepare, this.confirm, this.externalize, this.nominate, this.type);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+      if (!(object instanceof SCPStatementPledges)) {
+        return false;
+      }
+
+      SCPStatementPledges other = (SCPStatementPledges) object;
+      return Objects.equal(this.prepare, other.prepare) && Objects.equal(this.confirm, other.confirm) && Objects
+          .equal(this.externalize, other.externalize) && Objects.equal(this.nominate, other.nominate) && Objects
+          .equal(this.type, other.type);
+    }
+
     public static class SCPStatementPrepare {
+      public SCPStatementPrepare() {
+      }
+
       private Hash quorumSetHash;
+
+      public Hash getQuorumSetHash() {
+        return this.quorumSetHash;
+      }
+
+      public void setQuorumSetHash(Hash value) {
+        this.quorumSetHash = value;
+      }
+
       private SCPBallot ballot;
+
+      public SCPBallot getBallot() {
+        return this.ballot;
+      }
+
+      public void setBallot(SCPBallot value) {
+        this.ballot = value;
+      }
+
       private SCPBallot prepared;
+
+      public SCPBallot getPrepared() {
+        return this.prepared;
+      }
+
+      public void setPrepared(SCPBallot value) {
+        this.prepared = value;
+      }
+
       private SCPBallot preparedPrime;
+
+      public SCPBallot getPreparedPrime() {
+        return this.preparedPrime;
+      }
+
+      public void setPreparedPrime(SCPBallot value) {
+        this.preparedPrime = value;
+      }
+
       private Uint32 nC;
+
+      public Uint32 getNC() {
+        return this.nC;
+      }
+
+      public void setNC(Uint32 value) {
+        this.nC = value;
+      }
+
       private Uint32 nH;
 
-      public SCPStatementPrepare() {
+      public Uint32 getNH() {
+        return this.nH;
+      }
+
+      public void setNH(Uint32 value) {
+        this.nH = value;
       }
 
       public static void encode(
@@ -359,6 +403,17 @@ public class SCPStatement implements XdrElement {
         Uint32.encode(stream, encodedSCPStatementPrepare.nH);
       }
 
+      public void encode(XdrDataOutputStream stream) throws IOException {
+        encode(stream, this);
+      }
+
+      public ByteString encode() throws IOException {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+        encode(xdrOutputStream);
+        return new ByteString(byteStream.toByteArray());
+      }
+
       public static SCPStatementPrepare decode(ByteString bs) throws IOException {
         return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
       }
@@ -379,71 +434,10 @@ public class SCPStatement implements XdrElement {
         decodedSCPStatementPrepare.nH = Uint32.decode(stream);
         return decodedSCPStatementPrepare;
       }
-
-      public Hash getQuorumSetHash() {
-        return this.quorumSetHash;
-      }
-
-      public void setQuorumSetHash(Hash value) {
-        this.quorumSetHash = value;
-      }
-
-      public SCPBallot getBallot() {
-        return this.ballot;
-      }
-
-      public void setBallot(SCPBallot value) {
-        this.ballot = value;
-      }
-
-      public SCPBallot getPrepared() {
-        return this.prepared;
-      }
-
-      public void setPrepared(SCPBallot value) {
-        this.prepared = value;
-      }
-
-      public SCPBallot getPreparedPrime() {
-        return this.preparedPrime;
-      }
-
-      public void setPreparedPrime(SCPBallot value) {
-        this.preparedPrime = value;
-      }
-
-      public Uint32 getNC() {
-        return this.nC;
-      }
-
-      public void setNC(Uint32 value) {
-        this.nC = value;
-      }
-
-      public Uint32 getNH() {
-        return this.nH;
-      }
-
-      public void setNH(Uint32 value) {
-        this.nH = value;
-      }
-
-      public void encode(XdrDataOutputStream stream) throws IOException {
-        encode(stream, this);
-      }
-
-      public ByteString encode() throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-        encode(xdrOutputStream);
-        return new ByteString(byteStream.toByteArray());
-      }
-
       @Override
       public int hashCode() {
         return Objects.hashCode(this.quorumSetHash, this.ballot, this.prepared, this.preparedPrime, this.nC, this.nH);
       }
-
       @Override
       public boolean equals(Object object) {
         if (!(object instanceof SCPStatementPrepare)) {
@@ -508,15 +502,50 @@ public class SCPStatement implements XdrElement {
       }
 
     }
-
     public static class SCPStatementConfirm {
+      public SCPStatementConfirm() {
+      }
       private SCPBallot ballot;
+      public SCPBallot getBallot() {
+        return this.ballot;
+      }
+      public void setBallot(SCPBallot value) {
+        this.ballot = value;
+      }
+
       private Uint32 nPrepared;
+      public Uint32 getNPrepared() {
+        return this.nPrepared;
+      }
+      public void setNPrepared(Uint32 value) {
+        this.nPrepared = value;
+      }
+
       private Uint32 nCommit;
+      public Uint32 getNCommit() {
+        return this.nCommit;
+      }
+      public void setNCommit(Uint32 value) {
+        this.nCommit = value;
+      }
+
       private Uint32 nH;
+      public Uint32 getNH() {
+        return this.nH;
+      }
+
+      public void setNH(Uint32 value) {
+        this.nH = value;
+      }
+
       private Hash quorumSetHash;
 
-      public SCPStatementConfirm() {
+      public Hash getQuorumSetHash() {
+        return this.quorumSetHash;
+      }
+
+      public void setQuorumSetHash(Hash value) {
+        this.quorumSetHash = value;
       }
 
       public static void encode(
@@ -528,6 +557,17 @@ public class SCPStatement implements XdrElement {
         Uint32.encode(stream, encodedSCPStatementConfirm.nCommit);
         Uint32.encode(stream, encodedSCPStatementConfirm.nH);
         Hash.encode(stream, encodedSCPStatementConfirm.quorumSetHash);
+      }
+
+      public void encode(XdrDataOutputStream stream) throws IOException {
+        encode(stream, this);
+      }
+
+      public ByteString encode() throws IOException {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+        encode(xdrOutputStream);
+        return new ByteString(byteStream.toByteArray());
       }
 
       public static SCPStatementConfirm decode(ByteString bs) throws IOException {
@@ -542,57 +582,6 @@ public class SCPStatement implements XdrElement {
         decodedSCPStatementConfirm.nH = Uint32.decode(stream);
         decodedSCPStatementConfirm.quorumSetHash = Hash.decode(stream);
         return decodedSCPStatementConfirm;
-      }
-
-      public SCPBallot getBallot() {
-        return this.ballot;
-      }
-
-      public void setBallot(SCPBallot value) {
-        this.ballot = value;
-      }
-
-      public Uint32 getNPrepared() {
-        return this.nPrepared;
-      }
-
-      public void setNPrepared(Uint32 value) {
-        this.nPrepared = value;
-      }
-
-      public Uint32 getNCommit() {
-        return this.nCommit;
-      }
-
-      public void setNCommit(Uint32 value) {
-        this.nCommit = value;
-      }
-
-      public Uint32 getNH() {
-        return this.nH;
-      }
-
-      public void setNH(Uint32 value) {
-        this.nH = value;
-      }
-
-      public Hash getQuorumSetHash() {
-        return this.quorumSetHash;
-      }
-
-      public void setQuorumSetHash(Hash value) {
-        this.quorumSetHash = value;
-      }
-
-      public void encode(XdrDataOutputStream stream) throws IOException {
-        encode(stream, this);
-      }
-
-      public ByteString encode() throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-        encode(xdrOutputStream);
-        return new ByteString(byteStream.toByteArray());
       }
 
       @Override
@@ -656,13 +645,34 @@ public class SCPStatement implements XdrElement {
       }
 
     }
-
     public static class SCPStatementExternalize {
+      public SCPStatementExternalize() {
+      }
       private SCPBallot commit;
+      public SCPBallot getCommit() {
+        return this.commit;
+      }
+      public void setCommit(SCPBallot value) {
+        this.commit = value;
+      }
+
       private Uint32 nH;
+      public Uint32 getNH() {
+        return this.nH;
+      }
+
+      public void setNH(Uint32 value) {
+        this.nH = value;
+      }
+
       private Hash commitQuorumSetHash;
 
-      public SCPStatementExternalize() {
+      public Hash getCommitQuorumSetHash() {
+        return this.commitQuorumSetHash;
+      }
+
+      public void setCommitQuorumSetHash(Hash value) {
+        this.commitQuorumSetHash = value;
       }
 
       public static void encode(
@@ -672,6 +682,17 @@ public class SCPStatement implements XdrElement {
         SCPBallot.encode(stream, encodedSCPStatementExternalize.commit);
         Uint32.encode(stream, encodedSCPStatementExternalize.nH);
         Hash.encode(stream, encodedSCPStatementExternalize.commitQuorumSetHash);
+      }
+
+      public void encode(XdrDataOutputStream stream) throws IOException {
+        encode(stream, this);
+      }
+
+      public ByteString encode() throws IOException {
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+        encode(xdrOutputStream);
+        return new ByteString(byteStream.toByteArray());
       }
 
       public static SCPStatementExternalize decode(ByteString bs) throws IOException {
@@ -684,41 +705,6 @@ public class SCPStatement implements XdrElement {
         decodedSCPStatementExternalize.nH = Uint32.decode(stream);
         decodedSCPStatementExternalize.commitQuorumSetHash = Hash.decode(stream);
         return decodedSCPStatementExternalize;
-      }
-
-      public SCPBallot getCommit() {
-        return this.commit;
-      }
-
-      public void setCommit(SCPBallot value) {
-        this.commit = value;
-      }
-
-      public Uint32 getNH() {
-        return this.nH;
-      }
-
-      public void setNH(Uint32 value) {
-        this.nH = value;
-      }
-
-      public Hash getCommitQuorumSetHash() {
-        return this.commitQuorumSetHash;
-      }
-
-      public void setCommitQuorumSetHash(Hash value) {
-        this.commitQuorumSetHash = value;
-      }
-
-      public void encode(XdrDataOutputStream stream) throws IOException {
-        encode(stream, this);
-      }
-
-      public ByteString encode() throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-        encode(xdrOutputStream);
-        return new ByteString(byteStream.toByteArray());
       }
 
       @Override

@@ -19,38 +19,10 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SCPHistoryEntry implements XdrElement {
-  Integer v;
-  private SCPHistoryEntryV0 v0;
-
   public SCPHistoryEntry() {
   }
 
-  public static void encode(XdrDataOutputStream stream, SCPHistoryEntry encodedSCPHistoryEntry) throws IOException {
-    //Xdrgen::AST::Typespecs::Int
-    //Integer
-    stream.writeInt(encodedSCPHistoryEntry.getDiscriminant().intValue());
-    switch (encodedSCPHistoryEntry.getDiscriminant()) {
-      case 0:
-        SCPHistoryEntryV0.encode(stream, encodedSCPHistoryEntry.v0);
-        break;
-    }
-  }
-
-  public static SCPHistoryEntry decode(ByteString bs) throws IOException {
-    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
-  }
-
-  public static SCPHistoryEntry decode(XdrDataInputStream stream) throws IOException {
-    SCPHistoryEntry decodedSCPHistoryEntry = new SCPHistoryEntry();
-    Integer discriminant = stream.readInt();
-    decodedSCPHistoryEntry.setDiscriminant(discriminant);
-    switch (decodedSCPHistoryEntry.getDiscriminant()) {
-      case 0:
-        decodedSCPHistoryEntry.v0 = SCPHistoryEntryV0.decode(stream);
-        break;
-    }
-    return decodedSCPHistoryEntry;
-  }
+  Integer v;
 
   public Integer getDiscriminant() {
     return this.v;
@@ -60,38 +32,14 @@ public class SCPHistoryEntry implements XdrElement {
     this.v = value;
   }
 
+  private SCPHistoryEntryV0 v0;
+
   public SCPHistoryEntryV0 getV0() {
     return this.v0;
   }
 
   public void setV0(SCPHistoryEntryV0 value) {
     this.v0 = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(this.v0, this.v);
-  }
-
-  @Override
-  public boolean equals(Object object) {
-    if (!(object instanceof SCPHistoryEntry)) {
-      return false;
-    }
-
-    SCPHistoryEntry other = (SCPHistoryEntry) object;
-    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v, other.v);
   }
 
   public static final class Builder {
@@ -114,5 +62,56 @@ public class SCPHistoryEntry implements XdrElement {
       val.setV0(v0);
       return val;
     }
+  }
+
+  public static void encode(XdrDataOutputStream stream, SCPHistoryEntry encodedSCPHistoryEntry) throws IOException {
+    //Xdrgen::AST::Typespecs::Int
+    //Integer
+    stream.writeInt(encodedSCPHistoryEntry.getDiscriminant().intValue());
+    switch (encodedSCPHistoryEntry.getDiscriminant()) {
+      case 0:
+        SCPHistoryEntryV0.encode(stream, encodedSCPHistoryEntry.v0);
+        break;
+    }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
+  }
+
+  public static SCPHistoryEntry decode(ByteString bs) throws IOException {
+    return decode(new XdrDataInputStream(new ByteArrayInputStream(bs.toByteArray())));
+  }
+
+  public static SCPHistoryEntry decode(XdrDataInputStream stream) throws IOException {
+    SCPHistoryEntry decodedSCPHistoryEntry = new SCPHistoryEntry();
+    Integer discriminant = stream.readInt();
+    decodedSCPHistoryEntry.setDiscriminant(discriminant);
+    switch (decodedSCPHistoryEntry.getDiscriminant()) {
+      case 0:
+        decodedSCPHistoryEntry.v0 = SCPHistoryEntryV0.decode(stream);
+        break;
+    }
+    return decodedSCPHistoryEntry;
+  }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(this.v0, this.v);
+  }
+  @Override
+  public boolean equals(Object object) {
+    if (!(object instanceof SCPHistoryEntry)) {
+      return false;
+    }
+
+    SCPHistoryEntry other = (SCPHistoryEntry) object;
+    return Objects.equal(this.v0, other.v0) && Objects.equal(this.v, other.v);
   }
 }

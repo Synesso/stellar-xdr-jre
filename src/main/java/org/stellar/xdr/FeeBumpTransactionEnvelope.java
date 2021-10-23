@@ -22,10 +22,27 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class FeeBumpTransactionEnvelope implements XdrElement {
+  public FeeBumpTransactionEnvelope() {
+  }
+
   private FeeBumpTransaction tx;
+
+  public FeeBumpTransaction getTx() {
+    return this.tx;
+  }
+
+  public void setTx(FeeBumpTransaction value) {
+    this.tx = value;
+  }
+
   private DecoratedSignature[] signatures;
 
-  public FeeBumpTransactionEnvelope() {
+  public DecoratedSignature[] getSignatures() {
+    return this.signatures;
+  }
+
+  public void setSignatures(DecoratedSignature[] value) {
+    this.signatures = value;
   }
 
   public static void encode(
@@ -38,6 +55,17 @@ public class FeeBumpTransactionEnvelope implements XdrElement {
     for (int i = 0; i < signaturessize; i++) {
       DecoratedSignature.encode(stream, encodedFeeBumpTransactionEnvelope.signatures[i]);
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static FeeBumpTransactionEnvelope decode(ByteString bs) throws IOException {
@@ -54,39 +82,10 @@ public class FeeBumpTransactionEnvelope implements XdrElement {
     }
     return decodedFeeBumpTransactionEnvelope;
   }
-
-  public FeeBumpTransaction getTx() {
-    return this.tx;
-  }
-
-  public void setTx(FeeBumpTransaction value) {
-    this.tx = value;
-  }
-
-  public DecoratedSignature[] getSignatures() {
-    return this.signatures;
-  }
-
-  public void setSignatures(DecoratedSignature[] value) {
-    this.signatures = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.tx, Arrays.hashCode(this.signatures));
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof FeeBumpTransactionEnvelope)) {

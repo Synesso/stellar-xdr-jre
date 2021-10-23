@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class SetOptionsResult implements XdrElement {
+  public SetOptionsResult() {
+  }
+
   SetOptionsResultCode code;
 
-  public SetOptionsResult() {
+  public SetOptionsResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(SetOptionsResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private SetOptionsResultCode discriminant;
+
+    public Builder discriminant(SetOptionsResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public SetOptionsResult build() {
+      SetOptionsResult val = new SetOptionsResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(XdrDataOutputStream stream, SetOptionsResult encodedSetOptionsResult) throws IOException {
@@ -36,6 +59,17 @@ public class SetOptionsResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static SetOptionsResult decode(ByteString bs) throws IOException {
@@ -54,31 +88,10 @@ public class SetOptionsResult implements XdrElement {
     }
     return decodedSetOptionsResult;
   }
-
-  public SetOptionsResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(SetOptionsResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof SetOptionsResult)) {
@@ -87,20 +100,5 @@ public class SetOptionsResult implements XdrElement {
 
     SetOptionsResult other = (SetOptionsResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private SetOptionsResultCode discriminant;
-
-    public Builder discriminant(SetOptionsResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public SetOptionsResult build() {
-      SetOptionsResult val = new SetOptionsResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

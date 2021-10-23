@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class CreateAccountResult implements XdrElement {
+  public CreateAccountResult() {
+  }
+
   CreateAccountResultCode code;
 
-  public CreateAccountResult() {
+  public CreateAccountResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(CreateAccountResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private CreateAccountResultCode discriminant;
+
+    public Builder discriminant(CreateAccountResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public CreateAccountResult build() {
+      CreateAccountResult val = new CreateAccountResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(
@@ -39,6 +62,17 @@ public class CreateAccountResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static CreateAccountResult decode(ByteString bs) throws IOException {
@@ -57,31 +91,10 @@ public class CreateAccountResult implements XdrElement {
     }
     return decodedCreateAccountResult;
   }
-
-  public CreateAccountResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(CreateAccountResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof CreateAccountResult)) {
@@ -90,20 +103,5 @@ public class CreateAccountResult implements XdrElement {
 
     CreateAccountResult other = (CreateAccountResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private CreateAccountResultCode discriminant;
-
-    public Builder discriminant(CreateAccountResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public CreateAccountResult build() {
-      CreateAccountResult val = new CreateAccountResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }

@@ -21,9 +21,32 @@ import okio.ByteString;
 
 //  ===========================================================================
 public class RevokeSponsorshipResult implements XdrElement {
+  public RevokeSponsorshipResult() {
+  }
+
   RevokeSponsorshipResultCode code;
 
-  public RevokeSponsorshipResult() {
+  public RevokeSponsorshipResultCode getDiscriminant() {
+    return this.code;
+  }
+
+  public void setDiscriminant(RevokeSponsorshipResultCode value) {
+    this.code = value;
+  }
+
+  public static final class Builder {
+    private RevokeSponsorshipResultCode discriminant;
+
+    public Builder discriminant(RevokeSponsorshipResultCode discriminant) {
+      this.discriminant = discriminant;
+      return this;
+    }
+
+    public RevokeSponsorshipResult build() {
+      RevokeSponsorshipResult val = new RevokeSponsorshipResult();
+      val.setDiscriminant(discriminant);
+      return val;
+    }
   }
 
   public static void encode(
@@ -39,6 +62,17 @@ public class RevokeSponsorshipResult implements XdrElement {
       default:
         break;
     }
+  }
+
+  public void encode(XdrDataOutputStream stream) throws IOException {
+    encode(stream, this);
+  }
+
+  public ByteString encode() throws IOException {
+    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
+    encode(xdrOutputStream);
+    return new ByteString(byteStream.toByteArray());
   }
 
   public static RevokeSponsorshipResult decode(ByteString bs) throws IOException {
@@ -57,31 +91,10 @@ public class RevokeSponsorshipResult implements XdrElement {
     }
     return decodedRevokeSponsorshipResult;
   }
-
-  public RevokeSponsorshipResultCode getDiscriminant() {
-    return this.code;
-  }
-
-  public void setDiscriminant(RevokeSponsorshipResultCode value) {
-    this.code = value;
-  }
-
-  public void encode(XdrDataOutputStream stream) throws IOException {
-    encode(stream, this);
-  }
-
-  public ByteString encode() throws IOException {
-    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    XdrDataOutputStream xdrOutputStream = new XdrDataOutputStream(byteStream);
-    encode(xdrOutputStream);
-    return new ByteString(byteStream.toByteArray());
-  }
-
   @Override
   public int hashCode() {
     return Objects.hashCode(this.code);
   }
-
   @Override
   public boolean equals(Object object) {
     if (!(object instanceof RevokeSponsorshipResult)) {
@@ -90,20 +103,5 @@ public class RevokeSponsorshipResult implements XdrElement {
 
     RevokeSponsorshipResult other = (RevokeSponsorshipResult) object;
     return Objects.equal(this.code, other.code);
-  }
-
-  public static final class Builder {
-    private RevokeSponsorshipResultCode discriminant;
-
-    public Builder discriminant(RevokeSponsorshipResultCode discriminant) {
-      this.discriminant = discriminant;
-      return this;
-    }
-
-    public RevokeSponsorshipResult build() {
-      RevokeSponsorshipResult val = new RevokeSponsorshipResult();
-      val.setDiscriminant(discriminant);
-      return val;
-    }
   }
 }
